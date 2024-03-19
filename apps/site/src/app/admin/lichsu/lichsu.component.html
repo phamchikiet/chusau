@@ -1,0 +1,48 @@
+<div class="!flex flex-col flex-auto min-w-0 relative bg-white">
+  <div class="relative h-full w-full overflow-auto flex flex-col space-y-2 justify-between p-4">
+    <div class="relative flex flex-col items-center p-3">
+      <div class="p-4 grid lg:grid-cols-2 grid-cols-1 gap-2 items-center justify-between">
+        <div class="text-center text-xl">Lịch Sử</div>
+        <mat-form-field appearance="outline" class="text-xs w-full">
+          <mat-label>Tìm Kiếm</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
+        </mat-form-field> 
+      </div>
+    </div> 
+    <div class="mat-elevation-z8 w-full">
+      <table class="w-full" mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="Hoten">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ Tên </th>
+          <td mat-cell *matCellDef="let row"> {{row.User.Hoten}} </td>
+        </ng-container>
+        <ng-container matColumnDef="SDT">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
+          <td mat-cell *matCellDef="let row"> {{row.User.SDT}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Tieude">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu Đề </th>
+          <td mat-cell *matCellDef="let row"> {{row.Thietbi.Tieude}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Trangthai">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Trạng Thái </th>
+          <td mat-cell *matCellDef="let row"> 
+            <span class="{{row.Type==1?'text-red-600':'text-green-600'}}">
+            {{row.Type==1?"Đang Sử Dụng":"Đã Trả"}} </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Ngaytao">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày Tạo </th>
+          <td mat-cell *matCellDef="let row"> {{row.Ngaytao|date:'hh:mm:ss dd/MM/yyyy'}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-200"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>  
+    </div>
+</div>
+
+
