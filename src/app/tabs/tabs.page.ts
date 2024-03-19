@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EnvironmentInjector, inject } from '@angular/core';
-import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonCard, IonCardContent } from '@ionic/angular/standalone';
+import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonCard, IonCardContent, IonRouterOutlet, IonHeader } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { triangle, ellipse, square } from 'ionicons/icons';
 
@@ -9,9 +9,17 @@ import { triangle, ellipse, square } from 'ionicons/icons';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   standalone: true,
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel,CommonModule,
+  imports: [
+  IonTabs, 
+  IonTabBar, 
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  CommonModule,
   IonCard,
-  IonCardContent
+  IonCardContent,
+  IonRouterOutlet,
+  IonHeader
 ],
 })
 export class TabsPage {
