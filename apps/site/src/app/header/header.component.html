@@ -1,9 +1,14 @@
 <div class="m-auto p-4 bg-[#005ab7] space-y-2" routerLink="/">
   <img class="mx-auto" src="assets/img/logo-cdn.png" alt="logo" />
  <div class="flex justify-center">
-  <div class="text-center p-4 rounded-lg bg-white text-blue-500">
-    Chào, <strong>{{CUser.Hoten}} !</strong>
+  <div *ngIf="Token!=''" class="flex space-x-3 text-center p-4 rounded-lg bg-white text-blue-500 items-center">
+    <span>Chào,</span>
+    <strong>{{CUser.Hoten}} !</strong>
+    <span class="material-symbols-outlined" (click)="logout()">
+      logout
+      </span>
   </div>
+  
  </div>
 
 </div>
