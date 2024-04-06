@@ -13,3 +13,6 @@ npx nx g @nx/angular:setup-tailwind fe_shop
 git add .
 git commit -m "update"
 git push
+###
+npm install @angular/pwa@14 --save-dev
+npx nx g @angular/pwa:ng-add --project=site

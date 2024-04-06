@@ -26,6 +26,8 @@ import { TrangchuComponent } from './trangchu/trangchu.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { TaikhoanSiteComponent } from './taikhoan/taikhoan-site/taikhoan-site.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [			
     AppComponent,
@@ -128,6 +130,12 @@ import { TaikhoanSiteComponent } from './taikhoan/taikhoan-site/taikhoan-site.co
         },
         overlap: 150,
       },
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
     }),
   ],
   exports: [RouterModule],

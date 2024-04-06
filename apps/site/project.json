@@ -22,13 +22,17 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/site/src/favicon.ico",
-          "apps/site/src/assets"
+          "apps/site/src/assets",
+          "apps/site/src/manifest.webmanifest",
+          "apps/site/src/manifest.webmanifest"
         ],
         "styles": [
           "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
           "apps/site/src/styles.scss"
         ],
-        "scripts": []
+        "scripts": [],
+        "serviceWorker": true,
+        "ngswConfigPath": "apps/site/ngsw-config.json"
       },
       "configurations": {
         "production": {
