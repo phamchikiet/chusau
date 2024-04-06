@@ -35,7 +35,7 @@
           <table class="w-full" mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="Hoten">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ Tên </th>
-              <td class="p-2"  mat-cell *matCellDef="let row"> {{row.Hoten}} </td>
+              <td class="p-2"  mat-cell *matCellDef="let row" (click)="openDialog(dialogTemplate,row,'upadte')"> {{row.Hoten}} </td>
             </ng-container>
             <ng-container matColumnDef="email">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> email </th>
@@ -45,8 +45,16 @@
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
               <td class="p-2" mat-cell *matCellDef="let row"> {{row.SDT}} </td>
             </ng-container>
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Hành Động </th>
+              <td class="p-2" mat-cell *matCellDef="let row"> 
+                  <button mat-icon-button color="warn" (click)="XoaDialog(XoaTeamplate,row)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+            </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openDialog(dialogTemplate,row,'upadte')"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr>
@@ -97,4 +105,20 @@
       </div>
     </div>
   </ng-template>
+    <ng-template #XoaTeamplate>
+      <div class="p-2 flex flex-col space-y-3">
+        <div mat-dialog-title>Xoá</div>
+        <div mat-dialog-content>
+          <div class="flex flex-col w-full space-y-4 lg:p-4">
+              Bạn chắc chắn muốn Xoá?
+          </div>
+          <div class="flex flex-row space-x-2 items-center justify-center">
+            <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+            <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  
+  
   

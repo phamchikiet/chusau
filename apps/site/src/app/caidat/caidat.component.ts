@@ -17,7 +17,7 @@ export class CaidatComponent implements OnInit {
   User:any={}
   ListCloud:any[]=[]
   ListUser:any[]=[]
-  displayedColumns: string[] = ['Hoten', 'email', 'SDT'];
+  displayedColumns: string[] = ['Hoten', 'email', 'SDT','Action'];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -100,14 +100,15 @@ openDialog(teamplate: TemplateRef<any>,item:any,type:any): void {
     }
   });
 }
-  // Dangky(User:any)
-  // {
-  //   this._UsersService.Dangky(User).subscribe((data)=>this._NotifierService.notify('success','Thêm Thành Công'));
-  // }
-  // Update(User:any)
-  // {
-  //   this._UsersService.updateUser(User).subscribe((data)=>this._NotifierService.notify('success','Thêm Thành Công'));
-  // }
+XoaDialog(teamplate: TemplateRef<any>,item:any): void {
+  const dialogRef = this.dialog.open(teamplate, {
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result == 'true') {
+      this._UsersService.deleteUser(item.id).subscribe(() => location.reload())
+    }
+  });
+}
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

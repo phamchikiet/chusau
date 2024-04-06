@@ -93,7 +93,6 @@ export class UsersService {
         })
     );
 }
-
 getCauhinhUser(): Observable<any[]> {
   return this._httpClient.get<any[]>(`${this.APIURL}/test_cauhinh`).pipe(
     tap((data: any[]) => {
@@ -120,6 +119,15 @@ getProfile(): Observable<any> {
     return this._httpClient.get<any>(`${this.APIURL}/test_auth/profile`).pipe(
       tap((response) => {
         this._profile.next(response);
+      })
+    );
+  }
+  deleteUser(id: any): Observable<any> {
+    return this._httpClient.delete<any>(`${this.APIURL}/test_users/${id}`).pipe(
+      tap(() => {
+        const users = this._users.getValue();
+        const updatedUsers = users.filter((user: any) => user.id !== id);
+        this._users.next(updatedUsers);
       })
     );
   }

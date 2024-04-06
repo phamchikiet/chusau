@@ -6,7 +6,7 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve site --port 4202",
-    "build": "nx build",
+    "build": "nx run site:serve:production",
     "deploy": "nx deploy",
     "test": "nx test"
   },
