@@ -49,14 +49,14 @@ export class MainComponent implements OnInit {
   ) {
     this._LichsuService.getAll().subscribe(data => this.Lichsudata = data)
     this._UsersService.getProfile().subscribe(data => this.CUser = data)
-    // this._QrcodeService.getAll().subscribe()
+    this._QrcodeService.getAll().subscribe()
     // this._QrcodeService.Search(this.SearchParams)
-    // this._QrcodeService.thietbis$.subscribe((data) => {
-    //   this.Listdata = data
-    //   console.log(this.Listdata);
+    this._QrcodeService.thietbis$.subscribe((data) => {
+      this.Listdata = data
+      console.log(this.Listdata);
 
-    //   this.dataSource = new MatTableDataSource(data);
-    // })
+      this.dataSource = new MatTableDataSource(data);
+    })
   }
   ngOnInit(): void {
   }
@@ -83,7 +83,8 @@ export class MainComponent implements OnInit {
   onScanSuccess(data: string) {
     const result = this.Listdata.find(v => v.id == data)
     const result1 = this.Lichsudata.filter(v => v.idTB == data && v.idUser == this.CUser.id)
-    this._TelegramService.SendLogdev('Thiết bị đã được sử dụng bởi nhân viên khác')
+    this._TelegramService.SendLogdev(result)
+    this._TelegramService.SendLogdev(result1)
     if(result)
     {
       console.log(result);
