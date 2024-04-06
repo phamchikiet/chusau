@@ -15,7 +15,7 @@
         <router-outlet></router-outlet>
         <div *ngIf="isActive('/')">
           <ng-container *ngIf="IsshowCam; else elseTemplate">
-            <div class="w-96">
+            <div class="p-2 justify-center">
               <zxing-scanner #scanner (scanSuccess)="onScanSuccess($event)"></zxing-scanner>
             </div>
           </ng-container>

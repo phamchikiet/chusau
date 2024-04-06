@@ -85,7 +85,9 @@
         </ng-container>
         <ng-container matColumnDef="Tieude">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu đề </th>
-          <td mat-cell *matCellDef="let row" (click)="openDialog(dialogXoaBaiviet);Detail=row"> {{row.Tieude}} </td>
+          <td mat-cell *matCellDef="let row" (click)="openDialog(dialogXoaBaiviet);Detail=row">
+            <span class="line-clamp-3"> {{row.Tieude}} </span>
+            </td>
         </ng-container>
         <ng-container matColumnDef="Mota">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Mô Tả </th>

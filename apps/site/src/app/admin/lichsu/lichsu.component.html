@@ -1,7 +1,7 @@
 <div class="!flex flex-col flex-auto min-w-0 relative bg-white">
-  <div class="relative h-full w-full overflow-auto flex flex-col space-y-2 justify-between p-4">
+  <div class="relative h-full w-full overflow-auto flex flex-col space-y-2 justify-between">
     <div class="relative flex flex-col items-center p-3">
-      <div class="p-4 grid lg:grid-cols-2 grid-cols-1 gap-2 items-center justify-between">
+      <div class="grid lg:grid-cols-2 grid-cols-1 gap-2 items-center justify-between">
         <div class="text-center text-xl">Lịch Sử</div>
         <mat-form-field appearance="outline" class="text-xs w-full">
           <mat-label>Tìm Kiếm</mat-label>
@@ -9,7 +9,7 @@
         </mat-form-field> 
       </div>
     </div> 
-    <div class="mat-elevation-z8 w-full">
+    <div class="w-full border overflow-auto">
       <table class="w-full" mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="Hoten">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ Tên </th>
@@ -40,8 +40,8 @@
           <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
         </tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
 </div>
 

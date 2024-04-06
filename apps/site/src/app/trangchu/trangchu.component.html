@@ -1,7 +1,9 @@
                   
 <div class="text-center">Chào, {{CUser.Hoten}} !</div>
 <ng-container *ngIf="IsshowCam; else elseTemplate">
+  <div class="lg:w-96 w-52 p-2">  
   <zxing-scanner #scanner (scanSuccess)="onScanSuccess($event)"></zxing-scanner>
+  </div>
 </ng-container>
 <ng-template #elseTemplate>
   <!-- <div class="text-center py-2">

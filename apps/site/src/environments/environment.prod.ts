@@ -5,8 +5,11 @@ export const environment = {
   DATABASE_URL: "mysql://root:@localhost:3306/crm",
   //APIURL:"https://v2apidaotao.tazagroup.vn",
   //APIURL: "http://localhost:3333",
-  APIURL:"https://apifull.tazagroup.vn",
+  APIURL:"https://apicsvc.chikiet.com",
   REMOTE_URL: "mysql://tazaspac_it:ChiKiet1988:@localhost:3306/tazaspac_daotao",
   SECRETKEY: "mycustomuselongsecret",
   EXPIRESIN: "60 days",
+  secret_key: "HLBWj23hToA9fuiQvQY4",
+  APITelegram_accesstoken:"6571734116:AAFonel_6l-wwoqFkop80H9ewxhp0360Ekw",
+  APITelegram_Logdev:"-4194552388",
 };

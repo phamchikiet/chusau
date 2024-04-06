@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { TrangchuComponent } from '../trangchu/trangchu.component';
 import { LichsuService } from '../lichsu.service';
 import { NotifierService } from 'angular-notifier';
+import { TelegramService } from '../shared/telegram.service';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -44,6 +45,7 @@ export class MainComponent implements OnInit {
     private _NotifierService: NotifierService,
     private dialog: MatDialog,
     private router: Router,
+    private _TelegramService: TelegramService,
   ) {
     this._LichsuService.getAll().subscribe(data => this.Lichsudata = data)
     this._UsersService.getProfile().subscribe(data => this.CUser = data)
@@ -81,6 +83,7 @@ export class MainComponent implements OnInit {
   onScanSuccess(data: string) {
     const result = this.Listdata.find(v => v.id == data)
     const result1 = this.Lichsudata.filter(v => v.idTB == data && v.idUser == this.CUser.id)
+    this._TelegramService.SendLogdev('Thiết bị đã được sử dụng bởi nhân viên khác')
     if(result)
     {
       console.log(result);
