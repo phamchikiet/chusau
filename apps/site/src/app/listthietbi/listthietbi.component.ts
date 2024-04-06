@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WebcamImage } from 'ngx-webcam';
 import { Observable, Subject } from 'rxjs';
 import { LichsuService } from '../lichsu.service';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-listthietbi',
   templateUrl: './listthietbi.component.html',
@@ -74,7 +75,7 @@ export class ListthietbiComponent implements OnInit {
       console.log(event);
       this.SearchParams.pageSize = event.pageSize
       this.SearchParams.pageNumber = event.pageIndex
-      this._QrcodeService.Search(this.SearchParams)
+      this._QrcodeService.Search(this.SearchParams).then(()=>this.ngOnInit())
     }
   text = 'Hello, QR Code!';
   elementType = 'url'; // Other possible values: 'canvas', 'img', 'url'
@@ -182,11 +183,47 @@ export class ListthietbiComponent implements OnInit {
       return { time: Thoigian, color: 'primary' };
     }
   }
-  writeExcelFile(){}
-  readExcelFile(e:any){
-    console.log(e);
-    
+  readExcelFile(event: any) {
+    const file = event.target.files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const data = new Uint8Array((e.target as any).result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
+      console.log(jsonData);
+      this.writeExcelFile(jsonData)
+      // jsonData.forEach((v:any,k:any) => {
+      //   setTimeout(() => {
+      //     const convertedDate = v.Ngay.replace(/_/g, "/")
+      //     v.Ngayformat = new Date(convertedDate)
+      //     this.AddChart(v)
+      //     console.log(v);
+      //   }, 100*k);
+      // });
+      console.log(jsonData);
+    };
+    fileReader.readAsArrayBuffer(file);
   }
+  writeExcelFile(data:any) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Sheet1': worksheet }, SheetNames: ['Sheet1'] };
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    this.saveAsExcelFile(blob, 'data');
+  }
+  saveAsExcelFile(buffer: any, fileName: string) {
+    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url: string = window.URL.createObjectURL(data);
+    const link: HTMLAnchorElement = document.createElement('a');
+    link.href = url;
+    link.download = `${fileName}.xlsx`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+    link.remove();
+  }
+
   async LoadDrive(){
    const data = await this._QrcodeService.getDrive()
    this.SanphamsDrive = data.values.slice(1).map((row:any) => {

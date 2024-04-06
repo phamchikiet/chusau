@@ -1,15 +1,15 @@
 <div class="!flex flex-col flex-auto min-w-0 relative bg-white">
   <div class="relative flex flex-col  items-center p-3">
     <div class="text-center text-xl font-bold">Danh Sách Thiết Bị</div>
-    <div class="p-4 w-full flex flex-row space-x-2 items-center">
+    <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
       <mat-form-field appearance="outline" class="text-xs">
         <mat-label>Tìm Kiếm</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
       </mat-form-field>
-      <div class="lg:hidden flex cursor-pointer">
+      <!-- <div class="lg:hidden flex cursor-pointer">
         <mat-menu #menu="matMenu">
           <button mat-menu-item>
-            <div (click)="writeExcelFile()" class="flex flex-row space-x-2 items-center justify-center">
+            <div (click)="writeExcelFile('')" class="flex flex-row space-x-2 items-center justify-center">
               <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
               <span class="text-xs">Download</span>
             </div>
@@ -17,7 +17,7 @@
           <button mat-menu-item>
             <div (click)="uploadfile.click()" class="flex flex-row space-x-2 items-center justify-center">
               <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_upload</span>
-              <span class="text-xs">Upload</span>
+              <span class="text-xs">Tải Lên</span>
               <input class="hidden" (change)="readExcelFile($event)" type="file" #uploadfile>
             </div>
           </button>
@@ -35,8 +35,8 @@
             </div>
             </button>
         </mat-menu>
-      </div>
-      <div class="hidden lg:flex flex-row space-x-3 cursor-pointer">
+      </div> -->
+      <div class="flex flex-row space-x-3 cursor-pointer">
         <div 
           class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
           <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
@@ -45,7 +45,7 @@
         <div (click)="uploadfile.click()"
           class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
           <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_upload</span>
-          <span class="text-xs">Upload</span>
+          <span class="text-xs">Tải Lên</span>
           <input class="hidden"  type="file" #uploadfile>
         </div>
         <div (click)="LoadDrive()"
