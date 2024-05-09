@@ -1,5 +1,4 @@
 import {Entity,Column,PrimaryGeneratedColumn,CreateDateColumn, ManyToOne, JoinColumn, OneToMany} from 'typeorm';
-import { environment } from 'apps/csvc/src/environments/environment.prod'
 @Entity('lichsu', {
 orderBy: { Ngaytao: 'DESC' } })
 export class LichsuEntity {

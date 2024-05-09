@@ -1,32 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CreateLichsuDto } from './dto/create-lichsu.dto';
-import { UpdateLichsuDto } from './dto/update-lichsu.dto';
-import { LichsuService } from './lichsu.service';
 
+
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {LichsuService } from './lichsu.service';
 @Controller('test_lichsu')
 export class LichsuController {
-  constructor(private readonly lichsuService: LichsuService) {}
+  constructor(private readonly lichsuService:LichsuService) {}
 
   @Post()
-  create(@Body() createLichsuDto: CreateLichsuDto) {
-    return this.lichsuService.create(createLichsuDto);
+  create(@Body() data: any) {
+    return this.lichsuService.create(data);
   }
-
   @Get()
-  findAll() {
-    return this.lichsuService.findAll();
+  async findAll() {
+    return await this.lichsuService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lichsuService.findOne(id);
+  @Post('getByid')
+  async findOne(@Body() data: any) {
+    return await this.lichsuService.findid(data);
   }
-
+  @Get('findslug/:slug')
+  async findslug(@Param('slug') slug: string) {
+    return await this.lichsuService.findslug(slug);
+  }
+  @Post('search')
+    async findQuery(@Body() SearchParams: any){
+      return await this.lichsuService.findQuery(SearchParams);
+  }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLichsuDto: UpdateLichsuDto) {
-    return this.lichsuService.update(id, updateLichsuDto);
+  update(@Param('id') id: string, @Body() data: any) {
+    return this.lichsuService.update(id, data);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.lichsuService.remove(id);

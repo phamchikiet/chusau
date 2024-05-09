@@ -18,7 +18,7 @@ export class ThietbiService {
   async findAll() {
     return await this.ThietbiRepository.find();
   }
-  async findOne(id: string) {
+  async findByid(id: string) {
     return await this.ThietbiRepository.findOne({ where: { id: id } });
   }
   async findByidUser(id: string) {

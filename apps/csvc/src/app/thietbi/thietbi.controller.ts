@@ -20,9 +20,9 @@ export class ThietbiController {
     return this.thietbiService.findAll();
   }
 
-  @Get(':id')
+  @Get('findByid/:id')
   findOne(@Param('id') id: string) {
-    return this.thietbiService.findOne(id);
+    return this.thietbiService.findByid(id);
   }
 
   @Patch(':id')
