@@ -1,4 +1,4 @@
-import {Entity,Column,PrimaryGeneratedColumn,CreateDateColumn, ManyToOne, JoinColumn, OneToMany} from 'typeorm';
+import {Entity,Column,PrimaryGeneratedColumn,CreateDateColumn, ManyToOne, JoinColumn, OneToMany, UpdateDateColumn} from 'typeorm';
 @Entity('lichsu', {
 orderBy: { Ngaytao: 'DESC' } })
 export class LichsuEntity {
@@ -18,6 +18,8 @@ export class LichsuEntity {
     Trangthai: number;
     @CreateDateColumn()
     Ngaytao: Date;
+    @UpdateDateColumn()
+    NgayCapnhat: Date;
     @Column({ nullable: true })
     idTao: string;
 }

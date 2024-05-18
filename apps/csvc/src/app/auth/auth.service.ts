@@ -34,7 +34,7 @@ export class AuthService {
     // }
   }
   async changepass(data): Promise<any>{
-    const user = await this.usersService.findbySDT(data.user);
+    const user = await this.usersService.findbySDT(data.SDT);
     const compare = await bcrypt.compare( data.oldpass,user.password);
     if (!compare) {
       return [false,'Sai Mật Khẩu']

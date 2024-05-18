@@ -7,6 +7,8 @@ export class Thietbi {
     id: string;
     @Column({ type: 'text', collation: 'utf8_general_ci',default:''})
     Tieude: string;
+    @Column({ type: 'text', collation: 'utf8_general_ci' })
+    Code: string;
     @Column({ type: 'text', collation: 'utf8_general_ci',default:''})
     idUser: string;
     @Column({ type: 'text', collation: 'utf8_general_ci' })

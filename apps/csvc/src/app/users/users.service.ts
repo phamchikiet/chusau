@@ -49,6 +49,33 @@ export class UsersService {
       );
     return admin
   }
+  async findQuery(params: any) {
+    console.error(params);
+    const queryBuilder = this.usersRepository.createQueryBuilder('users');
+    if (params.Batdau && params.Ketthuc) {
+      queryBuilder.andWhere('users.CreateAt BETWEEN :startDate AND :endDate', {
+        startDate: params.Batdau,
+        endDate: params.Ketthuc,
+      });
+    }
+    if (params.MaDonHang) {
+      queryBuilder.andWhere('users.MaDonHang = :MaDonHang', { MaDonHang: `${params.MaDonHang}` });
+    }
+    let [item, totalCount]:any = await queryBuilder
+      .limit(params.pageSize || 10) // Set a default page size if not provided
+      .offset(params.pageNumber * params.pageSize || 0)
+      .getManyAndCount();
+      // const items = await Promise.all(
+      //   item.map(async (v: any) => {
+      //     v.Giohangs = await this._GiohangService.findid(v.idGiohang);
+      //     v.Khachhang = await this._KhachhangService.findid(v.idKH);
+      //     return v; 
+      //   })
+      // );         
+      console.log(item, totalCount);
+      
+    return { item, totalCount };
+  }
   async update(id: string, data: Partial<UpdateUserDto>) {
     await this.usersRepository.save(data);
     return await this.read(id);
@@ -59,11 +86,17 @@ export class UsersService {
   }
 
   async changepass(data: any): Promise<any> {
+    console.log(data);
+    
     const user = await this.read(data.id);
+    console.log(user);
+    
     if (!user) {
       throw new ConflictException('Tài Khoản Không Đúng');
     }
     const checkPass = await bcrypt.compare(data.oldpass, user.password);
+    console.log(checkPass);
+    
     if (!checkPass) {
       throw new ConflictException('Mật Khẩu Không Trùng Khớp');
     }

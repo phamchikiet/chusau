@@ -39,8 +39,12 @@ export class UsersController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
+  @Post('search')
+  async findQuery(@Body() SearchParams: any){
+    return await this.usersService.findQuery(SearchParams);
+}
   @Post('changepass')
-  @UseGuards(AuthGuard('hderma'))
+  //@UseGuards(AuthGuard('hderma'))
   changepass(@Body() data: any)
   {
     return this.usersService.changepass(data);

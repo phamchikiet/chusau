@@ -14,9 +14,9 @@ export class LichsuController {
   async findAll() {
     return await this.lichsuService.findAll();
   }
-  @Post('getByid')
+  @Post('getByidUser')
   async findOne(@Body() data: any) {
-    return await this.lichsuService.findid(data);
+    return await this.lichsuService.getByidUser(data);
   }
   @Get('findslug/:slug')
   async findslug(@Param('slug') slug: string) {

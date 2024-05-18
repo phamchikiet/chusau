@@ -18,6 +18,9 @@ export class LichsuService {
           this.LichsuRepository.create(data);
           return await this.LichsuRepository.save(data);
         }
+        else {
+          return { error: 1000, data: 'idUser hoặc idTB không tồn tại' }
+        }
     }
     else {
       check.Trangthai = 1
@@ -42,6 +45,39 @@ export class LichsuService {
       },
     });
   }
+
+  async getByidUser(data: any) {
+    console.log(data);
+    const result = await this.LichsuRepository.findOne({
+      where: {
+        idTB: data.idTB,
+      },
+    });
+    console.log(result);
+    if (result) {
+      if (result.idUser == data.idUser) {
+        if (result.Trangthai == 0) {
+          result.Trangthai = 1;
+          await this.update(result.id, result);
+          return { error: 200, data: 'Thiết bị vừa được bạn trả' };
+        } else {
+          this.LichsuRepository.create(data);
+          await this.LichsuRepository.save(data);
+          return { error: 201, data: 'Thiết bị vừa được bạn mượn' };
+        }
+      } else {
+        return { error: 1000, data: 'Thiết bị đang được sử dụng bởi người khác' };
+      }
+    } else {
+      this.LichsuRepository.create(data);
+      await this.LichsuRepository.save(data);
+      return { error: 201, data: 'Thiết bị vừa được bạn mượn' };
+    }
+  }
+
+
+
+
   async findslug(idUser: any) {
     return await this.LichsuRepository.findOne({
       where: {idUser : idUser },
