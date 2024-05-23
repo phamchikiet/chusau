@@ -1,0 +1,164 @@
+<div class="!flex flex-col flex-auto min-w-0 relative bg-white">
+    <div class="relative flex flex-col space-y-3 items-center p-3">
+      <div class="text-center text-xl font-bold">Danh Sách Nhân Viên</div>
+      <div class="flex lg:flex-row flex-col space-x-2">
+        <mat-form-field subscriptSizing="dynamic" appearance="outline" class="text-xs">
+          <mat-label>Tìm Kiếm</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
+        </mat-form-field>
+        <div class="flex flex-row space-x-3 items-center cursor-pointer">
+          <!-- <div 
+            class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
+            <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
+            <span class="text-xs">Download</span>
+          </div>
+          <div (click)="uploadfile.click()"
+            class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
+            <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_upload</span>
+            <span class="text-xs">Tải Lên</span>
+            <input class="hidden"  type="file" #uploadfile>
+          </div>
+          <div (click)="LoadDrive()"
+            class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+            <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>  
+            <span class="text-xs">Drive ({{SanphamsDrive.length||0}})</span>           
+          </div>
+          <div  (click)="SyncDrive()" *ngIf="SanphamsDrive.length>0"
+          class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+          <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_sync</span>
+          <span class="text-xs">Sync ({{Listdata.length||0}}/{{SanphamsDrive.length||0}})</span>
+        </div> -->
+          <div (click)="openDialog(dialogXoaBaiviet);Detail={}"
+          class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+          <span class="material-symbols-outlined text-xl" matTooltip="Drive">add_circle</span>
+          <span class="text-xs">Thêm Mới</span>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative h-full w-full overflow-auto flex flex-col lg:p-4">
+      <div class="w-full border overflow-auto">
+        <table mat-table [dataSource]="dataSource" matSort class="w-full border">
+          <ng-container matColumnDef="Hoten">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Họ Tên </th>
+            <td class="whitespace-nowrap" mat-cell *matCellDef="let row">
+                <span class="font-bold cursor-pointer" (click)="openDialog(dialogXoaBaiviet);Detail=row">{{row.Hoten}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="SDT">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
+             <span>{{row.SDT}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Role">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Phân Quyền </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
+             <span>{{row.Role}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
+             <span>{{row.email}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Status">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Trạng Thái </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
+             <span>{{row.Status}}</span>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="Ngaytao">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Ngày Tạo </th>
+            <td mat-cell *matCellDef="let row"> {{row.Ngaytao|date:'hh:mm:ss dd/MM/yyyy'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Action">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Xoá </th>
+            <td mat-cell *matCellDef="let row">
+              <span (click)="DeleteCaidat(row)" class="material-symbols-outlined p-2 border rounded-full 
+                    bg-slate-200 text-red-500 
+                    hover:bg-red-500 hover:text-white">
+                delete
+              </span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
+          </tr>
+        </table>
+        
+        <mat-paginator (page)="onPageChange($event)" 
+        [length]="Total"  
+        [pageSizeOptions]="pageSizeOptions" pageSize="10" hidePageSize="true"></mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #dialogXoaBaiviet>
+    <div class="!w-[90vw] p-2 flex flex-col space-y-3">
+    <div mat-dialog-title class="text-center">
+      <ng-container *ngIf="!Detail.id; else elseTemplate">
+        Thêm Nhân Viên
+      </ng-container>
+      <ng-template #elseTemplate>
+        Cập Nhật Nhân Viên
+      </ng-template>
+    </div>
+    <div mat-dialog-content>
+      <div class="grid lg:grid-cols-1 grid-cols-1 gap-3">
+        <div class="flex flex-col space-y-3 p-4 lg:w-full max-w-sm mx-auto">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Họ Tên</mat-label>
+            <input type="text" [(ngModel)]="Detail.Hoten" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Họ Tên'" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Số Điện Thoại</mat-label>
+            <input type="text" [(ngModel)]="Detail.SDT" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Số Điện Thoại'" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Email</mat-label>
+            <input type="text" [(ngModel)]="Detail.email" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Email'" />
+          </mat-form-field>
+          @if(!Detail.id){
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Mật Khẩu</mat-label>
+              <input type="password" [(ngModel)]="Detail.password" [ngModelOptions]="{standalone: true}" matInput
+                class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Mật Khẩu'" />
+            </mat-form-field>
+          }
+          <!-- <mat-form-field appearance="outline" class="w-full" *ngIf="!Detail.id">
+            <mat-label>Mật Khẩu</mat-label>
+            <input type="password" [(ngModel)]="Detail.password" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Mật Khẩu'" />
+          </mat-form-field> -->
+        </div>
+      </div>
+  
+    </div>
+    <div mat-dialog-actions>
+      <div class="w-full flex flex-row space-x-2 justify-end">
+        <ng-container *ngIf="Detail.id; else elseTemplate1">
+          <button mat-flat-button [color]="'primary'" mat-dialog-close="true"
+            (click)="UpdateCaidat(Detail)">Cập Nhật</button>
+        </ng-container>
+        <ng-template #elseTemplate1>
+          <button mat-flat-button [color]="'primary'" mat-dialog-close="true"
+            (click)="CreateCaidat(Detail)">Đồng Ý</button>
+        </ng-template>
+        <button mat-flat-button [color]="'warn'" mat-dialog-close="false">Huỷ</button>
+      </div>
+    </div>
+  </div>
+  </ng-template>
+
+
+

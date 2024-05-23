@@ -1,0 +1,126 @@
+<mat-drawer-container class="example-container w-full h-full min-h-[70vh]" autosize>
+  <mat-drawer #drawer class="example-sidenav lg:w-1/3 w-full" mode="over" position="end">
+  </mat-drawer>
+  <div class="example-sidenav-content">
+      <div class="flex flex-col w-full p-4 rounded shadow-lg bg-white">
+        <div class="relative flex flex-col items-center p-3">
+          <div class="text-center text-xl">Danh Sách Nhân Viên</div>
+          <div class="p-4 grid lg:grid-cols-2 grid-cols-1 gap-2 items-center justify-between">
+            <mat-form-field appearance="outline" class="text-xs w-full">
+              <mat-label>Tìm Kiếm</mat-label>
+              <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
+            </mat-form-field>
+            <div class="flex flex-row space-x-3 justify-start w-full">
+          <div (click)="openDialog(dialogTemplate,User,'add')"
+              class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+              <span class="material-symbols-outlined text-xl" matTooltip="Drive">add_circle</span>
+              <span class="text-xs">Thêm Mới</span>              
+            </div>
+              <div (click)="LoadDrive()"
+              class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+              <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>
+              <span class="text-xs">Drive ({{ListCloud.length||0}})</span>              
+            </div>
+              <div (click)="SyncDrive()" *ngIf="ListCloud.length>0"
+              class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+              <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_sync</span>
+              <span class="text-xs">Sync ({{ListUser.length||0}}/{{ListCloud.length||0}})</span>
+            </div>
+            </div>  
+          </div>
+        </div>    
+
+
+        <div class="w-full border overflow-auto">
+          <table class="w-full" mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="Hoten">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Họ Tên </th>
+              <td class="p-2"  mat-cell *matCellDef="let row" (click)="openDialog(dialogTemplate,row,'upadte')"> {{row.Hoten}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> email </th>
+              <td class="p-2" mat-cell *matCellDef="let row"> {{row.email}} </td>
+            </ng-container>
+            <ng-container matColumnDef="SDT">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
+              <td class="p-2" mat-cell *matCellDef="let row"> {{row.SDT}} </td>
+            </ng-container>
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Hành Động </th>
+              <td class="p-2" mat-cell *matCellDef="let row"> 
+                <span (click)="XoaDialog(XoaTeamplate,row)" class="material-symbols-outlined p-2 border rounded-full 
+                      bg-slate-200 text-red-500 
+                      hover:bg-red-500 hover:text-white">
+                  delete
+                </span>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" pageSize="10" hidePageSize="true"></mat-paginator>
+        </div>
+      </div>
+  </div>
+</mat-drawer-container>
+
+<ng-template #dialogTemplate>
+    <div class="lg:w-[40vw] p-2 flex flex-col space-y-3">
+      <div mat-dialog-content>
+        <div class="flex flex-col space-y-3 p-4 lg:w-full max-w-sm mx-auto">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Họ Tên</mat-label>
+            <input type="text" [(ngModel)]="User.Hoten" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Họ Tên'" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Số Điện Thoại</mat-label>
+            <input type="text" [(ngModel)]="User.SDT" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Số Điện Thoại'" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Email</mat-label>
+            <input type="text" [(ngModel)]="User.email" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Email'" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full" *ngIf="!User.id">
+            <mat-label>Mật Khẩu</mat-label>
+            <input type="password" [(ngModel)]="User.password" [ngModelOptions]="{standalone: true}" matInput
+              class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Mật Khẩu'" />
+          </mat-form-field>
+        </div>
+        <div class="flex flex-row space-x-2 items-center justify-center">
+          <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+          <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
+          <!-- <div class="text-center items-center" >
+            <ng-container *ngIf="User.id; else elseTemplate">
+              <button mat-raised-button color="primary"  mat-dialog-close="true" (click)="Update(User)">Cập Nhật</button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <button mat-raised-button color="primary" mat-dialog-close="true" (click)="Dangky(User)">Thêm User</button>
+            </ng-template>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </ng-template>
+    <ng-template #XoaTeamplate>
+      <div class="p-2 flex flex-col space-y-3">
+        <div mat-dialog-title>Xoá</div>
+        <div mat-dialog-content>
+          <div class="flex flex-col w-full space-y-4 lg:p-4">
+              Bạn chắc chắn muốn Xoá?
+          </div>
+          <div class="flex flex-row space-x-2 items-center justify-center">
+            <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+            <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  
+  
+  

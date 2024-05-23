@@ -1,0 +1,13 @@
+<div class="p-4 rounded-lg flex flex-col space-y-3 justify-center items-center">
+  @if (!IsshowCam) {
+  <zxing-scanner class="rounded-lg" #scanner (scanSuccess)="onScanSuccess($event)"
+    (camerasFound)="onCamerasFound($event)" [device]="selectedDevice"></zxing-scanner>
+  }
+  @else {
+  <button mat-flat-button color="primary" (click)="Reload()">Quét QR Code</button>
+  <app-lichsu class="w-full"></app-lichsu>
+  }
+
+</div>
+
+<!-- <qrcode [qrdata]="'Your data string'" [width]="256" [errorCorrectionLevel]="'M'"></qrcode> -->

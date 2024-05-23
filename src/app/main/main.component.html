@@ -1,0 +1,64 @@
+<div class="w-screen flex flex-col items-center justify-between">
+  <div class="w-full bg-[#005ab7]">
+    <div class="container flex lg:flex-row flex-col space-y-2 justify-between items-center mx-auto p-4">
+      <a class="w-full" href="/"><img src="https://csvc.chikiet.com/assets/img/logo-cdn.png"></a> 
+      <div class="z-10 !fixed bottom-0 right-0 w-screen bg-white lg:bg-transparent p-2 lg:!relative lg:w-full lg:order-1 order-2 grid grid-cols-3 gap-2 lg:flex lg:flex-row lg:space-x-2 items-center justify-center">
+        @for (item of items; track $index) {
+         <a [routerLink]="[item.link]"
+          class="flex flex-col space-y-1 justify-center items-center text-center hover:bg-blue-500 hover:text-white bg-gray-100 px-4 py-2 rounded-lg">
+          <span class="material-symbols-outlined">{{item.icon}}</span>
+          <div class="text-xs">{{item.title}}</div>
+        </a>
+        <!-- <a class="p-2 bg-white rounded-lg" [routerLink]="[item.link]"
+          routerLinkActive="router-link-active">{{item.title}}</a> -->
+        }
+      </div>
+      <!-- <div class="lg:order-2 order-1 flex flex-row space-x-4 items-center justify-center text-white">
+       <span class="material-symbols-outlined">account_circle</span>
+        <div class="flex flex-col space-y-2 justify-center">
+          <span class="text-bold">{{profile?.Hoten}}</span>
+          <span class="italic">{{profile?.email}}</span>
+        </div>
+        <span class="p-2 bg-white rounded-lg">Đăng Nhập</span>
+        <span class="p-2 bg-white rounded-lg">Đăng Ký</span>
+      </div> -->
+    </div>
+  </div>
+
+<div class="container">
+  <router-outlet />
+</div>
+
+  <div class="w-full flex justify-center bg-[#005ab7] text-white">
+    <div class="container grid lg:grid-cols-4  grid-cols-1 gap-4 p-8">
+      <div class="flex flex-row items-center space-x-4">
+        <img class="mx-auto" src="https://csvc.chikiet.com/assets/img/logo-vuong.png" alt="logo" />
+        <span class="text-xl font-bold">TRƯỜNG CAO ĐẲNG NGHỀ TP.HỒ CHÍ MINH</span>
+      </div>
+      <div class="lg:col-span-2 flex flex-col space-y-2">
+        <span>Cơ sở 1: 235 đường Hoàng Sa, phường Tân Định, Quận 1, Thành phố Hồ Chí Minh. Điện thoại:(028) 38 483 265</span>
+        <span>Cơ sở 2: 19A, Đường 17, phường Linh Chiểu, TP.Thủ Đức, Thành phố Hồ Chí Minh. Điện thoại: (028) 37.225.782</span>
+        <span>HOTLINE &amp; ZALO: 0924116266 Email: hcmvc&#64;cdntphcm.edu.vn</span>
+      </div>
+      <div class="flex flex-col space-y-2 lg:px-8 lg:mb-0 mb-10">
+          <div class="flex flex-row justify-between">
+            <span>Đang Online</span>
+            <span>{{Dangonline| number:'1.0-0'}}</span>
+          </div>
+          <div class="flex flex-row justify-between">
+            <span>Hôm Nay</span>
+            <span>{{Homnay| number:'1.0-0'}}</span>
+          </div>
+          <div class="flex flex-row justify-between">
+            <span>Hôm Qua</span>
+            <span>{{Homqua| number:'1.0-0'}}</span>
+          </div>
+          <div class="flex flex-row justify-between">
+            <span>Tổng Cộng</span>
+            <span>{{Tongcong| number:'1.0-0'}}</span>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
