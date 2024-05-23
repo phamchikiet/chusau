@@ -25,5 +25,5 @@ jobs:
           server: hf44-22061.azdigihost.com
           username: chikiet@chikiet.com
           password: '@Hikiet1988'
-          local-dir: ./dist/site/browser/  # <-- Specify the local "build" folder
+          local-dir: ./dist/site/  # <-- Specify the local "build" folder
           server-dir: /public_html/caodangnghe/site/  # Destination on server
