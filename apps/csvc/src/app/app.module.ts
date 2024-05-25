@@ -6,6 +6,8 @@ import { LichsuModule } from "./lichsu/lichsu.module";
 import { ThietbiModule } from "./thietbi/thietbi.module";
 import { UsersModule } from "./users/users.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { GoogleAnalyticsService } from "./google-analytics.service";
+import { BaocaoModule } from './baocao/baocao.module';
 
 @Module({
   imports: [
@@ -24,8 +26,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     AuthModule,
     UsersModule,
     ThietbiModule,
+    BaocaoModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,GoogleAnalyticsService],
 })
 export class AppModule {}
