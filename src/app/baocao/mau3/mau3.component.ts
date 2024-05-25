@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-mau3',
+  standalone:true,
   templateUrl: './mau3.component.html',
   styleUrls: ['./mau3.component.css']
 })

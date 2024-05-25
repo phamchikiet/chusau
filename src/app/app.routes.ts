@@ -16,7 +16,8 @@ export const routes: Routes = [
             { path: 'caidat', loadComponent: () => import('./caidat/caidat.component').then(comp => comp.CaidatComponent) },
             { path: 'scan', loadComponent: () => import('./scan/scan.component').then(comp => comp.ScanComponent) },
             { path: 'taikhoan', loadComponent: () => import('./taikhoan/taikhoan.component').then(comp => comp.TaikhoanComponent) },
-            { path: 'baocao', loadComponent: () => import('./baocao/baocao.component').then(comp => comp.BaocaoComponent) }
+            { path: 'baocao', loadComponent: () => import('./baocao/baocao.component').then(comp => comp.BaocaoComponent) },
+            { path: 'baocao/:slug', loadComponent: () => import('./baocao/baocao.component').then(comp => comp.BaocaoComponent) },
         ]
     },
     {

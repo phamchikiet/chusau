@@ -1,47 +1,133 @@
 <mat-drawer-container class="example-container min-h-[50vh] h-full" autosize>
-  <mat-drawer [mode]="SidenavMode" [opened]="isOpen" position="end" class="!w-3/4" #drawer>
-    <button type="button" mat-button (click)="drawer.toggle()">
-      Toggle sidenav
-    </button>
-  </mat-drawer>
-  <div class="example-sidenav-content">
+  <mat-drawer [mode]="SidenavMode" [opened]="isOpen" class="flex flex-col h-full space-y-2 lg:!w-1/4 !w-full p-2"
+    #drawer>
+    <div class="p-2 flex flex-row justify-between space-x-2 items-center">
+      <span (click)="drawer.close()" class="lg:hidden block material-symbols-outlined p-2 hover:rounded-full 
+    bg-slate-200 text-blue-500 
+    hover:bg-blue-500 hover:text-white">
+        close
+      </span>
+      <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full !text-xs">
+        <mat-label>Tìm kiếm</mat-label>
+        <input type="text" matInput class="w-full border border-gray-200 rounded" [placeholder]="'Tìm kiếm'"
+          (keyup)="applyFilter($event)" />
+      </mat-form-field>
+      <span (click)="openDialog(dialogTemplate)" class="material-symbols-outlined p-2 hover:rounded-full 
+        bg-slate-200 text-blue-500 
+        hover:bg-blue-500 hover:text-white">
+        add_circle
+      </span>
+    </div>
     <mat-tree class="p-4" [dataSource]="treedataSource" [treeControl]="treeControl">
-      <mat-tree-node (click)="drawer.toggle()" *matTreeNodeDef="let node" matTreeNodePadding>
-        <button mat-icon-button disabled></button>
-        {{node.Title}}
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        @if(node.Type=="baocao"){
+        <a [href]="['baocao/'+node.Slug]" routerLinkActive="router-link-active"
+          class="hover:bg-blue-gray-50 p-3 rounded-lg">
+          {{node.Title}}
+        </a>
+        }
+        @else {
+        <div class="hover:bg-blue-gray-50 p-3 rounded-lg">
+          {{node.Title}}
+        </div>
+        }
       </mat-tree-node>
       <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
-        <div class="w-full group flex flex-row space-x-2 items-center justify-between">
+        <div
+          class="hover:bg-blue-gray-50 p-3 rounded-lg w-full group flex flex-row space-x-2 items-center justify-between">
           <div class="flex flex-row space-x-2 items-center">
+            <span>
+              {{node.Title}}
+            </span>
             <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
               <span class="material-symbols-outlined">
                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
               </span>
             </button>
-            <span>
-              {{node.Title}}
-            </span>
-          </div>
-          <div class="flex flex-row space-x-2 items-center">
-            <span class="material-symbols-outlined p-2 border rounded-full 
-        bg-slate-200 text-blue-500 
-        hover:bg-blue-500 hover:text-white">
-              add_circle
-            </span>
-            <!-- <span class="hidden group-hover:block material-symbols-outlined p-2 border rounded-full 
-        bg-slate-200 text-blue-500 
-        hover:bg-blue-500 hover:text-white">
-              edit_square
-            </span>
-            <span class="hidden group-hover:block material-symbols-outlined p-2 border rounded-full 
-        bg-slate-200 text-red-500 
-        hover:bg-red-500 hover:text-white">
-              delete
-            </span> -->
-
           </div>
         </div>
       </mat-tree-node>
     </mat-tree>
+
+
+  </mat-drawer>
+  <div class="example-sidenav-content p-4 bg-white">
+    <div class="flex flex-row justify-between space-x-2">
+      <span (click)="drawer.toggle()"
+        class="material-symbols-outlined p-2 rounded-full bg-slate-200 text-blue-500 hover:bg-blue-500 hover:text-white">
+        menu
+      </span>
+      <div>Tiêu Đề</div>
+      <div>Tool</div>
+    </div>
+    <div class="flex flex-col space-y-2">
+      <div class="w-[1240px] h-[1754px]">
+        @switch (Baocao.idDM) {
+        @case ('1') {
+        <app-mau0></app-mau0>
+        }
+        @case ('2') {
+        <app-mau1></app-mau1>
+        }
+        @case ('3') {
+        <app-mau2></app-mau2>
+        }
+        @case ('4') {
+        <app-mau3></app-mau3>
+        }
+        @default {
+        <div> Chưa Chọn Báo Cáo</div>
+        }
+        }
+      </div>
+    </div>
   </div>
 </mat-drawer-container>
+
+
+
+
+<ng-template #dialogTemplate>
+  <div class="lg:max-w-lg w-[90vw] p-4 lg:p-8 flex flex-col space-y-3 justify-center">
+    <div mat-dialog-title>Thêm Mới</div>
+    <div mat-dialog-content>
+      <div class="flex flex-col w-full space-y-4 lg:p-4">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Tiêu Đề</mat-label>
+          <input matInput [(ngModel)]="Detail.Title" [ngModelOptions]="{standalone: true}" placeholder="Tiêu Đề"
+            (input)="FillSlug()">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Slug</mat-label>
+          <input matInput [(ngModel)]="Detail.Slug" [ngModelOptions]="{standalone: true}" placeholder="Oldlink">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Danh Mục</mat-label>
+          <mat-select [(ngModel)]="Detail.idDM" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="item.id" *ngFor="let item of Maubaocao">{{item.Title}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="flex flex-row space-x-2 items-center justify-center">
+        <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+        <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #XoaTeamplate>
+  <div class="lg:w-[40vw] p-2 flex flex-col space-y-3">
+    <div mat-dialog-title>Xoá</div>
+    <div mat-dialog-content>
+      <div class="flex flex-col w-full space-y-4 lg:p-4">
+        Bạn chắc chắn muốn Xoá?
+      </div>
+      <div class="flex flex-row space-x-2 items-center justify-center">
+        <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+        <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
