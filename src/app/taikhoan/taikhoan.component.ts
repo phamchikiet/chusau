@@ -5,6 +5,7 @@ import { UsersService } from '../auth/users.service';
 import { NhanvienService } from '../nhanvien/nhanvien.service';
 import { NotifierService } from 'angular-notifier';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-taikhoan',
@@ -25,6 +26,7 @@ export class TaikhoanComponent {
   _UsersService: UsersService = inject(UsersService)
   _NhanvienService: NhanvienService = inject(NhanvienService)
   _NotifierService: NotifierService = inject(NotifierService)
+  _AuthService: AuthService = inject(AuthService)
   ngOnInit() {
     if (this.token) {
       this._UsersService.getProfile();
@@ -53,6 +55,14 @@ export class TaikhoanComponent {
   {
     this._NhanvienService.UpdateNhanvien(this.Detail).then((data: any) => {
       this._NotifierService.notify('success', 'Cập nhật thành công')
+    })
+  }
+  Logout() {
+    this._AuthService.Dangxuat().subscribe(() => {
+      this._NotifierService.notify('success', 'Đăng xuất thành công')
+      setTimeout(() => {
+        window.location.reload()
+      }, 100);
     })
   }
 }

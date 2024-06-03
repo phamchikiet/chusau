@@ -7,6 +7,8 @@ import { LichsuService } from './lichsu.service';
 import { ThietbiService } from '../thietbi/thietbi.service';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-lichsu',
@@ -15,7 +17,9 @@ import { CommonModule } from '@angular/common';
     MatTableModule,
     MatInputModule,
     MatPaginatorModule,
-    CommonModule
+    CommonModule,
+    MatTooltipModule,
+    MatButtonModule
   ],
   templateUrl: './lichsu.component.html',
   styleUrl: './lichsu.component.scss'

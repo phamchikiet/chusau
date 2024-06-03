@@ -2,8 +2,8 @@
   <mat-drawer [mode]="SidenavMode" [opened]="isOpen" class="flex flex-col h-full space-y-2 lg:!w-1/4 !w-full p-2"
     #drawer>
     <div class="p-2 flex flex-row justify-between space-x-2 items-center">
-      <span (click)="drawer.close()" class="lg:hidden block material-symbols-outlined p-2 hover:rounded-full 
-    bg-slate-200 text-blue-500 
+      <span (click)="drawer.close()" class="lg:hidden block material-symbols-outlined p-2 hover:rounded-full
+    bg-slate-200 text-blue-500
     hover:bg-blue-500 hover:text-white">
         close
       </span>
@@ -12,8 +12,8 @@
         <input type="text" matInput class="w-full border border-gray-200 rounded" [placeholder]="'Tìm kiếm'"
           (keyup)="applyFilter($event)" />
       </mat-form-field>
-      <span (click)="openDialog(dialogTemplate)" class="material-symbols-outlined p-2 hover:rounded-full 
-        bg-slate-200 text-blue-500 
+      <span (click)="openDialog(dialogTemplate)" class="material-symbols-outlined p-2 hover:rounded-full
+        bg-slate-200 text-blue-500
         hover:bg-blue-500 hover:text-white">
         add_circle
       </span>
@@ -58,7 +58,13 @@
         menu
       </span>
       <div>Tiêu Đề</div>
-      <div>Tool</div>
+      <div (click)="writeExcelFile()"
+      class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
+      <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
+      <span class="text-xs">Download</span>
+    </div>
+
+
     </div>
     <div class="flex flex-col space-y-2">
       <div class="w-[1240px] h-[1754px]">

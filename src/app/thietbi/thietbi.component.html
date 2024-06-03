@@ -7,7 +7,7 @@
           <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
         </mat-form-field>
         <div class="flex flex-row space-x-3 items-center cursor-pointer">
-          <div 
+          <div
             class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
             <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
             <span class="text-xs">Download</span>
@@ -20,8 +20,8 @@
           </div>
           <div (click)="LoadDrive()"
             class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
-            <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>  
-            <span class="text-xs">Drive ({{SanphamsDrive.length||0}})</span>           
+            <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>
+            <span class="text-xs">Drive ({{SanphamsDrive.length||0}})</span>
           </div>
           <div  (click)="SyncDrive()" *ngIf="SanphamsDrive.length>0"
           class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
@@ -55,13 +55,13 @@
           </ng-container>
           <ng-container matColumnDef="Tieude">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu đề </th>
-            <td class="max-w-60"  mat-cell *matCellDef="let row" (click)="openDialog(dialogXoaBaiviet);Detail=row">
-              <span class="line-clamp-3 hover:line-clamp-none"> {{row.Tieude}} </span>
+            <td class="max-w-60"  mat-cell *matCellDef="let row">
+              <span class="line-clamp-3" matTooltip="{{row.Tieude}}"> {{row.Tieude}} </span>
               </td>
           </ng-container>
           <ng-container matColumnDef="Code">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
-            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row"> 
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
                 <div class="max-h-60">
                     {{row.Code}}
                 </div>
@@ -100,8 +100,19 @@
           <ng-container matColumnDef="Action">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Xoá </th>
             <td mat-cell *matCellDef="let row">
-              <button mat-icon-button class="bg-red-400 hover:bg-red-600 text-white" (click)="DeleteThietbi(row)"><span
-                  class="material-icons">delete</span></button>
+              <div class="flex flex-row space-x-2 items-center">
+                <span class="material-symbols-outlined p-2 border rounded-full
+                bg-slate-200 text-blue-500
+                hover:bg-blue-500 hover:text-white" (click)="openDialog(dialogXoaBaiviet);Detail=row">
+            edit_square
+          </span>
+          <span class="material-symbols-outlined p-2 border rounded-full
+                bg-slate-200 text-red-500
+                hover:bg-red-500 hover:text-white" (click)="DeleteThietbi(row)">
+            delete
+          </span>
+              </div>
+
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -111,9 +122,9 @@
             <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
           </tr>
         </table>
-        
-        <mat-paginator (page)="onPageChange($event)" 
-        [length]="Total"  
+
+        <mat-paginator (page)="onPageChange($event)"
+        [length]="Total"
         [pageSizeOptions]="pageSizeOptions" pageSize="10" hidePageSize="true"></mat-paginator>
       </div>
     </div>
@@ -141,7 +152,7 @@
             <button mat-flat-button color="primary" (click)="triggerSnapshot()">Chụp Hình</button>
           </div>
         </div>
-        
+
         <div class="col-span-2 grid lg:grid-cols-2 grid-cols-1 gap-3">
           <mat-form-field appearance="outline" class="w-full col-span-2">
             <mat-label>Tiêu Đề</mat-label>
@@ -171,7 +182,7 @@
             </mat-form-field>
         </div>
       </div>
-  
+
     </div>
     <div mat-dialog-actions>
       <div class="w-full flex flex-row space-x-2 justify-end">
@@ -188,8 +199,8 @@
     </div>
   </div>
   </ng-template>
-  
-  
+
+
   <ng-template #dialogZoomQR>
     <div mat-dialog-title class="text-center">
     </div>
@@ -198,10 +209,11 @@
         <qrcode [qrdata]="SelectItem.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
         [colorLight]="'#ffffffff'" [title]="SelectItem.Tieude" [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
         [width]="400"></qrcode>
-        <span>{{SelectItem.Tieude}}</span>
+        <span class="font-bold text-black">{{SelectItem.Code}}</span>
       </div>
     </div>
-    <div mat-dialog-actions class="justify-center">
-      <button mat-button class="bg-red-400 hover:bg-red-600 text-white" mat-dialog-close="false">Đóng</button>
+    <div mat-dialog-actions class="!justify-center">
+      <button mat-flat-button color="primary">Tải QR</button>
+      <button mat-flat-button color="warn" mat-dialog-close="false">Đóng</button>
     </div>
   </ng-template>

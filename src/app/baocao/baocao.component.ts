@@ -15,6 +15,8 @@ import { Mau0Component } from './mau0/mau0.component';
 import { Mau1Component } from './mau1/mau1.component';
 import { Mau2Component } from './mau2/mau2.component';
 import { Mau3Component } from './mau3/mau3.component';
+import * as XLSX from 'xlsx';
+import moment from 'moment';
 @Component({
   selector: 'app-baocao',
   standalone: true,
@@ -114,7 +116,7 @@ export class BaocaoComponent implements OnInit  {
    console.log(Slug);
    console.log(List);
    console.log(this.MenuBaocao);
-   
+
     this.treedataSource.data = this.MenuBaocao
   }
   FillSlug() {
@@ -133,7 +135,58 @@ export class BaocaoComponent implements OnInit  {
   applyFilter(event:any)
   {
     console.log(event);
-    
+
+  }
+  writeExcelFile() {
+    let Giagoc:any=[]
+    let item:any={}
+    // this.FilterLists.forEach((v:any) => {
+    //     item.idSP =v.id
+    //     item.TenSP =v.Title
+    //     v.Giagoc.forEach((gg:any) => {
+    //       item = {...item,...gg}
+    //       Giagoc.push(item)
+    //     });
+    // });
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet([
+      { A: "Merged Cells", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
+      { A: "Value 1", B: "Value 2", C: "Value 3",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""}
+  ]);
+  worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }, { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } }]; // Merge first row
+
+  // 3. Add Styling (Bold, Centered, Font Size)
+  const headerStyle = {
+    font: { bold: true, sz: 14 },
+    alignment: { horizontal: "center" },
+  };
+
+  // Apply header style to merged cell A1
+  worksheet["A1"].s = headerStyle;
+  // Add worksheet to workbook
+  XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
+
+  // 4. Generate Excel File (xlsx)
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+
+    // const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
+    // const worksheet2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(Giagoc);
+    // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
+    // XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
+    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    this.saveAsExcelFile(excelBuffer, 'DonhangAdmin_'+moment().format("DD_MM_YYYY"));
+
+  }
+  saveAsExcelFile(buffer: any, fileName: string) {
+    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url: string = window.URL.createObjectURL(data);
+    const link: HTMLAnchorElement = document.createElement('a');
+    link.href = url;
+    link.download = `${fileName}.xlsx`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+    link.remove();
   }
   openDialog(teamplate: TemplateRef<any>): void {
     const dialogRef = this.dialog.open(teamplate, {
