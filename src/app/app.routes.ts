@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { GuestGuard } from './auth/guards/guest.guard';
 import { DangnhapComponent } from './dangnhap/dangnhap.component';
 import { AuthGuard } from './auth/guards/auth.guard';
+import { DangkyComponent } from './dangky/dangky.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'lichsu', pathMatch: 'full' },
@@ -26,17 +27,11 @@ export const routes: Routes = [
         canActivateChild: [GuestGuard],
         component: DangnhapComponent,
     },
-    // { path: 'about', loadChildren: './about/about.module#AboutModule' },
-    // { path: 'contact', loadChildren: './contact/contact.module#ContactModule' },
-    // { path: 'products', loadChildren: './products/products.module#ProductsModule' },
-    // { path: 'product/:id', loadChildren: './product/product.module#ProductModule' },
-    // { path: 'cart', loadChildren: './cart/cart.module#CartModule' },
-    // { path: 'checkout', loadChildren: './checkout/checkout.module#CheckoutModule' },
-    // { path: 'order', loadChildren: './order/order.module#OrderModule' },
-    // { path: 'order/:id', loadChildren: './order/order.module#OrderModule' },
-    // { path: 'account', loadChildren: './account/account.module#AccountModule' },
-    // { path: 'account/:id', loadChildren: './account/account.module#AccountModule' },
-    // { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
-    // { path: 'admin/:id', loadChildren: './admin/admin.module#AdminModule' },
-    { path: '**', redirectTo: 'home' }
+    {
+        path: 'dangky',
+        canActivate: [GuestGuard],
+        canActivateChild: [GuestGuard],
+        component: DangkyComponent,
+    },
+    { path: '**', redirectTo: 'lichsu' }
 ];
