@@ -1,5 +1,88 @@
 <div class="flex flex-col space-y-2 justify-center">
-  <div class="flex flex-row justify-between space-x-2">
+  <div class="w-full flex flex-row space-x-2">
+    <mat-form-field subscriptSizing="dynamic" appearance="outline">
+      <mat-label>Tìm kiếm</mat-label>
+      <input type="text" #input matInput class="w-full border border-gray-200 rounded" [placeholder]="'Tìm kiếm'"
+        (keyup)="applyFilter($event)" />
+    </mat-form-field>
+    <div (click)="writeExcelFile()"
+    class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
+    <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
+    <span class="text-xs">Download</span>
+  </div>
+  </div>
+  <div class="border overflow-auto">
+    <table class="w-full" mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="TenTSCD">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Tên TSCĐ </th>
+        <td mat-cell *matCellDef="let row"> 
+          <span class="line-clamp-2">
+            {{row.TenTSCD}}
+          </span>
+         </td>
+      </ng-container>
+      <ng-container matColumnDef="MasoTSCD">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>  Mã Số TSCĐ  </th>
+        <td mat-cell *matCellDef="let row"> {{row.MasoTSCD}} </td>
+      </ng-container>
+      <ng-container matColumnDef="NamSD">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Năm Sử Dụng </th>
+        <td mat-cell *matCellDef="let row"> {{row.NamSD}} </td>
+      </ng-container>
+      <ng-container matColumnDef="TheoSoSL">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Theo Sổ SL </th>
+        <td mat-cell *matCellDef="let row"> {{row.TheoSoSL}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="TheoSoConlai">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Theo Sổ Còn Lại </th>
+        <td mat-cell *matCellDef="let row"> {{row.TheoSoConlai}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="KiemkeSL">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê SL </th>
+        <td mat-cell *matCellDef="let row"> {{row.KiemkeSL}} </td>
+      </ng-container>
+      <ng-container matColumnDef="KiemkeNguyengia">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê Nguyên Giá </th>
+        <td mat-cell *matCellDef="let row"> {{row.KiemkeNguyengia}} </td>
+      </ng-container>
+      <ng-container matColumnDef="KiemkeConlai">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê Còn Lại </th>
+        <td mat-cell *matCellDef="let row"> {{row.KiemkeConlai}} </td>
+      </ng-container>
+      <ng-container matColumnDef="ChenhlechSL">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch SL </th>
+        <td mat-cell *matCellDef="let row"> {{row.ChenhlechSL}} </td>
+      </ng-container>
+      <ng-container matColumnDef="ChenhlechNguyengia">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch Nguyên Giá </th>
+        <td mat-cell *matCellDef="let row"> {{row.ChenhlechNguyengia}} </td>
+      </ng-container>
+      <ng-container matColumnDef="ChenhlechConlai">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch Còn Lại </th>
+        <td mat-cell *matCellDef="let row"> {{row.ChenhlechConlai}} </td>
+      </ng-container>
+      <ng-container matColumnDef="Ghichu">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Ghi Chú </th>
+        <td mat-cell *matCellDef="let row"> {{row.Ghichu}} </td>
+      </ng-container>
+      <ng-container matColumnDef="MaCode">
+        <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Mã Code </th>
+        <td mat-cell *matCellDef="let row"> {{row.MaCode}} </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
+  <!-- <div class="flex flex-row justify-between space-x-2">
     <div class="flex flex-col space-y-2 justify-center items-center">
       <div>TRƯỜNG CAO ĐẲNG NGHỀ</div>
       <div>THÀNH PHỐ HỒ CHÍ MINH</div>
@@ -10,5 +93,5 @@
       <div>Độc lập - Tự do - Hạnh phúc</div>
     </div>
   </div>
-  <div class="text-xl font-bold text-center">TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH</div>
+  <div class="text-xl font-bold text-center">TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH</div> -->
 </div>

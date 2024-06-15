@@ -150,10 +150,14 @@ export class BaocaoComponent implements OnInit  {
     // });
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet([
-      { A: "Merged Cells", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-      { A: "Value 1", B: "Value 2", C: "Value 3",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""}
+      { A: "Merged Cells ádasdadsa ádasdasdads ádasd", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
+      { A: "Value 1", B: "Value 2", C: "Value 3",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
+      { A: "Value 3", B: "Value 5", C: "Value 3",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
+      { A: "Value 4", B: "Value 6", C: "Value 3",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""}
   ]);
-  worksheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }, { s: { r: 1, c: 0 }, e: { r: 1, c: 2 } }]; // Merge first row
+  worksheet["!merges"] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 2 } }, { s: { r: 0, c: 3 }, e: { r: 0, c: 5 } },
+  ]; // Merge first row
 
   // 3. Add Styling (Bold, Centered, Font Size)
   const headerStyle = {
@@ -163,6 +167,7 @@ export class BaocaoComponent implements OnInit  {
 
   // Apply header style to merged cell A1
   worksheet["A1"].s = headerStyle;
+  worksheet["A2"].s = headerStyle;
   // Add worksheet to workbook
   XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
 
@@ -175,7 +180,7 @@ export class BaocaoComponent implements OnInit  {
     // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
     // XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
     // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'DonhangAdmin_'+moment().format("DD_MM_YYYY"));
+    this.saveAsExcelFile(excelBuffer, 'Baocao_'+moment().format("DD_MM_YYYY"));
 
   }
   saveAsExcelFile(buffer: any, fileName: string) {

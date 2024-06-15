@@ -51,23 +51,22 @@
 
 
   </mat-drawer>
-  <div class="example-sidenav-content p-4 bg-white">
+  <div class="flex flex-col space-x-2 p-4 bg-white">
     <div class="flex flex-row justify-between space-x-2">
       <span (click)="drawer.toggle()"
         class="material-symbols-outlined p-2 rounded-full bg-slate-200 text-blue-500 hover:bg-blue-500 hover:text-white">
         menu
       </span>
       <div>Tiêu Đề</div>
-      <div (click)="writeExcelFile()"
+      <div></div>
+    <!-- <div (click)="writeExcelFile()"
       class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
       <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
       <span class="text-xs">Download</span>
-    </div>
-
-
+    </div> -->
     </div>
     <div class="flex flex-col space-y-2">
-      <div class="w-[1240px] h-[1754px]">
+      <div class="w-full">
         @switch (Baocao.idDM) {
         @case ('1') {
         <app-mau0></app-mau0>
