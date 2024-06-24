@@ -17,6 +17,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UsersService } from '../auth/users.service';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { OverlayModule } from '@angular/cdk/overlay';
 @Component({
   selector: 'app-caidat',
   standalone: true,
@@ -34,6 +37,9 @@ import { UsersService } from '../auth/users.service';
     ReactiveFormsModule,
     FormsModule,
     MatDialogModule,
+    MatOptionModule,
+    MatSelectModule,
+    OverlayModule
   ],
   templateUrl: './caidat.component.html'
 })
@@ -55,8 +61,14 @@ export class CaidatComponent {
     pageSize:10,
     pageNumber:0,
   };
+  Roles:any={
+    Admin : 'admin',
+    User : 'user',
+    Nhanvien : 'nhanvien'
+  }
+  isOpen = false;
   IsshowCam:boolean=false;
-  displayedColumns: string[] = ['Hoten','SDT', 'Role', 'email','Status','Ngaytao','Action'];
+  displayedColumns: string[] = ['Hoten','SDT', 'Role', 'email','Status','Role','Ngaytao','Action'];
   dataSource!: MatTableDataSource<any>;
   Listdata:any[]=[];
   public showWebcam = true;
@@ -86,7 +98,7 @@ export class CaidatComponent {
      this._UsersService.users$.subscribe((data:any)=>
      {
        if(data)
-       {  
+       {
        this.Listdata = data
        this.dataSource = new MatTableDataSource(data);
        this.dataSource.paginator = this.paginator;
@@ -99,7 +111,7 @@ export class CaidatComponent {
       console.log(event);
       this.SearchParams.pageSize = event.pageSize
       this.SearchParams.pageNumber = event.pageIndex
-      this._CaidatService.SearchCaidat(this.SearchParams).then(()=>this.ngOnInit())
+      this._CaidatService.SearchUsers(this.SearchParams).then(()=>this.ngOnInit())
     }
   text = 'Hello, QR Code!';
   elementType = 'url'; // Other possible values: 'canvas', 'img', 'url'
@@ -125,11 +137,11 @@ export class CaidatComponent {
   }
   CreateCaidat(data:any)
   {
-    this._CaidatService.CreateCaidat(data)
+    this._CaidatService.CreateUsers(data)
     // .subscribe(()=>
     // {
     //   this._CaidatService.caidats$.subscribe((data:any)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
+    //     this.dataSource = new MatTableDataSource(data);
     //     this.dataSource.paginator = this.paginator;
     //     this.dataSource.sort = this.sort;
     //    })
@@ -140,12 +152,12 @@ export class CaidatComponent {
    const result = await this.getHSD(data);
    data.NgayHSD = result
    console.log(data.NgayHSD);
-   
-    this._CaidatService.UpdateCaidat(data)
+
+    this._CaidatService.UpdateUsers(data)
     // .subscribe(()=>
     // {
     //   this._CaidatService.caidats$.subscribe((data)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
+    //     this.dataSource = new MatTableDataSource(data);
     //     this.dataSource.paginator = this.paginator;
     //     this.dataSource.sort = this.sort;
     //    })
@@ -162,11 +174,11 @@ export class CaidatComponent {
   }
   DeleteCaidat(data:any)
   {
-    this._CaidatService.DeleteCaidat(data)
+    this._CaidatService.DeleteUsers(data)
     // this._CaidatService.deletePage(data).subscribe(()=>
     // {
     //   this._CaidatService.caidats$.subscribe((data)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
+    //     this.dataSource = new MatTableDataSource(data);
     //     this.dataSource.paginator = this.paginator;
     //     this.dataSource.sort = this.sort;
     //    })
@@ -186,9 +198,9 @@ export class CaidatComponent {
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
-  
+
   GetPercent(begin:any,end:any)
-  { 
+  {
     let Thoigian:number=100;
     let now = new Date();
     let startDate = new Date(begin);
@@ -263,8 +275,8 @@ export class CaidatComponent {
   SyncDrive(){
     this.SanphamsDrive.forEach((v:any)=>
     {
-      this._CaidatService.CreateCaidat(v)
+      this._CaidatService.CreateUsers(v)
     })
-   
+
   }
 }

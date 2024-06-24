@@ -7,7 +7,7 @@
           <input matInput (keyup)="applyFilter($event)" placeholder="Tìm Kiếm" #input>
         </mat-form-field>
         <div class="flex flex-row space-x-3 items-center cursor-pointer">
-          <!-- <div 
+          <!-- <div
             class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
             <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
             <span class="text-xs">Download</span>
@@ -20,8 +20,8 @@
           </div>
           <div (click)="LoadDrive()"
             class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
-            <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>  
-            <span class="text-xs">Drive ({{SanphamsDrive.length||0}})</span>           
+            <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_download</span>
+            <span class="text-xs">Drive ({{SanphamsDrive.length||0}})</span>
           </div>
           <div  (click)="SyncDrive()" *ngIf="SanphamsDrive.length>0"
           class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
@@ -48,7 +48,7 @@
           <ng-container matColumnDef="SDT">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
             <td class="whitespace-nowrap"  mat-cell *matCellDef="let row">
-             <span>{{row.SDT}}</span>
+             <span class="font-bold cursor-pointer" (click)="openDialog(dialogXoaBaiviet);Detail=row">{{row.SDT}}</span>
             </td>
           </ng-container>
           <ng-container matColumnDef="Role">
@@ -69,17 +69,15 @@
              <span>{{row.Status}}</span>
             </td>
           </ng-container>
-
-
           <ng-container matColumnDef="Ngaytao">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Ngày Tạo </th>
             <td mat-cell *matCellDef="let row"> {{row.Ngaytao|date:'hh:mm:ss dd/MM/yyyy'}} </td>
           </ng-container>
           <ng-container matColumnDef="Action">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Xoá </th>
-            <td mat-cell *matCellDef="let row">
-              <span (click)="DeleteCaidat(row)" class="material-symbols-outlined p-2 border rounded-full 
-                    bg-slate-200 text-red-500 
+            <td class="cursor-pointer" mat-cell *matCellDef="let row">
+              <span (click)="DeleteCaidat(row)" class="material-symbols-outlined p-2 border rounded-full
+                    bg-slate-200 text-red-500
                     hover:bg-red-500 hover:text-white">
                 delete
               </span>
@@ -92,9 +90,9 @@
             <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
           </tr>
         </table>
-        
-        <mat-paginator (page)="onPageChange($event)" 
-        [length]="Total"  
+
+        <mat-paginator (page)="onPageChange($event)"
+        [length]="Total"
         [pageSizeOptions]="pageSizeOptions" pageSize="10" hidePageSize="true"></mat-paginator>
       </div>
     </div>
@@ -128,6 +126,12 @@
             <input type="text" [(ngModel)]="Detail.email" [ngModelOptions]="{standalone: true}" matInput
               class="w-full px-3 py-2 border border-gray-200 rounded" [placeholder]="'Email'" />
           </mat-form-field>
+          <mat-form-field appearance="outline">
+              <mat-label>Phân Quyền</mat-label>
+              <mat-select [(ngModel)]="Detail.Role" [ngModelOptions]="{standalone: true}">
+                <mat-option [value]="item.key" *ngFor="let item of Roles|keyvalue">{{item.value}}</mat-option>
+              </mat-select>
+            </mat-form-field>          
           @if(!Detail.id){
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Mật Khẩu</mat-label>
@@ -142,7 +146,7 @@
           </mat-form-field> -->
         </div>
       </div>
-  
+
     </div>
     <div mat-dialog-actions>
       <div class="w-full flex flex-row space-x-2 justify-end">
