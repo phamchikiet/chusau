@@ -1,7 +1,7 @@
 FROM node:18-alpine AS builder
 WORKDIR /app/src
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --force
 COPY . .
 RUN npm run build --prod --configuration=production:ssr
 
