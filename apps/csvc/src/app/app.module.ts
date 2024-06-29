@@ -13,15 +13,26 @@ import { BaocaoModule } from './baocao/baocao.module';
   imports: [
     TypeOrmModule.forRoot({
         type: 'mysql',
-        host: '103.221.221.14',
+        host: '103.221.222.71',
         port: 3306,
-        username: 'jtnkwfpz_chikiet88',
-        password: '@Hikiet1988',
-        database: 'jtnkwfpz_csvc',
+        username: 'tazaspac_chikiet',
+        password: '@Hikiet88',
+        database: 'tazaspac_chikiet',
         autoLoadEntities: true,
         synchronize: true,
         charset: "utf8mb4"
     }),
+    // TypeOrmModule.forRoot({
+    //     type: 'mysql',
+    //     host: '103.221.221.14',
+    //     port: 3306,
+    //     username: 'jtnkwfpz_chikiet88',
+    //     password: '@Hikiet1988',
+    //     database: 'jtnkwfpz_csvc',
+    //     autoLoadEntities: true,
+    //     synchronize: true,
+    //     charset: "utf8mb4"
+    // }),
     LichsuModule,
     AuthModule,
     UsersModule,

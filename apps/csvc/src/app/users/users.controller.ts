@@ -35,7 +35,6 @@ export class UsersController {
     return this.usersService.findAdmin();
   }
   @Patch(':id')
-  @UseGuards(AuthGuard('hderma'))
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
@@ -50,7 +49,6 @@ export class UsersController {
     return this.usersService.changepass(data);
   }
   @Delete(':id')
-  @UseGuards(AuthGuard('hderma'))
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
