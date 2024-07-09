@@ -8,6 +8,11 @@ import { UsersModule } from "./users/users.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { GoogleAnalyticsService } from "./google-analytics.service";
 import { BaocaoModule } from './baocao/baocao.module';
+import { Mau1Module } from './mau1/mau1.module';
+import { Mau2Module } from './mau2/mau2.module';
+import { Mau3Module } from './mau3/mau3.module';
+import { HangmucModule } from './hangmuc/hangmuc.module';
+import { CauhinhModule } from './cauhinh/cauhinh.module';
 
 @Module({
   imports: [
@@ -38,6 +43,11 @@ import { BaocaoModule } from './baocao/baocao.module';
     UsersModule,
     ThietbiModule,
     BaocaoModule,
+    Mau1Module,
+    Mau2Module,
+    Mau3Module,
+    HangmucModule,
+    CauhinhModule,
   ],
   controllers: [AppController],
   providers: [AppService,GoogleAnalyticsService],
