@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -6,6 +6,19 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ThietbiService } from '../../thietbi/thietbi.service';
 import * as XLSX from 'xlsx';
 import moment from 'moment';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { HangmucService } from '../../hangmuc/hangmuc.service';
+import { CauhinhService } from '../../cauhinh/cauhinh.service';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { Mau1Service } from './mau1.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-mau1',
   standalone:true,
@@ -13,145 +26,39 @@ import moment from 'moment';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule
+    MatInputModule,
+    MatAutocompleteModule,
+    FormsModule,
+    OverlayModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatCardModule,
+    CommonModule,
+    MatButtonModule,
+    MatTooltipModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './mau1.component.html',
   styleUrls: ['./mau1.component.css']
 })
 
 export class Mau1Component implements OnInit {
+  @Input() idBaocao: any=''
   displayedColumns: string[] = [
     'STT','TenTSCD', 'Hangmuc', 'Tinhtrang', 'Ngaykiemtra','Ghichu'
   ];
   Baocao:any= [];
-  DataMau:any=[
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Màn Hình",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Con Chuột",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Bàn Phím",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Phần cứng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "CPU",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Vỏ Thiết Bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Cục Lạnh",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Cục Nóng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Động cơ",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Pin thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Bộ nguồn thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Phụ kiện thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Dây đo thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Hóa Chất/ Gas",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Vỏ Thiết Bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Cục Lạnh",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Cục Nóng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Hóa Chất/ Gas",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Phụ kiện thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Dây đo thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    }
-]
+  DataMau:any[]=[]
+//   DataMau:any=[
+//     {
+//         "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
+//         "Hangmuc": "Màn Hình",
+//         "Tinhtrang": "Đang HĐ/ Hư Hỏng",
+//         "Ngaykiemtra": "02/01/2024",
+//         "Ghichu":""
+//     }
+// ]
+
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -162,31 +69,96 @@ export class Mau1Component implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  _ThietbiService:ThietbiService= inject(ThietbiService)
-  constructor() { }
+  TSCD:any[]=[]
+  FilterTSCD:any[]=[]
 
+  Hangmuc:any[]=[]
+  FilterHangmuc:any[]=[]
+
+  Trangthai:any[]=[]
+  FilterTrangthai:any[]=[]
+
+  _ThietbiService:ThietbiService= inject(ThietbiService)
+  _HangmucService:HangmucService= inject(HangmucService)
+  _CauhinhService:CauhinhService= inject(CauhinhService)
+  _Mau1Service:Mau1Service= inject(Mau1Service)
+  input2:any=''
+  input3:any=''
+  Overlay1:any = {}
+  Overlay2:any = {}
+  Overlay3:any = {}
+  Overlay4:any = {}
+  Overlay5:any = {}
+  idTrangthai:any =''
+  triggerOrigin: any;
+  toggle1(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay1[index] = true
+  }
+  toggle2(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay2[index] = true
+  }
+  toggle3(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay3[index] = true
+  }
+  toggle4(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay4[index] = true
+  }
+  toggle5(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay5[index] = true
+  }
+  async Addrow()
+  {
+    const item = {
+      TenTSCD: "",
+      Hangmuc: "",
+      Tinhtrang: "",
+      Ngaykiemtra: new Date(),
+      idBaocao:this.idBaocao
+     }
+      this._Mau1Service.CreateMau1(item).then(async ()=>
+      {
+        this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.idBaocao)
+        this.dataSource = new MatTableDataSource(this.DataMau);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      })
+
+  }
+  constructor() { }
   async ngOnInit() {
-    const Thietbis = await this._ThietbiService.SearchThietbi({
-      pageSize:10,
-      pageNumber:0,
-      isDelete:false
-    })
-    console.log(Thietbis);
-    Thietbis.item.forEach((v:any)=>{
-      v.TenTSCD = v.Tieude
-      v.MasoTSCD = v.Code
-      v.NamSD = ''
-      v.TheoSoSL = ''
-      v.TheoSoConlai = ''
-      v.KiemkeSL = ''
-      v.KiemkeNguyengia = ''
-      v.KiemkeConlai = ''
-      v.ChenhlechNguyengia = ''
-      v.ChenhlechConlai = ''
-      v.Ghichu = ''
-      v.MaCode = ''
-      this.Baocao.push(v)
-    })
+    //  const Thietbis = await this._ThietbiService.SearchThietbi({
+    //   pageSize:10,
+    //   pageNumber:0,
+    //   isDelete:false
+    // })
+    console.log(this.idBaocao);
+
+    this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
+    this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
+    this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.idBaocao)
+    const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
+    this.idTrangthai = Trangthai?.id
+    this.Trangthai = this.FilterTrangthai = Trangthai?.Data
+    // Thietbis.item.forEach((v:any)=>{
+    //   v.TenTSCD = v.Tieude
+    //   v.MasoTSCD = v.Code
+    //   v.NamSD = ''
+    //   v.TheoSoSL = ''
+    //   v.TheoSoConlai = ''
+    //   v.KiemkeSL = ''
+    //   v.KiemkeNguyengia = ''
+    //   v.KiemkeConlai = ''
+    //   v.ChenhlechNguyengia = ''
+    //   v.ChenhlechConlai = ''
+    //   v.Ghichu = ''
+    //   v.MaCode = ''
+    //   this.Baocao.push(v)
+    // })
     console.log(this.Baocao);
     this.dataSource = new MatTableDataSource(this.DataMau);
     this.dataSource.sortingDataAccessor = (item, property) => {
@@ -202,9 +174,104 @@ export class Mau1Component implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+
+  DeleteItem(item:any)
+  {
+    this._Mau1Service.DeleteMau1(item).then(()=>this.ngOnInit())
+  }
+
+  FilterOverlay1(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterTSCD = this.TSCD.filter((v:any)=>{
+          return v.Tieude.includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterTSCD = this.TSCD
+  }
+  FilterOverlay2(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterHangmuc = this.Hangmuc.filter((v:any)=>{
+          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterHangmuc = this.Hangmuc
+  }
+  FilterOverlay3(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterTrangthai = this.Trangthai.filter((v:any)=>{
+          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterTrangthai = this.Trangthai
+  }
+  ChooseOverlay1(item:any,index:any)
+  {
+    this.DataMau[index].TenTSCD = item.Tieude
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
+    this.dataSource = new MatTableDataSource(this.DataMau);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  ChooseOverlay2(item:any,index:any)
+  {
+    this.DataMau[index].Hangmuc = item.Title
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
+    this.dataSource = new MatTableDataSource(this.DataMau);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  ChooseOverlay3(item:any,index:any)
+  {
+    console.log();
+
+    this.DataMau[index].Tinhtrang = item.Title
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
+    this.dataSource = new MatTableDataSource(this.DataMau);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  ChooseOverlay4(item:any,index:any)
+  {
+    console.log(item);
+    this.DataMau[index].Ngaykiemtra = item
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
+    this.dataSource = new MatTableDataSource(this.DataMau);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  ChooseOverlay5(item:any,index:any)
+  {
+    console.log(item);
+    this.DataMau[index].Ghichu = item
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
+    this.dataSource = new MatTableDataSource(this.DataMau);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  AddHangmuc(item:any)
+  {
+    this._HangmucService.CreateHangmuc({Title:item}).then(()=>
+    {
+    })
+  }
+  AddTrangthai(data:any)
+  {
+    console.log(data);
+    this.Trangthai.push({id:this.Trangthai.length+1,Title:data})
+    const item ={id:this.idTrangthai,Data:this.Trangthai}
+    this._CauhinhService.UpdateCauhinh(item).then(()=>{})
+  }
   writeExcelFile() {
-    let Giagoc:any=[]
-    let item:any={}
+
   let exData:any= []
   let Header= [
     { A: "TRƯỜNG CAO ĐẲNG NGHỀ", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",K:"",L:"",M:"",N:""},
@@ -224,27 +291,27 @@ export class Mau1Component implements OnInit {
   let Main:any = []
   this.DataMau.forEach((v:any)=>
     {
-     const item = 
-     { 
-      A: v.STT, 
-      B: v.TenTSCD, 
-      c: v.Hangmuc, 
+     const item =
+     {
+      A: v.STT,
+      B: v.TenTSCD,
+      c: v.Hangmuc,
       C: v.Tinhtrang ,
       D: v.Ngaykiemtra,
       E: v.Ghichu
       }
       Main.push(item)
-    })	
+    })
 
     exData = [...Header,...Main,...Footer]
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(exData);								
+    const worksheet = XLSX.utils.json_to_sheet(exData);
   worksheet["!merges"] = [
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } }, 
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
     { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } }, 
+    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
     { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
-    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } }, 
+    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
     { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
     { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
     { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },

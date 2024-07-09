@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewEncapsulation, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -36,9 +36,10 @@ import moment from 'moment';
     Mau3Component
   ],
   templateUrl: './baocao.component.html',
-  styleUrl: './baocao.component.scss'
+  styleUrl: './baocao.component.scss',
+  encapsulation:ViewEncapsulation.None
 })
-export class BaocaoComponent implements OnInit  {
+export class BaocaoComponent implements OnInit {
   DPI = 300
   WidthA4 = '2481px';
   HeightA4 = '3508px';
@@ -113,11 +114,8 @@ export class BaocaoComponent implements OnInit  {
       this.Baocao = List.find((v:any)=>v.Slug==Slug)
       console.log(this.Baocao);
     }
-   console.log(Slug);
-   console.log(List);
-   console.log(this.MenuBaocao);
-
     this.treedataSource.data = this.MenuBaocao
+    this.treeControl.expandAll();
   }
   FillSlug() {
     this.Detail.Slug =  this.Detail.Title
