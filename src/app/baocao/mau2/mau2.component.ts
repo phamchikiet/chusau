@@ -89,6 +89,8 @@ export class Mau2Component implements OnInit {
   Overlay3:any = {}
   Overlay4:any = {}
   Overlay5:any = {}
+  Overlay6:any = {}
+  Overlay7:any = {}
   idTrangthai:any =''
   triggerOrigin: any;
   toggle1(trigger: any,index:any) {
@@ -110,6 +112,14 @@ export class Mau2Component implements OnInit {
   toggle5(trigger: any,index:any) {
     this.triggerOrigin = trigger;
     this.Overlay5[index] = true
+  }
+  toggle6(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay6[index] = true
+  }
+  toggle7(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay7[index] = true
   }
   async Addrow()
   {
