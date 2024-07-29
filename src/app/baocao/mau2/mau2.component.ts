@@ -43,11 +43,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 
 export class Mau2Component implements OnInit {
-  @Input() idBaocao: any=''
+  @Input() Baocao: any
   displayedColumns: string[] = [
     'STT','TenTSCD', 'Hangmuc', 'Tinhtrang','Ngaythuchien','Noidungthuchien','Saukhithuchien','Ghichu'
   ];
-  Baocao:any= [];
   DataMau:any[]=[]
 //   DataMau:any=[
 //     {
@@ -128,11 +127,11 @@ export class Mau2Component implements OnInit {
       Hangmuc: "",
       Tinhtrang: "",
       Ngaykiemtra: new Date(),
-      idBaocao:this.idBaocao
+      Baocao:this.Baocao.id
      }
       this._Mau2Service.CreateMau2(item).then(async ()=>
       {
-        this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.idBaocao)
+        this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
         this.dataSource = new MatTableDataSource(this.DataMau);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -141,34 +140,12 @@ export class Mau2Component implements OnInit {
   }
   constructor() { }
   async ngOnInit() {
-    //  const Thietbis = await this._ThietbiService.SearchThietbi({
-    //   pageSize:10,
-    //   pageNumber:0,
-    //   isDelete:false
-    // })
-    console.log(this.idBaocao);
-
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
     this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
-    this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.idBaocao)
+    this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
     const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
     this.idTrangthai = Trangthai?.id
     this.Trangthai = this.FilterTrangthai = Trangthai?.Data
-    // Thietbis.item.forEach((v:any)=>{
-    //   v.TenTSCD = v.Tieude
-    //   v.MasoTSCD = v.Code
-    //   v.NamSD = ''
-    //   v.TheoSoSL = ''
-    //   v.TheoSoConlai = ''
-    //   v.KiemkeSL = ''
-    //   v.KiemkeNguyengia = ''
-    //   v.KiemkeConlai = ''
-    //   v.ChenhlechNguyengia = ''
-    //   v.ChenhlechConlai = ''
-    //   v.Ghichu = ''
-    //   v.MaCode = ''
-    //   this.Baocao.push(v)
-    // })
     console.log(this.Baocao);
     this.dataSource = new MatTableDataSource(this.DataMau);
     this.dataSource.sortingDataAccessor = (item, property) => {

@@ -18,7 +18,7 @@
         add_circle
       </span>
     </div>
-    <mat-tree class="p-4 h-[70vh] overflow-auto" [dataSource]="treedataSource" [treeControl]="treeControl">
+    <mat-tree class="p-4" [dataSource]="treedataSource" [treeControl]="treeControl">
       <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
         @if(node.Type=="baocao"){
         <a [href]="['baocao/'+node.Slug]" routerLinkActive="router-link-active"
@@ -51,30 +51,35 @@
 
 
   </mat-drawer>
-  <div class="h-screen flex flex-col space-y-4 p-4 bg-white">
+  <div class="flex flex-col space-y-2 p-4 bg-white">
     <div class="flex flex-row items-center justify-between space-x-2">
       <span (click)="drawer.toggle()"
         class="material-symbols-outlined p-2 rounded-full bg-slate-200 text-blue-500 hover:bg-blue-500 hover:text-white">
         menu
       </span>
+      <div class="flex flex-col items-center space-y-2">
       @switch (Baocao.idDM) {
         @case ('1') {
-          <div class="text-2xl font-bold">TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH</div>
+          <div class="font-bold">TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH</div>
         }
         @case ('2') {
-          <div class="text-2xl font-bold">ĐÁNH GIÁ THIẾT BỊ ĐỊNH KỲ</div>
+          <div class="font-bold">ĐÁNH GIÁ THIẾT BỊ ĐỊNH KỲ</div>
         }
         @case ('3') {
-          <div class="text-2xl font-bold">BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
+          <div class="font-bold">BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
         }
         @case ('4') {
-          <div class="text-2xl font-bold">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
+          <div class="font-bold">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
         }
         @default {
-          <div class="text-2xl font-bold"> Chưa Chọn Báo Cáo</div>
+          <div class="font-bold"> Chưa Chọn Báo Cáo</div>
         }
-        }
-      <div></div>
+      }
+      <div class="text-xl font-bold">{{Baocao.Title}}</div>
+      </div>
+      <div>
+
+      </div>
     <!-- <div (click)="writeExcelFile()"
       class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
       <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
@@ -88,10 +93,10 @@
         <app-mau0></app-mau0>
         }
         @case ('2') {
-        <app-mau1 [idBaocao]="Baocao.id"></app-mau1>
+        <app-mau1 [Baocao]="Baocao"></app-mau1>
         }
         @case ('3') {
-        <app-mau2 [idBaocao]="Baocao.id"></app-mau2>
+        <app-mau2 [Baocao]="Baocao"></app-mau2>
         }
         @case ('4') {
         <app-mau3></app-mau3>

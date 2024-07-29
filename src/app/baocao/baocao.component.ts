@@ -112,7 +112,6 @@ export class BaocaoComponent implements OnInit {
    if(Slug)
     {
       this.Baocao = List.find((v:any)=>v.Slug==Slug)
-      console.log(this.Baocao);
     }
     this.treedataSource.data = this.MenuBaocao
     this.treeControl.expandAll();
@@ -133,7 +132,6 @@ export class BaocaoComponent implements OnInit {
   applyFilter(event:any)
   {
     console.log(event);
-
   }
   writeExcelFile() {
     let Giagoc:any=[]

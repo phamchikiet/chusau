@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -6,6 +6,12 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ThietbiService } from '../../thietbi/thietbi.service';
 import * as XLSX from 'xlsx';
 import moment from 'moment';
+import { FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-mau0',
   standalone:true,
@@ -13,7 +19,13 @@ import moment from 'moment';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatDialogModule,
+    OverlayModule,
+    MatTooltipModule
   ],
   templateUrl: './mau0.component.html',
   styleUrls: ['./mau0.component.css']
@@ -22,13 +34,16 @@ import moment from 'moment';
 export class Mau0Component implements OnInit {
 
   displayedColumns: string[] = [
-    'TenTSCD', 'MasoTSCD', 'NamSD', 
+    'TenTSCD', 'MasoTSCD', 'NamSD',
     'TheoSoSL','TheoSoConlai',
     'KiemkeSL','KiemkeNguyengia','KiemkeConlai',
     'ChenhlechSL','ChenhlechNguyengia','ChenhlechConlai',
     'Ghichu','MaCode'
   ];
   Baocao:any= [];
+  TSCD:any= [];
+  FilterTSCD:any= [];
+  Detail:any={}
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -40,9 +55,9 @@ export class Mau0Component implements OnInit {
     }
   }
   _ThietbiService:ThietbiService= inject(ThietbiService)
-  constructor() { }
-
+  constructor(private dialog: MatDialog) { }
   async ngOnInit() {
+    this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
     const Thietbis = await this._ThietbiService.SearchThietbi({
       pageSize:10,
       pageNumber:0,
@@ -65,8 +80,8 @@ export class Mau0Component implements OnInit {
       this.Baocao.push(v)
     })
     console.log(this.Baocao);
-    
-    
+
+
     this.dataSource = new MatTableDataSource(this.Baocao);
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch(property) {
@@ -80,7 +95,31 @@ export class Mau0Component implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
+  triggerOrigin: any;
+  Overlay1:boolean = false
+  toggle1(trigger: any) {
+    this.triggerOrigin = trigger;
+    this.Overlay1 = true
+  }
+  FilterOverlay1(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterTSCD = this.TSCD.filter((v:any)=>{
+          return v.Tieude.includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterTSCD = this.TSCD
+  }
+  ChooseOverlay1(item:any)
+  {
+    // this.DataMau[index].TenTSCD = item.Tieude
+    // this._Mau2Service.UpdateMau2(this.DataMau[index])
+    // this.dataSource = new MatTableDataSource(this.DataMau);
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+  }
   writeExcelFile() {
     let Giagoc:any=[]
     let item:any={}
@@ -103,11 +142,11 @@ export class Mau0Component implements OnInit {
   let Main:any = []
   this.Baocao.forEach((v:any)=>
     {
-     const item = 
-     { 
-      A: v.TenTSCD, 
-      B: v.MasoTSCD, 
-      c: v.NamSD, 
+     const item =
+     {
+      A: v.TenTSCD,
+      B: v.MasoTSCD,
+      c: v.NamSD,
       C: v.TheoSoSL ,
       D: v.TheoSoConlai,
       E: v.KiemkeSL,
@@ -122,17 +161,17 @@ export class Mau0Component implements OnInit {
       N: v.MaCode
       }
       Main.push(item)
-    })	
+    })
 
     exData = [...Header,...Main,...Footer]
     const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(exData);								
+    const worksheet = XLSX.utils.json_to_sheet(exData);
   worksheet["!merges"] = [
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } }, 
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
     { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } }, 
+    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
     { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
-    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } }, 
+    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
     { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
     { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
     { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },
@@ -166,5 +205,24 @@ export class Mau0Component implements OnInit {
     link.click();
     window.URL.revokeObjectURL(url);
     link.remove();
+  }
+  SelectItem: any = {}
+  openDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+       // this._SanphamService.CreateSanpham(this.Detail).then(() => this.ngOnInit())
+      }
+    });
+  }
+  XoaDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+       // this._SanphamService.DeleteSanpham(this.SelectItem).then(() => this.ngOnInit())
+      }
+    });
   }
 }

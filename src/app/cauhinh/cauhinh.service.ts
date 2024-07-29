@@ -63,7 +63,6 @@ export class CauhinhService {
       };
           const response = await fetch(`${environment.APIURL}/cauhinh/findslug/${Slug}`,options);
           const data = await response.json();
-          console.log(data);
           this._cauhinh.next(data)
           return data;
       } catch (error) {
