@@ -11,6 +11,8 @@ export class Mau1Entity {
   Mota: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   TenTSCD: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  Chitiet: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Hangmuc: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
