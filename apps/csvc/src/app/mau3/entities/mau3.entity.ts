@@ -4,11 +4,15 @@ export class Mau3Entity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
-  idDM: string;
+  idBaocao: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Title: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Mota: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  TenTSCD: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  Chitiet: string;
   @Column({ default: '' })
   Slug: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })

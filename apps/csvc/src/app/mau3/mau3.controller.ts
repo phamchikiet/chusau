@@ -20,6 +20,10 @@ export class Mau3Controller {
   async findslug(@Param('slug') slug: string) {
     return await this.mau3Service.findslug(slug);
   }
+  @Get('findidbaocao/:id')
+  async findidbaocao(@Param('id') id: string) {
+    return await this.mau3Service.findidbaocao(id);
+  }
   @Post('search')
     async findQuery(@Body() SearchParams: any){
       return await this.mau3Service.findQuery(SearchParams);

@@ -9,15 +9,8 @@ export class Mau3Service {
     private Mau3Repository: Repository<Mau3Entity>
   ) { }
   async create(data: any) {
-    const check = await this.findSHD(data)
-    if(!check) {
-      this.Mau3Repository.create(data);
-      return await this.Mau3Repository.save(data);
-    }
-    else {
-      return { error: 1001, data: "Trùng Dữ Liệu" }
-    }
-
+    this.Mau3Repository.create(data);
+    return await this.Mau3Repository.save(data);
   }
 
   async findAll() {
@@ -37,6 +30,11 @@ export class Mau3Service {
   async findslug(Title: any) {
     return await this.Mau3Repository.findOne({
       where: { Title: Title },
+    });
+  }
+  async findidbaocao(idbaocao: any) {
+    return await this.Mau3Repository.find({
+      where: { idBaocao: idbaocao },
     });
   }
   async findPagination(page: number, perPage: number) {
