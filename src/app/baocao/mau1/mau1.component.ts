@@ -75,16 +75,16 @@ export class Mau1Component implements OnInit {
   _Mau1Service: Mau1Service = inject(Mau1Service)
   input2: any = ''
   input3: any = ''
-  Overlay1: any = ''
+  Overlay1: any = {}
   Overlay2: any = {}
   Overlay3: any = {}
   Overlay4: any = {}
   Overlay5: any = {}
   idTrangthai: any = ''
   triggerOrigin: any;
-  toggle1(trigger: any) {
+  toggle1(trigger: any,index: any) {
     this.triggerOrigin = trigger;
-    this.Overlay1 = true
+    this.Overlay1[index] = true
   }
   toggle2(trigger: any, index: any) {
     this.triggerOrigin = trigger;
@@ -103,21 +103,48 @@ export class Mau1Component implements OnInit {
     this.Overlay5[index] = true
   }
   async Addrow() {
-    const item = {
+      const item = {
       TenTSCD: "",
-      Hangmuc: "",
-      Tinhtrang: "",
-      Ngaykiemtra: new Date(),
+        Chitiet:[],
       idBaocao: this.Baocao.id
     }
-    this._Mau1Service.CreateMau1(item).then(async () => {
-      this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.Baocao.id)
-      this.dataSource = new MatTableDataSource(this.DataMau);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    })
+    this.DataMau = [item,...this.DataMau]
+    // const item = {
+    //   TenTSCD: "",
+    //   Hangmuc: "",
+    //   Tinhtrang: "",
+    //   Ngaykiemtra: new Date(),
+    //   idBaocao: this.Baocao.id
+    // }
+    // this._Mau1Service.CreateMau1(item).then(async () => {
+    //   this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.Baocao.id)
+    //   this.dataSource = new MatTableDataSource(this.DataMau);
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    // })
 
   }
+  logselect(a:any,b:any)
+  {
+    console.log(a,b);
+
+  }
+  // async Addrow() {
+  //   const item = {
+  //     TenTSCD: "",
+  //     Hangmuc: "",
+  //     Tinhtrang: "",
+  //     Ngaykiemtra: new Date(),
+  //     idBaocao: this.Baocao.id
+  //   }
+  //   this._Mau1Service.CreateMau1(item).then(async () => {
+  //     this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.Baocao.id)
+  //     this.dataSource = new MatTableDataSource(this.DataMau);
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //   })
+
+  // }
   constructor(
     private dialog: MatDialog,
     private _NotifierService: NotifierService,
@@ -164,8 +191,8 @@ export class Mau1Component implements OnInit {
 
     });
   }
-  AddChitiet() {
-    this.Detail.Chitiet.push({ Hangmuc: '', Tinhtrang: '', Ngaykiemtra: '', Ghichu: '' })
+  AddChitiet(index:any) {
+    this.DataMau[index].Chitiet.unshift({ Hangmuc: '', Tinhtrang: '', Ngaykiemtra: '', Ghichu: '' })
   }
 
   XoaDialog(teamplate: TemplateRef<any>): void {
@@ -213,20 +240,23 @@ export class Mau1Component implements OnInit {
   }
   ChooseOverlay1(item: any, index: any) {
     this.Detail.TenTSCD = item.Tieude
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
-  ChooseOverlay2(item: any, index: any) {
-    console.log(item, index);
-
-    this.Detail.Chitiet[index].Hangmuc = item.Title
+  ChooseOverlay2(item: any, index: any,index1: any) {
+    this.DataMau[index].Chitiet[index1].Hangmuc = item.Title
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
-  ChooseOverlay3(item: any, index: any) {
-    this.Detail.Chitiet[index].Tinhtrang = item.Title
+  ChooseOverlay3(item: any, index: any,index1: any) {
+    this.DataMau[index].Chitiet[index1].Tinhtrang = item.Title
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
-  ChooseOverlay4(item: any, index: any) {
-    this.Detail.Chitiet[index].Ngaykiemtra = item
+  ChooseOverlay4(item: any, index: any,index1: any) {
+    this.DataMau[index].Chitiet[index1].Ngaykiemtra = item
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
-  ChooseOverlay5(item: any, index: any) {
-    this.Detail.Chitiet[index].Ghichu = item.Title
+  ChooseOverlay5(item: any, index: any,index1: any) {
+    this.DataMau[index].Chitiet[index1].Ngaykiemtra = item.Title
+    this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
   AddHangmuc(item: any) {
     this._HangmucService.CreateHangmuc({ Title: item }).then(() => {

@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ThietbiService } from '../../thietbi/thietbi.service';
-import * as XLSX from 'xlsx';
-import moment from 'moment';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -19,6 +17,9 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Mau2Service } from './mau2.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-mau2',
   standalone:true,
@@ -35,7 +36,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCardModule,
     CommonModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './mau2.component.html',
@@ -44,81 +46,251 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 export class Mau2Component implements OnInit {
   @Input() Baocao: any
-  displayedColumns: string[] = [
-    'STT','TenTSCD', 'Hangmuc', 'Tinhtrang','Ngaythuchien','Noidungthuchien','Saukhithuchien','Ghichu'
-  ];
+  displayedColumns: string[] = ['STT', 'Hangmuc', 'Tinhtrang','Ngaythuchien','Noidungthuchien','Saukhithuchien','Ghichu'];
   DataMau:any[]=[]
-//   DataMau:any=[
-//     {
-//         "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-//         "Hangmuc": "Màn Hình",
-//         "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-//         "Ngaykiemtra": "02/01/2024",
-//         "Ghichu":""
-//     }
-// ]
-
-  dataSource!: MatTableDataSource<any>;
+  Chitiet:any[]=[]
+  dataSource: any[]=[];
+  // dataSource!: MatTableDataSource<any[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
   TSCD:any[]=[]
   FilterTSCD:any[]=[]
-
   Hangmuc:any[]=[]
   FilterHangmuc:any[]=[]
-
   Trangthai:any[]=[]
   FilterTrangthai:any[]=[]
-
   _ThietbiService:ThietbiService= inject(ThietbiService)
   _HangmucService:HangmucService= inject(HangmucService)
   _CauhinhService:CauhinhService= inject(CauhinhService)
   _Mau2Service:Mau2Service= inject(Mau2Service)
+  SelectItem:any
   input2:any=''
   input3:any=''
   Overlay1:any = {}
-  Overlay2:any = {}
-  Overlay3:any = {}
-  Overlay4:any = {}
-  Overlay5:any = {}
-  Overlay6:any = {}
-  Overlay7:any = {}
+  Overlay2:any= []
+  Overlay3:any = []
+  Overlay4:any = []
+  Overlay5:any = []
+  Overlay6:any = []
+  Overlay7:any = []
   idTrangthai:any =''
   triggerOrigin: any;
   toggle1(trigger: any,index:any) {
     this.triggerOrigin = trigger;
     this.Overlay1[index] = true
   }
-  toggle2(trigger: any,index:any) {
-    this.triggerOrigin = trigger;
-    this.Overlay2[index] = true
+  toggle2(trigger: any,index:any,index1:any) {
+   this.triggerOrigin = trigger;
+    const item = this.Overlay2.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    if(item){
+      const findIndex = this.Overlay2.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay2[findIndex].value = true
+    }
+    else {
+      this.Overlay2.push({index:index,index1:index1,value:true})
+    }
+    console.log(this.Overlay2);
   }
-  toggle3(trigger: any,index:any) {
-    this.triggerOrigin = trigger;
-    this.Overlay3[index] = true
+  backdrop2(index:any,index1:any) {
+     const item = this.Overlay2.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     console.log(item);
+
+     if(item){
+       const findIndex = this.Overlay2.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay2[findIndex].value = false
+     }
+     else {
+       this.Overlay2.push({index:index,index1:index1,value:false})
+     }
+   }
+  backdrop3(index:any,index1:any) {
+     const item = this.Overlay3.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     console.log(item);
+
+     if(item){
+       const findIndex = this.Overlay2.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay3[findIndex].value = false
+     }
+     else {
+       this.Overlay3.push({index:index,index1:index1,value:false})
+     }
+   }
+   backdrop4(index:any,index1:any) {
+    const item = this.Overlay4.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay4.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay4[findIndex].value = false
+    }
+    else {
+      this.Overlay4.push({index:index,index1:index1,value:false})
+    }
   }
-  toggle4(trigger: any,index:any) {
-    this.triggerOrigin = trigger;
-    this.Overlay4[index] = true
+  backdrop5(index:any,index1:any) {
+    const item = this.Overlay5.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay5.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay5[findIndex].value = false
+    }
+    else {
+      this.Overlay5.push({index:index,index1:index1,value:false})
+    }
   }
-  toggle5(trigger: any,index:any) {
-    this.triggerOrigin = trigger;
-    this.Overlay5[index] = true
+  backdrop6(index:any,index1:any) {
+    const item = this.Overlay6.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay6.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay6[findIndex].value = false
+    }
+    else {
+      this.Overlay6.push({index:index,index1:index1,value:false})
+    }
   }
-  toggle6(trigger: any,index:any) {
-    this.triggerOrigin = trigger;
-    this.Overlay6[index] = true
+  backdrop7(index:any,index1:any) {
+    const item = this.Overlay7.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay7.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay7[findIndex].value = false
+    }
+    else {
+      this.Overlay7.push({index:index,index1:index1,value:false})
+    }
   }
-  toggle7(trigger: any,index:any) {
+
+
+  toggle3(trigger: any,index:any,index1:any) {
     this.triggerOrigin = trigger;
-    this.Overlay7[index] = true
+     const item = this.Overlay3.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     if(item){
+       const findIndex = this.Overlay3.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay3[findIndex].value = true
+     }
+     else {
+       this.Overlay3.push({index:index,index1:index1,value:true})
+     }
+     console.log(this.Overlay3);
+   }
+
+toggle4(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay4.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay4.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay4[findIndex].value = true
+   }
+   else {
+     this.Overlay4.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay4);
+ }
+ toggle5(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay5.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay5.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay5[findIndex].value = true
+   }
+   else {
+     this.Overlay5.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay5);
+ }
+ toggle6(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay6.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay6.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay6[findIndex].value = true
+   }
+   else {
+     this.Overlay6.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay6);
+ }
+ toggle7(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay7.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay7.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay7[findIndex].value = true
+   }
+   else {
+     this.Overlay7.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay7);
+ }
+  GetOverlay(List:any,index:any,index1:any){
+    const item =  List.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    if(item){
+      return item.value
+    }
+    else {
+      return false
+    }
   }
   async Addrow()
   {
@@ -132,41 +304,44 @@ export class Mau2Component implements OnInit {
       this._Mau2Service.CreateMau2(item).then(async ()=>
       {
         this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
-        this.dataSource = new MatTableDataSource(this.DataMau);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.dataSource[1] = new MatTableDataSource(this.DataMau[1].Chitiet);
+        this.dataSource[1].paginator = this.paginator;
+        this.dataSource[1].sort = this.sort;
       })
 
   }
-  constructor() { }
+  constructor(
+    private dialog: MatDialog,
+    private _NotifierService: NotifierService
+  ) { }
   async ngOnInit() {
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
     this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
     this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
+    this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
     const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
     this.idTrangthai = Trangthai?.id
     this.Trangthai = this.FilterTrangthai = Trangthai?.Data
-    console.log(this.Baocao);
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch(property) {
-        case 'Diachi': return item.Giohangs.Khachhang.Diachi;
-        case 'Hoten': return item.Giohangs.Khachhang.Hoten;
-        case 'SDT': return item.Giohangs.Khachhang.SDT;
-        case 'Hinhthuc': return item.Thanhtoan.Hinhthuc;
-        default: return item[property];
-      }
-    };
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    console.log(this.DataMau);
+    console.log(this.Chitiet);
+    this.LoadDataSource()
+
   }
-
-
-  DeleteItem(item:any)
+  LoadDataSource()
   {
-    this._Mau2Service.DeleteMau2(item).then(()=>this.ngOnInit())
+    this.DataMau.forEach((v,k) => {
+      this.dataSource[k] = new MatTableDataSource(v.Chitiet);
+      this.dataSource[k].paginator = this.paginator;
+      this.dataSource[k].sort = this.sort;
+    });
   }
 
+
+  DeleteItem(item:any,index:any)
+  {
+    item.Chitiet = item.Chitiet.slice(0, index).concat(item.Chitiet.slice(index+1))
+    this._Mau2Service.UpdateMau2(item).then(()=>this.ngOnInit())
+  }
   FilterOverlay1(event:any)
   {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -200,49 +375,45 @@ export class Mau2Component implements OnInit {
       }
     else this.FilterTrangthai = this.Trangthai
   }
-  ChooseOverlay1(item:any,index:any)
+  ChooseOverlay1(item:any,index:any,index1:any)
   {
     this.DataMau[index].TenTSCD = item.Tieude
     this._Mau2Service.UpdateMau2(this.DataMau[index])
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.LoadDataSource()
   }
-  ChooseOverlay2(item:any,index:any)
+  ChooseOverlay2(item:any,index:any,index1:any)
   {
-    this.DataMau[index].Hangmuc = item.Title
+    this.DataMau[index].Chitiet[index1].Hangmuc = item.Title
     this._Mau2Service.UpdateMau2(this.DataMau[index])
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.LoadDataSource()
   }
-  ChooseOverlay3(item:any,index:any)
+  ChooseOverlay3(item:any,index:any,index1:any)
   {
     console.log();
 
-    this.DataMau[index].Tinhtrang = item.Title
+    this.DataMau[index].Chitiet[index1].Tinhtrang = item.Title
     this._Mau2Service.UpdateMau2(this.DataMau[index])
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.LoadDataSource()
   }
-  ChooseOverlay4(item:any,index:any)
+  ChooseOverlay4(item:any,index:any,index1:any)
   {
     console.log(item);
-    this.DataMau[index].Ngaykiemtra = item
+    this.DataMau[index].Chitiet[index1].Ngaykiemtra = item
     this._Mau2Service.UpdateMau2(this.DataMau[index])
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.LoadDataSource()
   }
-  ChooseOverlay5(item:any,index:any)
+  ChooseOverlay5(item:any,index:any,index1:any)
   {
     console.log(item);
-    this.DataMau[index].Ghichu = item
+    this.DataMau[index].Chitiet[index1].Ghichu = item
     this._Mau2Service.UpdateMau2(this.DataMau[index])
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.LoadDataSource()
+  }
+  AddChitiet(index:any) {
+    console.log(index);
+    this.DataMau[index].Chitiet.unshift({ Hangmuc: '', Tinhtrang: '', Ngaykiemtra: '', Ghichu: '' })
+   // this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
+    this.LoadDataSource()
   }
   AddHangmuc(item:any)
   {
@@ -257,80 +428,24 @@ export class Mau2Component implements OnInit {
     const item ={id:this.idTrangthai,Data:this.Trangthai}
     this._CauhinhService.UpdateCauhinh(item).then(()=>{})
   }
-  writeExcelFile() {
+  openPrintDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result:any) => {
 
-  let exData:any= []
-  let Header= [
-    { A: "TRƯỜNG CAO ĐẲNG NGHỀ", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",K:"",L:"",M:"",N:""},
-    { A: "THÀNH PHỐ HỒ CHÍ MINH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"Độc lập - Tự do - Hạnh phúc",K:"",L:"",M:"",N:""},
-    { A: "KHOA: ĐIỆN - ĐIỆN LẠNH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "Số: / M1/KĐ.ĐL", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:"Mẫu 1"},
-    { A: "", B: "TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "STT", B: "Tên TSCĐ", C: "Mã số TSCĐ",D:"Năm sử dụng",E:"Theo sổ kế toán",F:"",G:"Theo kiểm kê",H:"",I:"",J:"Chênh lệch",K:"",L:"",M:"Ghi chú",N:"Mã code"},
-    { A: "", B: "", C: "",D:"SL",E:"Giá trị còn lại",F:"SL",G:"Nguyên giá",H:"Giá trị còn lại",I:"SL",J:"Nguyên giá",K:"Giá trị còn lại",L:"",M:"",N:""},
-  ]
-  let Footer= [
-    { A: "", B: "Trưởng ban kiểm kê", C: "" ,D:"",E:"Trưởng phòng TC-KT	",F:"",G:"",H:"Trưởng phòng QTTB",I:"",J:"",K:"",L:"Trưởng khoa Điện - Điện Lạnh",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "Trần Kim Tuyền", C: "" ,D:"",E:"Lưu Thị Hương",F:"",G:"",H:"Phạm Mạnh Dũng",I:"",J:"",K:"",L:"Phạm Văn Trọng	",M:"",N:""}
-  ]
-  let Main:any = []
-  this.DataMau.forEach((v:any)=>
-    {
-     const item =
-     {
-      A: v.STT,
-      B: v.TenTSCD,
-      c: v.Hangmuc,
-      C: v.Tinhtrang ,
-      D: v.Ngaykiemtra,
-      E: v.Ghichu
-      }
-      Main.push(item)
-    })
-
-    exData = [...Header,...Main,...Footer]
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(exData);
-  worksheet["!merges"] = [
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
-    { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
-    { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
-    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },
-  ]; // Merge first row
-
-  // 3. Add Styling (Bold, Centered, Font Size)
-  const headerStyle = {
-    font: { bold: true, sz: 14 },
-    alignment: { horizontal: "center" },
-  };
-  worksheet["A1"].s = headerStyle;
-  XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
-  // 4. Generate Excel File (xlsx)
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-
-
-    // const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
-    // const worksheet2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(Giagoc);
-    // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
-    // XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
-    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'Mau2_'+moment().format("DD_MM_YYYY"));
-
+    });
   }
-  saveAsExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url: string = window.URL.createObjectURL(data);
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.xlsx`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-    link.remove();
+  XoaDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.SelectItem);
+        this._Mau2Service.DeleteMau2(this.SelectItem).then(() =>{
+          this._NotifierService.notify("success","Xoá Thành Công")
+          this.ngOnInit()
+        })
+      }
+    });
   }
 }

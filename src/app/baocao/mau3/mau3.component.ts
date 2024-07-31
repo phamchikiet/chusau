@@ -1,11 +1,25 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ThietbiService } from '../../thietbi/thietbi.service';
-import * as XLSX from 'xlsx';
-import moment from 'moment';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { HangmucService } from '../../hangmuc/hangmuc.service';
+import { CauhinhService } from '../../cauhinh/cauhinh.service';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NotifierService } from 'angular-notifier';
+import { Mau3Service } from './mau3.service';
 @Component({
   selector: 'app-mau3',
   standalone:true,
@@ -13,270 +27,426 @@ import moment from 'moment';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule
+    MatInputModule,
+    MatAutocompleteModule,
+    FormsModule,
+    OverlayModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatCardModule,
+    CommonModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatDialogModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './mau3.component.html',
   styleUrls: ['./mau3.component.css']
 })
 
 export class Mau3Component implements OnInit {
-  displayedColumns: string[] = [
-    'STT','TenTSCD', 'Hangmuc', 'Noidungthuchien', 'Ngaythuchien','Chiphivattu','Chiphinhancong','Soluong','Thanhtien','Ghichu'
-  ];
-  Baocao:any= [];
-  DataMau:any=[
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Màn Hình",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Con Chuột",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Bàn Phím",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "Phần cứng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy Vi tính E7300-2.66ghz+LCD 15.6\"LG",
-        "Hangmuc": "CPU",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "02/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Vỏ Thiết Bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Cục Lạnh",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Cục Nóng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy lạnh PANASONIC CWC 182KF 2.0HP -1K",
-        "Hangmuc": "Động cơ",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "03/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Pin thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Bộ nguồn thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Phụ kiện thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Dây đo thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Máy đo rò rỉ môi chất lạnh",
-        "Hangmuc": "Hóa Chất/ Gas",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Vỏ Thiết Bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Cục Lạnh",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Cục Nóng",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Hóa Chất/ Gas",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Phụ kiện thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    },
-    {
-        "TenTSCD": "Mô hình máy lạnh 10 HP",
-        "Hangmuc": "Dây đo thiết bị",
-        "Tinhtrang": "Đang HĐ/ Hư Hỏng",
-        "Ngaykiemtra": "04/01/2024"
-    }
-]
-  dataSource!: MatTableDataSource<any>;
+  @Input() Baocao: any
+  displayedColumns: string[] = ['STT', 'Hangmuc', 'Tinhtrang','Ngaythuchien','Chiphivattu','Chiphinhancong','Soluong','Thanhtien','Ghichu'];
+  DataMau:any[]=[]
+  Chitiet:any[]=[]
+  dataSource: any[]=[];
+  // dataSource!: MatTableDataSource<any[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   if (this.dataSource.paginator) {
+  //     this.dataSource.paginator.firstPage();
+  //   }
+  // }
+  TSCD:any[]=[]
+  FilterTSCD:any[]=[]
+  Hangmuc:any[]=[]
+  FilterHangmuc:any[]=[]
+  Trangthai:any[]=[]
+  FilterTrangthai:any[]=[]
+  _ThietbiService:ThietbiService= inject(ThietbiService)
+  _HangmucService:HangmucService= inject(HangmucService)
+  _CauhinhService:CauhinhService= inject(CauhinhService)
+  _Mau3Service:Mau3Service= inject(Mau3Service)
+  SelectItem:any
+  input2:any=''
+  input3:any=''
+  Overlay1:any = {}
+  Overlay2:any= []
+  Overlay3:any = []
+  Overlay4:any = []
+  Overlay5:any = []
+  Overlay6:any = []
+  Overlay7:any = []
+  idTrangthai:any =''
+  triggerOrigin: any;
+  toggle1(trigger: any,index:any) {
+    this.triggerOrigin = trigger;
+    this.Overlay1[index] = true
+  }
+  toggle2(trigger: any,index:any,index1:any) {
+   this.triggerOrigin = trigger;
+    const item = this.Overlay2.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    if(item){
+      const findIndex = this.Overlay2.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay2[findIndex].value = true
+    }
+    else {
+      this.Overlay2.push({index:index,index1:index1,value:true})
+    }
+    console.log(this.Overlay2);
+  }
+  backdrop2(index:any,index1:any) {
+     const item = this.Overlay2.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     console.log(item);
+
+     if(item){
+       const findIndex = this.Overlay2.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay2[findIndex].value = false
+     }
+     else {
+       this.Overlay2.push({index:index,index1:index1,value:false})
+     }
+   }
+  backdrop3(index:any,index1:any) {
+     const item = this.Overlay3.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     console.log(item);
+
+     if(item){
+       const findIndex = this.Overlay2.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay3[findIndex].value = false
+     }
+     else {
+       this.Overlay3.push({index:index,index1:index1,value:false})
+     }
+   }
+   backdrop4(index:any,index1:any) {
+    const item = this.Overlay4.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay4.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay4[findIndex].value = false
+    }
+    else {
+      this.Overlay4.push({index:index,index1:index1,value:false})
     }
   }
-  _ThietbiService:ThietbiService= inject(ThietbiService)
-  constructor() { }
+  backdrop5(index:any,index1:any) {
+    const item = this.Overlay5.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
 
-  async ngOnInit() {
-    const Thietbis = await this._ThietbiService.SearchThietbi({
-      pageSize:10,
-      pageNumber:0,
-      isDelete:false
+    if(item){
+      const findIndex = this.Overlay5.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay5[findIndex].value = false
+    }
+    else {
+      this.Overlay5.push({index:index,index1:index1,value:false})
+    }
+  }
+  backdrop6(index:any,index1:any) {
+    const item = this.Overlay6.find((v:any)=>{
+      return v.index == index && v.index1==index1
     })
-    console.log(Thietbis);
-    Thietbis.item.forEach((v:any)=>{
-      v.TenTSCD = v.Tieude
-      v.MasoTSCD = v.Code
-      v.NamSD = ''
-      v.TheoSoSL = ''
-      v.TheoSoConlai = ''
-      v.KiemkeSL = ''
-      v.KiemkeNguyengia = ''
-      v.KiemkeConlai = ''
-      v.ChenhlechNguyengia = ''
-      v.ChenhlechConlai = ''
-      v.Ghichu = ''
-      v.MaCode = ''
-      this.Baocao.push(v)
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay6.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay6[findIndex].value = false
+    }
+    else {
+      this.Overlay6.push({index:index,index1:index1,value:false})
+    }
+  }
+  backdrop7(index:any,index1:any) {
+    const item = this.Overlay7.find((v:any)=>{
+      return v.index == index && v.index1==index1
     })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay7.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay7[findIndex].value = false
+    }
+    else {
+      this.Overlay7.push({index:index,index1:index1,value:false})
+    }
+  }
+
+
+  toggle3(trigger: any,index:any,index1:any) {
+    this.triggerOrigin = trigger;
+     const item = this.Overlay3.find((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     if(item){
+       const findIndex = this.Overlay3.findIndex((v:any)=>{
+         return v.index == index && v.index1==index1
+       })
+       this.Overlay3[findIndex].value = true
+     }
+     else {
+       this.Overlay3.push({index:index,index1:index1,value:true})
+     }
+     console.log(this.Overlay3);
+   }
+
+toggle4(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay4.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay4.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay4[findIndex].value = true
+   }
+   else {
+     this.Overlay4.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay4);
+ }
+ toggle5(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay5.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay5.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay5[findIndex].value = true
+   }
+   else {
+     this.Overlay5.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay5);
+ }
+ toggle6(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay6.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay6.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay6[findIndex].value = true
+   }
+   else {
+     this.Overlay6.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay6);
+ }
+ toggle7(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay7.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay7.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay7[findIndex].value = true
+   }
+   else {
+     this.Overlay7.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay7);
+ }
+  GetOverlay(List:any,index:any,index1:any){
+    const item =  List.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    if(item){
+      return item.value
+    }
+    else {
+      return false
+    }
+  }
+  async Addrow()
+  {
     console.log(this.Baocao);
-    this.dataSource = new MatTableDataSource(this.DataMau);
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch(property) {
-        case 'Diachi': return item.Giohangs.Khachhang.Diachi;
-        case 'Hoten': return item.Giohangs.Khachhang.Hoten;
-        case 'SDT': return item.Giohangs.Khachhang.SDT;
-        case 'Hinhthuc': return item.Thanhtoan.Hinhthuc;
-        default: return item[property];
-      }
-    };
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    const item = {
+      TenTSCD: "",
+      Hangmuc: "",
+      Tinhtrang: "",
+      idBaocao:this.Baocao.id
+     }
+     console.log(item);
+
+      this._Mau3Service.CreateMau3(item).then(async ()=>
+      {
+        this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.Baocao.id)
+      })
+
+  }
+  constructor(
+    private dialog: MatDialog,
+    private _NotifierService: NotifierService
+  ) { }
+  async ngOnInit() {
+    this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
+    this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
+    this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.Baocao.id)
+    console.log(this.DataMau);
+
+    this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
+    const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
+    this.idTrangthai = Trangthai?.id
+    this.Trangthai = this.FilterTrangthai = Trangthai?.Data
+    console.log(this.DataMau);
+    console.log(this.Chitiet);
+    this.LoadDataSource()
+  }
+  LoadDataSource()
+  {
+    this.DataMau.forEach((v,k) => {
+      this.dataSource[k] = new MatTableDataSource(v.Chitiet);
+      this.dataSource[k].paginator = this.paginator;
+      this.dataSource[k].sort = this.sort;
+    });
   }
 
-  writeExcelFile() {
-    let Giagoc:any=[]
-    let item:any={}
-  let exData:any= []
-  let Header= [
-    { A: "TRƯỜNG CAO ĐẲNG NGHỀ", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",K:"",L:"",M:"",N:""},
-    { A: "THÀNH PHỐ HỒ CHÍ MINH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"Độc lập - Tự do - Hạnh phúc",K:"",L:"",M:"",N:""},
-    { A: "KHOA: ĐIỆN - ĐIỆN LẠNH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "Số: / M1/KĐ.ĐL", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:"Mẫu 1"},
-    { A: "", B: "TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "STT", B: "Tên TSCĐ", C: "Mã số TSCĐ",D:"Năm sử dụng",E:"Theo sổ kế toán",F:"",G:"Theo kiểm kê",H:"",I:"",J:"Chênh lệch",K:"",L:"",M:"Ghi chú",N:"Mã code"},
-    { A: "", B: "", C: "",D:"SL",E:"Giá trị còn lại",F:"SL",G:"Nguyên giá",H:"Giá trị còn lại",I:"SL",J:"Nguyên giá",K:"Giá trị còn lại",L:"",M:"",N:""},
-  ]
-  let Footer= [
-    { A: "", B: "Trưởng ban kiểm kê", C: "" ,D:"",E:"Trưởng phòng TC-KT	",F:"",G:"",H:"Trưởng phòng QTTB",I:"",J:"",K:"",L:"Trưởng khoa Điện - Điện Lạnh",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "Trần Kim Tuyền", C: "" ,D:"",E:"Lưu Thị Hương",F:"",G:"",H:"Phạm Mạnh Dũng",I:"",J:"",K:"",L:"Phạm Văn Trọng	",M:"",N:""}
-  ]
-  let Main:any = []
-  this.DataMau.forEach((v:any)=>
+
+  DeleteItem(item:any,index:any)
+  {
+    item.Chitiet = item.Chitiet.slice(0, index).concat(item.Chitiet.slice(index+1))
+    this._Mau3Service.UpdateMau3(item).then(()=>this.ngOnInit())
+  }
+  FilterOverlay1(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterTSCD = this.TSCD.filter((v:any)=>{
+          return v.Tieude.includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterTSCD = this.TSCD
+  }
+  FilterOverlay2(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterHangmuc = this.Hangmuc.filter((v:any)=>{
+          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterHangmuc = this.Hangmuc
+  }
+  FilterOverlay3(event:any)
+  {
+    const filterValue = (event.target as HTMLInputElement).value;
+    if(filterValue.length>1)
+      {
+        this.FilterTrangthai = this.Trangthai.filter((v:any)=>{
+          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+        })
+      }
+    else this.FilterTrangthai = this.Trangthai
+  }
+  ChooseOverlay1(item:any,index:any,index1:any)
+  {
+    this.DataMau[index].TenTSCD = item.Tieude
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+    this.LoadDataSource()
+  }
+  ChooseOverlay2(item:any,index:any,index1:any)
+  {
+    this.DataMau[index].Chitiet[index1].Hangmuc = item.Title
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+    this.LoadDataSource()
+  }
+  ChooseOverlay3(item:any,index:any,index1:any)
+  {
+    console.log();
+
+    this.DataMau[index].Chitiet[index1].Tinhtrang = item.Title
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+    this.LoadDataSource()
+  }
+  ChooseOverlay4(item:any,index:any,index1:any)
+  {
+    console.log(item);
+    this.DataMau[index].Chitiet[index1].Ngaythuchien = item
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+    this.LoadDataSource()
+  }
+  ChooseOverlay5(item:any,index:any,index1:any)
+  {
+    console.log(item);
+    this.DataMau[index].Chitiet[index1].Ghichu = item
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+    this.LoadDataSource()
+  }
+  AddChitiet(index:any) {
+    console.log(index);
+    this.DataMau[index].Chitiet.unshift({ Hangmuc: '', Tinhtrang: '', Ngaykiemtra: '', Ghichu: '' })
+   // this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
+    this.LoadDataSource()
+  }
+  AddHangmuc(item:any)
+  {
+    this._HangmucService.CreateHangmuc({Title:item}).then(()=>
     {
-     const item =
-     {
-      A: v.STT,
-      B: v.TenTSCD,
-      c: v.Hangmuc,
-      C: v.Tinhtrang ,
-      D: v.Ngaykiemtra,
-      E: v.Ghichu
-      }
-      Main.push(item)
     })
-
-    exData = [...Header,...Main,...Footer]
-    const workbook = XLSX.utils.book_new();
-    const worksheet = XLSX.utils.json_to_sheet(exData);
-  worksheet["!merges"] = [
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
-    { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
-    { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
-    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },
-  ]; // Merge first row
-
-  // 3. Add Styling (Bold, Centered, Font Size)
-  const headerStyle = {
-    font: { bold: true, sz: 14 },
-    alignment: { horizontal: "center" },
-  };
-  worksheet["A1"].s = headerStyle;
-  XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
-  // 4. Generate Excel File (xlsx)
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-
-
-    // const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
-    // const worksheet2: XLSX.WorkSheet = XLSX.utils.json_to_sheet(Giagoc);
-    // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
-    // XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
-    // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'Mau3_'+moment().format("DD_MM_YYYY"));
-
   }
-  saveAsExcelFile(buffer: any, fileName: string) {
-    const data: Blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const url: string = window.URL.createObjectURL(data);
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.xlsx`;
-    link.click();
-    window.URL.revokeObjectURL(url);
-    link.remove();
+  AddTrangthai(data:any)
+  {
+    console.log(data);
+    this.Trangthai.push({id:this.Trangthai.length+1,Title:data})
+    const item ={id:this.idTrangthai,Data:this.Trangthai}
+    this._CauhinhService.UpdateCauhinh(item).then(()=>{})
+  }
+  openPrintDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result:any) => {
+
+    });
+  }
+  XoaDialog(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.SelectItem);
+        this._Mau3Service.DeleteMau3(this.SelectItem).then(() =>{
+          this._NotifierService.notify("success","Xoá Thành Công")
+          this.ngOnInit()
+        })
+      }
+    });
   }
 }
