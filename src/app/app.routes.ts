@@ -3,6 +3,8 @@ import { GuestGuard } from './auth/guards/guest.guard';
 import { DangnhapComponent } from './dangnhap/dangnhap.component';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { DangkyComponent } from './dangky/dangky.component';
+import { Baninmau1Component } from './banin/baninmau1/baninmau1.component';
+import { BaninComponent } from './banin/banin.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'lichsu', pathMatch: 'full' },
@@ -20,6 +22,12 @@ export const routes: Routes = [
             { path: 'baocao', loadComponent: () => import('./baocao/baocao.component').then(comp => comp.BaocaoComponent) },
             { path: 'baocao/:slug', loadComponent: () => import('./baocao/baocao.component').then(comp => comp.BaocaoComponent) },
         ]
+    },
+    {
+        path: 'banin/:slug/:id',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        component: BaninComponent,
     },
     {
         path: 'dangnhap',
