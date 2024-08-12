@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { Mau1Service } from './mau1.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 @Component({
@@ -39,6 +40,7 @@ import { NotifierService } from 'angular-notifier';
     MatButtonModule,
     MatTooltipModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './mau1.component.html',

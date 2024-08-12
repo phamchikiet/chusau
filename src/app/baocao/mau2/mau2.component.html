@@ -5,11 +5,10 @@
       <span class="material-symbols-outlined text-xl">add_circle</span>
       <span class="text-xs">Thêm Mới</span>
     </div>
-    <div (click)="openPrintDialog(PrintTeamplate)"
-      class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
+    <a href="banin/2/{{Baocao.id}}" class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
       <span class="material-symbols-outlined text-xl">print</span>
       <span class="text-xs">In Báo Cáo</span>
-    </div>
+    </a>
   </div>
   <div class="p-2 flex flex-col space-y-2">
     @for (item of DataMau; track item.id;let idx = $index) {

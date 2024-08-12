@@ -12,6 +12,7 @@ export class Baninmau1Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window.print();
   }
 
 }

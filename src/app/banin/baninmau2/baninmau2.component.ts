@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-baninmau2',
   standalone:true,
+  imports: [CommonModule],
   templateUrl: './baninmau2.component.html',
   styleUrls: ['./baninmau2.component.css']
 })
@@ -12,6 +14,7 @@ export class Baninmau2Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window.print();
   }
 
 }

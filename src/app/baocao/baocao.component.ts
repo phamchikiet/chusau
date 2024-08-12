@@ -94,7 +94,7 @@ export class BaocaoComponent implements OnInit {
       .subscribe(async (breakpoints: any) => {
         // console.log(breakpoints.matches);
         if (breakpoints.matches) {
-          this.isOpen = false
+          this.isOpen = true
           this.SidenavMode = 'over'
         } else {
           this.isOpen = true
@@ -112,6 +112,7 @@ export class BaocaoComponent implements OnInit {
    if(Slug)
     {
       this.Baocao = List.find((v:any)=>v.Slug==Slug)
+      this.isOpen = false
     }
     this.treedataSource.data = this.MenuBaocao
     this.treeControl.expandAll();

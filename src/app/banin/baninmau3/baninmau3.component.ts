@@ -14,9 +14,9 @@ export class Baninmau3Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window.print();
     console.log(this.DataMau);
     console.log(this.Baocao);
-
   }
 
 }
