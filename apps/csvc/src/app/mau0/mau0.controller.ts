@@ -1,34 +1,39 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { Mau0Service } from './mau0.service';
-import { CreateMau0Dto } from './dto/create-mau0.dto';
-import { UpdateMau0Dto } from './dto/update-mau0.dto';
-
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {Mau0Service } from './mau0.service';
 @Controller('mau0')
 export class Mau0Controller {
-  constructor(private readonly mau0Service: Mau0Service) {}
+  constructor(private readonly mau0Service:Mau0Service) {}
 
   @Post()
-  create(@Body() createMau0Dto: CreateMau0Dto) {
-    return this.mau0Service.create(createMau0Dto);
+  create(@Body() data: any) {
+    return this.mau0Service.create(data);
   }
-
   @Get()
-  findAll() {
-    return this.mau0Service.findAll();
+  async findAll() {
+    return await this.mau0Service.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mau0Service.findOne(+id);
+  @Get('findid/:id')
+  async findOne(@Param('id') id: string) {
+    return await this.mau0Service.findid(id);
   }
-
+  @Get('findslug/:slug')
+  async findslug(@Param('slug') slug: string) {
+    return await this.mau0Service.findslug(slug);
+  }
+  @Get('findidbaocao/:id')
+  async findidbaocao(@Param('id') id: string) {
+    return await this.mau0Service.findidbaocao(id);
+  }
+  @Post('search')
+    async findQuery(@Body() SearchParams: any){
+      return await this.mau0Service.findQuery(SearchParams);
+  }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMau0Dto: UpdateMau0Dto) {
-    return this.mau0Service.update(+id, updateMau0Dto);
+  update(@Param('id') id: string, @Body() data: any) {
+    return this.mau0Service.update(id, data);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.mau0Service.remove(+id);
+    return this.mau0Service.remove(id);
   }
 }

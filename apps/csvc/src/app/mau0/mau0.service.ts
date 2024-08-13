@@ -1,26 +1,81 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMau0Dto } from './dto/create-mau0.dto';
-import { UpdateMau0Dto } from './dto/update-mau0.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { Like, Repository } from 'typeorm';
+import { Mau0Entity } from './entities/mau0.entity';
 @Injectable()
 export class Mau0Service {
-  create(createMau0Dto: CreateMau0Dto) {
-    return 'This action adds a new mau0';
+  constructor(
+    @InjectRepository(Mau0Entity)
+    private Mau0Repository: Repository<Mau0Entity>
+  ) { }
+  async create(data: any) {
+      this.Mau0Repository.create(data);
+      return await this.Mau0Repository.save(data);
   }
 
-  findAll() {
-    return `This action returns all mau0`;
+  async findAll() {
+    return await this.Mau0Repository.find();
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} mau0`;
+  async findid(id: string) {
+    return await this.Mau0Repository.findOne({ where: { id: id } });
   }
-
-  update(id: number, updateMau0Dto: UpdateMau0Dto) {
-    return `This action updates a #${id} mau0`;
+  async findSHD(data: any) {
+    return await this.Mau0Repository.findOne({
+      where: {
+        Title: data.Title,
+        Type: data.Type
+      },
+    });
   }
+  async findslug(Title: any) {
+    return await this.Mau0Repository.findOne({
+      where: { Title: Title },
+    });
+  }
+  async findidbaocao(idbaocao: any) {
+    return await this.Mau0Repository.find({
+      where: { idBaocao: idbaocao },
+    });
+  }
+  async findPagination(page: number, perPage: number) {
+    const skip = (page - 1) * perPage;
+    const totalItems = await this.Mau0Repository.count();
+    const mau0s = await this.Mau0Repository.find({ skip, take: perPage });
+    return {
+      currentPage: page,
+      perPage,
+      totalItems,
+      totalPages: Math.ceil(totalItems / perPage),
+      data: mau0s,
+    };
+  }
+  async findQuery(params: any) {
+    console.error(params);
+    const queryBuilder = this.Mau0Repository.createQueryBuilder('mau0');
+    if (params.hasOwnProperty('Batdau') && params.hasOwnProperty('Ketthuc')) {
+      queryBuilder.andWhere('mau0.CreateAt BETWEEN :startDate AND :endDate', {
+        startDate: params.Batdau,
+        endDate: params.Ketthuc,
+      });
+    }
+    if (params.hasOwnProperty('Title')) {
+      queryBuilder.andWhere('mau0.Title LIKE :Title', { SDT: `%${params.Title}%` });
+    }
+    const [items, totalCount] = await queryBuilder
+      .limit(params.pageSize || 10) // Set a default page size if not provided
+      .offset(params.pageNumber * params.pageSize || 0)
+      .getManyAndCount();
+    console.log(items, totalCount);
 
-  remove(id: number) {
-    return `This action removes a #${id} mau0`;
+    return { items, totalCount };
+  }
+  async update(id: string, UpdateMau0Dto: any) {
+    this.Mau0Repository.save(UpdateMau0Dto);
+    return await this.Mau0Repository.findOne({ where: { id: id } });
+  }
+  async remove(id: string) {
+    console.error(id)
+    await this.Mau0Repository.delete(id);
+    return { deleted: true };
   }
 }

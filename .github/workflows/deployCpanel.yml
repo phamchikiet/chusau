@@ -26,4 +26,4 @@ jobs:
           username: chikiet@chikiet.com
           password: '@Hikiet1988'
           local-dir: ./dist/apps/csvc/  # <-- Specify the local "build" folder
-          server-dir: /public_html/caodangnghe/api/dist/  # Destination on server
+          server-dir: public_html/addonwebsite/chikiet/api/dist  # Destination on server
