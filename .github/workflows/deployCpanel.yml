@@ -26,4 +26,4 @@ jobs:
           username: tazaspac
           password: '@Taza#Group*2020'
           local-dir: ./dist/site/browser/  # <-- Specify the local "build" folder
-          server-dir: public_html/addonwebsite/chikiet/site  # Destination on server
+          server-dir: public_html/addonwebsite/chikiet/site/  # Destination on server
