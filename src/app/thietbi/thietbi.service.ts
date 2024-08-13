@@ -27,8 +27,8 @@ export class ThietbiService {
         },
       };
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1VghpYpLVKug07LJm1-pdcpeQcEoh5VaCOgBvOfQ0-L8/values/thietbi?key=AIzaSyCWh10EgrjVBm8qKpnsGOgXrIsT5uqroMc`,options);
-    const data = await response.json();  
-          //this._thietbis.next(data)                 
+    const data = await response.json();
+          //this._thietbis.next(data)
     return data;
       } catch (error) {
           return console.error(error);
@@ -43,8 +43,8 @@ export class ThietbiService {
         },
       };
           const response = await fetch(`${environment.APIURL}/test_thietbi`,options);
-          const data = await response.json(); 
-          this._thietbis.next(data)                 
+          const data = await response.json();
+          this._thietbis.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -59,8 +59,8 @@ export class ThietbiService {
         },
       };
           const response = await fetch(`${environment.APIURL}/test_thietbi/findslug/${Slug}`,options);
-          const data = await response.json();    
-          this._thietbi.next(data)                      
+          const data = await response.json();
+          this._thietbi.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -78,14 +78,14 @@ export class ThietbiService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._thietbi.next(data)              
+          const data = await response.json();
+          this._thietbi.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async SearchThietbi(SearchParams:any) {    
+  async SearchThietbi(SearchParams:any) {
     try {
       const options = {
         method:'POST',
@@ -98,9 +98,9 @@ export class ThietbiService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._thietbis.next(data.item)              
-          this._totalCount.next(data.totalCount)              
+          const data = await response.json();
+          this._thietbis.next(data.item)
+          this._totalCount.next(data.totalCount)
           return data;
       } catch (error) {
           return console.error(error);
@@ -108,6 +108,7 @@ export class ThietbiService {
   }
   async CreateThietbi(item:any) {
     try {
+      const thietbis:any = await this.thietbis$.pipe(take(1)).toPromise();
         const options = {
             method:'POST',
             headers: {
@@ -115,18 +116,18 @@ export class ThietbiService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/thietbi`, options);          
+          const response = await fetch(`${environment.APIURL}/test_thietbi`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
-          console.log(data);
-          
-          return data                
+          const data = await response.json();
+          const newthietbis = [...thietbis,data]
+          this._thietbis.next(newthietbis)
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async SyncThietbi(item:any) {
     try {
         const options = {
@@ -136,18 +137,18 @@ export class ThietbiService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/test_thietbi/sync`, options);          
+          const response = await fetch(`${environment.APIURL}/test_thietbi/sync`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
+          const data = await response.json();
           console.log(data);
-          
-          return data                
+
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async UpdateThietbi(item:any) {
     const thietbis:any = await this.thietbis$.pipe(take(1)).toPromise();
     try {
@@ -163,17 +164,17 @@ export class ThietbiService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._thietbi.next(data) 
+          this._thietbi.next(data)
           const updateThietbis = thietbis.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._thietbis.next(updateThietbis);               
-          return data;  
+          this._thietbis.next(updateThietbis);
+          return data;
       } catch (error) {
           return console.error(error);
       }
-  }  
-  
+  }
+
   async DeleteThietbi(item:any) {
     try {
         const options = {
@@ -183,7 +184,7 @@ export class ThietbiService {
             },
           };
           const response = await fetch(`${environment.APIURL}/test_thietbi/${item.id}`, options);
-          return await response.json();         
+          return await response.json();
       } catch (error) {
           return console.error(error);
       }

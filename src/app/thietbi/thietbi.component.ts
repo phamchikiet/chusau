@@ -51,7 +51,7 @@ export class ThietbiComponent {
     {id:4,Tieude:'Năm'}
   ]
   SearchParams: any = {
-    pageSize:10,
+    pageSize:9999,
     pageNumber:0,
     isDelete:false
   };
@@ -79,13 +79,15 @@ export class ThietbiComponent {
 
   }
   async ngOnInit(): Promise<void> {
-    const result = await this._ThietbiService.SearchThietbi(this.SearchParams)
-    this.pageSizeOptions = [10, 20, result.totalCount].filter(v => v <= result.totalCount);
-    this.Total = result.totalCount
+   await this._ThietbiService.SearchThietbi(this.SearchParams)
+    // this.pageSizeOptions = [10, 20, result.totalCount].filter(v => v <= result.totalCount);
+    // this.Total = result.totalCount
      this._ThietbiService.thietbis$.subscribe((data)=>
      {
        if(data)
-       {  
+       {
+        console.log(data);
+
        this.Listdata = data
        this.dataSource = new MatTableDataSource(data);
        this.dataSource.paginator = this.paginator;
@@ -124,27 +126,19 @@ export class ThietbiComponent {
   }
   CreateThietbi(data:any)
   {
-    this._ThietbiService.CreateThietbi(data)
-    // .subscribe(()=>
-    // {
-    //   this._ThietbiService.thietbis$.subscribe((data:any)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //    })
-    // })
+    this._ThietbiService.CreateThietbi(data).then(()=>this.ngOnInit())
   }
   async UpdateThietbi(data:any)
   {
    const result = await this.getHSD(data);
    data.NgayHSD = result
    console.log(data.NgayHSD);
-   
+
     this._ThietbiService.UpdateThietbi(data)
     // .subscribe(()=>
     // {
     //   this._ThietbiService.thietbis$.subscribe((data)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
+    //     this.dataSource = new MatTableDataSource(data);
     //     this.dataSource.paginator = this.paginator;
     //     this.dataSource.sort = this.sort;
     //    })
@@ -161,16 +155,7 @@ export class ThietbiComponent {
   }
   DeleteThietbi(data:any)
   {
-    this._ThietbiService.DeleteThietbi(data)
-    // this._ThietbiService.deletePage(data).subscribe(()=>
-    // {
-    //   this._ThietbiService.thietbis$.subscribe((data)=>{
-    //     this.dataSource = new MatTableDataSource(data);  
-    //     this.dataSource.paginator = this.paginator;
-    //     this.dataSource.sort = this.sort;
-    //    })
-    // })
-
+    this._ThietbiService.DeleteThietbi(data).then(()=>this.ngOnInit())
   }
   Today(){return new Date();}
 
@@ -185,9 +170,9 @@ export class ThietbiComponent {
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
-  
+
   GetPercent(begin:any,end:any)
-  { 
+  {
     let Thoigian:number=100;
     let now = new Date();
     let startDate = new Date(begin);
@@ -232,7 +217,13 @@ export class ThietbiComponent {
     fileReader.readAsArrayBuffer(file);
   }
   writeExcelFile(data:any) {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+    const exportData = data.map((v:any)=>({
+      Tieude:v.Tieude,
+      Code:v.Code,
+      Mota:v.Mota,
+      HSD:v.HSD,
+    }))
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
     const workbook: XLSX.WorkBook = { Sheets: { 'Sheet1': worksheet }, SheetNames: ['Sheet1'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
@@ -264,6 +255,6 @@ export class ThietbiComponent {
     {
       this._ThietbiService.CreateThietbi(v)
     })
-   
+
   }
 }
