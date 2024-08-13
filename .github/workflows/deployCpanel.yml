@@ -22,8 +22,8 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
 
         with:
-          server: hf44-22061.azdigihost.com
-          username: chikiet@chikiet.com
-          password: '@Hikiet1988'
+          server: tazagroup.vn
+          username: tazaspac
+          password: '@Taza#Group*2020'
           local-dir: ./dist/site/browser/  # <-- Specify the local "build" folder
-          server-dir: /public_html/caodangnghe/site/  # Destination on server
+          server-dir: public_html/addonwebsite/chikiet/site  # Destination on server
