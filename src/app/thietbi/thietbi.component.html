@@ -141,19 +141,24 @@
       </ng-template>
     </div>
     <div mat-dialog-content>
-      <div class="grid lg:grid-cols-3 grid-cols-1 gap-3">
-        <div class="flex flex-col space-y-3 justify-center items-center">
-          <webcam [height]="384" [width]="384" (imageCapture)="handleImage($event)" [trigger]="triggerObservable">
-          </webcam>
-          <div class="snapshot" *ngIf="webcamImage">
-            <img [src]="webcamImage.imageAsDataUrl" class="w-96" />
-          </div>
+      <div class="flex flex-col space-y-4">
+        <div class="grid lg:grid-cols-3 grid-cols-1 gap-2 text-center">
+          <webcam [height]="384" [width]="384" (imageCapture)="handleImage($event)" [trigger]="triggerObservable"></webcam>
+          @if (webcamImage) {
+            <div class="snapshot">
+              <img [src]="webcamImage.imageAsDataUrl" class="h-48 m-auto" />
+            </div>
+          }
+          @else if (Detail.Hinhanh) {
+            <img [src]="Detail.Hinhanh" class="h-48 m-auto" />
+          }
+
           <div>
             <button mat-flat-button color="primary" (click)="triggerSnapshot()">Chụp Hình</button>
           </div>
         </div>
 
-        <div class="col-span-2 grid lg:grid-cols-2 grid-cols-1 gap-3">
+        <div class="col-span-2 flex flex-col m-auto">
           <mat-form-field appearance="outline" class="w-full col-span-2">
             <mat-label>Tiêu Đề</mat-label>
             <input class="w-full" matInput [(ngModel)]="Detail.Tieude" [ngModelOptions]="{standalone: true}"
@@ -164,28 +169,30 @@
             <input class="w-full" matInput [(ngModel)]="Detail.Mota" [ngModelOptions]="{standalone: true}"
               placeholder="Mô Tả">
           </mat-form-field>
-            <mat-form-field appearance="outline">
+          <div class="grid grid-cols-4 gap-3">
+            <mat-form-field appearance="outline" class="w-full lg:col-span-1 col-span-2">
               <mat-label>Giờ</mat-label>
               <input matInput [(ngModel)]="Detail.HSDGio" [ngModelOptions]="{standalone: true}" placeholder="Giờ">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full lg:col-span-1 col-span-2">
               <mat-label>Ngày</mat-label>
               <input matInput [(ngModel)]="Detail.HSDNgay" [ngModelOptions]="{standalone: true}" placeholder="Ngày">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full lg:col-span-1 col-span-2">
               <mat-label>Tháng</mat-label>
               <input matInput [(ngModel)]="Detail.HSDThang" [ngModelOptions]="{standalone: true}" placeholder="Tháng">
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-full lg:col-span-1 col-span-2">
               <mat-label>Năm</mat-label>
               <input matInput [(ngModel)]="Detail.HSDNam" [ngModelOptions]="{standalone: true}" placeholder="Năm">
             </mat-form-field>
+          </div>
         </div>
       </div>
 
     </div>
     <div mat-dialog-actions>
-      <div class="w-full flex flex-row space-x-2 justify-end">
+      <div class="w-full flex flex-row space-x-2 justify-center">
         <ng-container *ngIf="Detail.id; else elseTemplate1">
           <button mat-flat-button [color]="'primary'" mat-dialog-close="true"
             (click)="UpdateThietbi(Detail)">Cập Nhật</button>
