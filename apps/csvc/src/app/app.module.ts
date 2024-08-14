@@ -13,6 +13,7 @@ import { Mau2Module } from './mau2/mau2.module';
 import { Mau3Module } from './mau3/mau3.module';
 import { HangmucModule } from './hangmuc/hangmuc.module';
 import { CauhinhModule } from './cauhinh/cauhinh.module';
+import { Mau0Module } from "./mau0/mau0.module";
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CauhinhModule } from './cauhinh/cauhinh.module';
     UsersModule,
     ThietbiModule,
     BaocaoModule,
+    Mau0Module,
     Mau1Module,
     Mau2Module,
     Mau3Module,
