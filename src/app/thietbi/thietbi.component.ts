@@ -164,6 +164,23 @@ export class ThietbiComponent {
     this.webcamImage = webcamImage;
     this.Detail.Hinhanh = webcamImage.imageAsDataUrl
   }
+
+  onUpload() {
+
+    // const filePath = `images/${this.selectedFile.name}`;
+    // const fileRef = this.storage.ref(filePath);
+    // const task = this.storage.upload(filePath, this.selectedFile);  
+    // // Observe the upload progress
+    // this.uploadPercent = task.percentageChanges();
+
+    // // Get the download URL when the upload is complete
+    // task.snapshotChanges().pipe(
+    //   finalize(() => {
+    //     this.downloadURL = fileRef.getDownloadURL();
+    //   })
+    // ).subscribe();
+  }
+
   public triggerSnapshot(): void {
     this.trigger.next();
   }

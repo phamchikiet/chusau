@@ -6,14 +6,18 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './auth/auth.service';
 import { UsersInterceptor } from './auth/users.interceptor';
 import { NotifyModule } from './notify.module';
-
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { FirebaseModule } from './firebase.module';
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
     AuthModule,
-    NotifyModule
+    NotifyModule,
+    FirebaseModule
   ],
   providers: [
     NotifierService,

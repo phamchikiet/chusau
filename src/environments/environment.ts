@@ -4,12 +4,20 @@ export const environment = {
   APITINYMCE: "1cdi3qs7qw7nogvpu6poxqc6z7bf4a4hurwyao0kdbd741dl",
   DATABASE_URL: "mysql://root:@localhost:3306/crm",
   //APIURL:"https://v2apidaotao.tazagroup.vn",
-  //APIURL: "http://localhost:3300",
- APIURL:"https://apicsvc.chikiet.com",
+  APIURL: "http://localhost:3300",
+ //APIURL:"https://apicsvc.chikiet.com",
   REMOTE_URL: "mysql://tazaspac_it:ChiKiet1988:@localhost:3306/tazaspac_daotao",
   SECRETKEY: "mycustomuselongsecret",
   EXPIRESIN: "60 days",
   secret_key: "HLBWj23hToA9fuiQvQY4",
   APITelegram_accesstoken:"6571734116:AAFonel_6l-wwoqFkop80H9ewxhp0360Ekw",
   APITelegram_Logdev:"-4194552388",
+  firebaseConfig : {
+    apiKey: "AIzaSyBnVhkLTNUYWaE6ZnXVwJnxYselJ5Zunfw",
+    authDomain: "chusau.firebaseapp.com",
+    projectId: "chusau",
+    storageBucket: "chusau.appspot.com",
+    messagingSenderId: "908605862689",
+    appId: "1:908605862689:web:4ac2458c49449ef25a4460"
+  }
 };
