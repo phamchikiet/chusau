@@ -1,11 +1,9 @@
-@switch (idMau) {
-  @case (1) {
-    <app-baninmau1 [DataMau]="DataMau" [Baocao]="Baocao"></app-baninmau1>
-  }
-  @case (2) {
-    <app-baninmau2 [DataMau]="DataMau" [Baocao]="Baocao"></app-baninmau2>
-  }
-  @default {
-    <app-baninmau3 [DataMau]="DataMau" [Baocao]="Baocao"></app-baninmau3>
-  }
+@if (idMau==1) {
+  <app-baninmau1 [idBaocao]="idBaocao"></app-baninmau1>
+}
+@else if (idMau==2) {
+  <app-baninmau2 [idBaocao]="idBaocao"></app-baninmau2>
+}
+@else if (idMau==3) {
+  <app-baninmau3 [idBaocao]="idBaocao"></app-baninmau3>
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { Mau3Service } from '../../baocao/mau3/mau3.service';
 
 @Component({
   selector: 'app-baninmau3',
@@ -9,14 +10,16 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./baninmau3.component.css']
 })
 export class Baninmau3Component implements OnInit {
-  @Input() DataMau:any[]=[];
-  @Input() Baocao:any={};
+  @Input() idBaocao:any;
+  DataMau:any[]=[]
   constructor() { }
-
-  ngOnInit() {
-    window.print();
+  _Mau3Service:Mau3Service = inject(Mau3Service)
+  async ngOnInit() {
+     this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.idBaocao)
     console.log(this.DataMau);
-    console.log(this.Baocao);
+    setTimeout(() => {
+      window.print();
+    }, 1000);
   }
 
 }
