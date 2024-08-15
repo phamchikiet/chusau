@@ -33,23 +33,36 @@
           <span class="material-symbols-outlined text-xl" matTooltip="Drive">add_circle</span>
           <span class="text-xs">Thêm Mới</span>
         </div>
-          <div class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+          <div  (click)="createZip()" class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
           <span class="material-symbols-outlined text-xl" matTooltip="Drive">qr_code_2</span>
           <span class="text-xs">Tải QR Code</span>
         </div>
+        <!-- <div class="h-10" #parentContainer>
+          <div *ngFor="let item of Listdata;let i = index" #dynamicElement [id]="'abc'+i">
+            <qrcode [class]="'abc'+i" [qrdata]="item.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
+            [colorLight]="'#ffffffff'" [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
+            [width]="100">
+          </qrcode>
+          </div>
+
+        </div> -->
         </div>
       </div>
     </div>
     <div class="relative h-full w-full overflow-auto flex flex-col lg:p-4">
-      <div class="w-full border overflow-auto">
+      <div #parentContainer class="w-full border overflow-auto">
         <table mat-table [dataSource]="dataSource" matSort class="w-full border">
           <ng-container matColumnDef="qrcode">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> QR Code </th>
-            <td class="whitespace-nowrap" mat-cell *matCellDef="let row" (click)="openZoomDialog(dialogZoomQR,row)">
-              <qrcode [qrdata]="row.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
+            <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let i=index" (click)="openZoomDialog(dialogZoomQR,row)">
+              <div #dynamicElement [id]="'abc'+i" class="flex flex-col justify-center items-center h-[200px]">
+                <qrcode [qrdata]="row.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
                 [colorLight]="'#ffffffff'" [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
-                [width]="100">
+                [width]="150">
               </qrcode>
+              <span class="font-bold -mt-4">{{row.Code}}</span>
+              </div>
+
             </td>
           </ng-container>
           <ng-container matColumnDef="hinhanh">
@@ -127,7 +140,7 @@
             <td class="mat-cell" colspan="4">Không Tìm Thấy "{{input.value}}"</td>
           </tr>
         </table>
-        <mat-paginator pageSize="10" hidePageSize="true"></mat-paginator>
+        <mat-paginator pageSize="10" [pageSizeOptions]="[10,100,Listdata.length]"></mat-paginator>
         <!-- <mat-paginator (page)="onPageChange($event)"
         [length]="Total"
         [pageSizeOptions]="pageSizeOptions" pageSize="10" hidePageSize="true"></mat-paginator> -->

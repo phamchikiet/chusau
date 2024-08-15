@@ -1,4 +1,4 @@
-import { Component, ElementRef, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, QueryList, TemplateRef, ViewChild, ViewChildren, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -8,7 +8,7 @@ import { Subject, Observable } from 'rxjs';
 import * as XLSX from 'xlsx';
 import { LichsuService } from '../lichsu/lichsu.service';
 import { ThietbiService } from './thietbi.service';
-import {MatDialog, MatDialogActions, MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,6 +17,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import html2canvas from 'html2canvas';
+import jsZip from 'jszip';
+import FileSaver from 'file-saver';
+import JSZip from 'jszip';
 @Component({
   selector: 'app-thietbi',
   standalone: true,
@@ -65,6 +68,8 @@ export class ThietbiComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('captureDiv') captureDiv!: ElementRef;
+  @ViewChild('qrCodes') qrCodes!: ElementRef;
+  @ViewChild('myContainer') myContainer!: ElementRef;
   public webcamImage: WebcamImage | undefined;
   private trigger: Subject<void> = new Subject<void>();
   SanphamsDrive:any[]=[]
@@ -80,7 +85,10 @@ export class ThietbiComponent {
     // this._ThietbiService.getAll().subscribe()
 
   }
+  @ViewChild('parentContainer',{static:true}) parentContainerRef!: ElementRef;
+  @ViewChildren('dynamicElement') dynamicElements!: QueryList<ElementRef>;
   async ngOnInit(): Promise<void> {
+
    await this._ThietbiService.SearchThietbi(this.SearchParams)
     // this.pageSizeOptions = [10, 20, result.totalCount].filter(v => v <= result.totalCount);
     // this.Total = result.totalCount
@@ -88,19 +96,44 @@ export class ThietbiComponent {
      {
        if(data)
        {
-        console.log(data);
-
-       this.Listdata = data
+      this.Listdata = data
        this.dataSource = new MatTableDataSource(data);
        this.dataSource.paginator = this.paginator;
        this.dataSource.sort = this.sort;
        }
      })
   }
+  createZip() {
+    const zip = new JSZip();
+    const promises:any = [];
+
+    this.Listdata.forEach((value, index) => {
+      const element = this.parentContainerRef.nativeElement.querySelector('#abc' + index);
+      if (!element) {
+        console.warn(`Element with id #abc${index} not found. Skipping.`);
+        return;
+      }
+
+      const promise = html2canvas(element).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        if (imgData) {
+          const parts = imgData.split(',');
+          const base64Data = parts[1];
+          zip.file(`qr_code_${index + 1}.png`, base64Data, { base64: true });
+        }
+        return Promise.resolve(); // Resolve the promise
+      });
+      promises.push(promise);
+    });
+
+    Promise.all(promises).then(() => {
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        FileSaver.saveAs(content, 'qr_codes.zip');
+      });
+    });
+  }
   saveAsImage(item:any) {
     html2canvas(this.captureDiv.nativeElement).then(canvas => {
-      console.log(canvas);
-
       const imgData = canvas.toDataURL('image/png');
 
       // Option 1: Download directly

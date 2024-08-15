@@ -21,7 +21,9 @@
               "qrcode",
               "moment",
               "undici",
-              "faye-websocket"
+              "file-saver",
+              "faye-websocket",
+              "jszip"
             ],
             "outputPath": "dist/site",
             "index": "src/index.html",
