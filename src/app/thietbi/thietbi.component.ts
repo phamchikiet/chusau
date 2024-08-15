@@ -16,6 +16,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-thietbi',
   standalone: true,
@@ -63,6 +64,7 @@ export class ThietbiComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('canvas') canvas!: ElementRef;
+  @ViewChild('captureDiv') captureDiv!: ElementRef;
   public webcamImage: WebcamImage | undefined;
   private trigger: Subject<void> = new Subject<void>();
   SanphamsDrive:any[]=[]
@@ -95,7 +97,43 @@ export class ThietbiComponent {
        }
      })
   }
+  saveAsImage(item:any) {
+    html2canvas(this.captureDiv.nativeElement).then(canvas => {
+      console.log(canvas);
 
+      const imgData = canvas.toDataURL('image/png');
+
+      // Option 1: Download directly
+      const link = document.createElement('a');
+      link.download = `${item.Code}.png`;
+      link.href = imgData;
+      link.click();
+
+      // Option 2: Display the image on the page (uncomment to use)
+      // const image = new Image();
+      // image.src = imgData;
+      // document.body.appendChild(image);
+    });
+    // fetches base 64 date from image
+    // const parentElement = parent.el.nativeElement.querySelector("img").src;
+
+    // // converts base 64 encoded image to blobData
+    // let blobData = this.convertBase64ToBlob(parentElement);
+
+    // // saves as image
+    // if (window.navigator && window.navigator.msSaveOrOpenBlob) { //IE
+    //   window.navigator.msSaveOrOpenBlob(blobData, 'Qrcode');
+    // } else { // chrome
+    //   const blob = new Blob([blobData], { type: "image/png" });
+    //   const url = window.URL.createObjectURL(blob);
+    //   // window.open(url);
+    //   const link = document.createElement('a');
+    //   link.href = url;
+    //   link.download = 'Qrcode';
+    //   link.click();
+    // }
+
+  }
   onPageChange(event: any) {
       console.log(event);
       this.SearchParams.pageSize = event.pageSize
@@ -130,10 +168,7 @@ export class ThietbiComponent {
   }
   async UpdateThietbi(data:any)
   {
-   const result = await this.getHSD(data);
-   data.NgayHSD = result
    console.log(data.NgayHSD);
-
     this._ThietbiService.UpdateThietbi(data)
     // .subscribe(()=>
     // {
@@ -143,15 +178,6 @@ export class ThietbiComponent {
     //     this.dataSource.sort = this.sort;
     //    })
     // })
-  }
-  async getHSD(data:any) {
-    var cDate = new Date(data.Ngaytao);
-    cDate.setFullYear(cDate.getFullYear() + data.HSDNam);
-    cDate.setMonth(cDate.getMonth() + data.HSDThang);
-    cDate.setDate(cDate.getDate() + data.HSDNgay);
-    cDate.setHours(cDate.getHours() + data.HSDGio);
-    const result = new Date(cDate);
-    return result
   }
   DeleteThietbi(data:any)
   {

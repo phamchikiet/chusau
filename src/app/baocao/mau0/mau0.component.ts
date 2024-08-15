@@ -12,6 +12,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Mau0Service } from './mau0.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-mau0',
   standalone:true,
@@ -44,6 +46,7 @@ export class Mau0Component implements OnInit {
   TSCD:any= [];
   FilterTSCD:any= [];
   Detail:any={}
+  DataMau:any={}
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -55,11 +58,17 @@ export class Mau0Component implements OnInit {
     }
   }
   _ThietbiService:ThietbiService= inject(ThietbiService)
+  _Mau0Service:Mau0Service= inject(Mau0Service)
+  route: ActivatedRoute = inject(ActivatedRoute);
   constructor(private dialog: MatDialog) { }
   async ngOnInit() {
+    const Slug = this.route.snapshot.params['slug'];
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
+    this.DataMau = await this._Mau0Service.getMau0BySlug(Slug)
+    console.log(this.DataMau);
+
     const Thietbis = await this._ThietbiService.SearchThietbi({
-      pageSize:10,
+      pageSize:9999,
       pageNumber:0,
       isDelete:false
     })

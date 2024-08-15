@@ -79,6 +79,8 @@ export class Mau3Service {
       };
           const response = await fetch(`${environment.APIURL}/mau3/findidbaocao/${id}`,options);
           const data = await response.json();
+          console.log(data);
+
           this._mau3.next(data)
           return data;
       } catch (error) {
@@ -183,10 +185,12 @@ export class Mau3Service {
           }
           const data = await response.json();
           this._mau3.next(data)
-          const updateMau3s = mau3s.map((v:any) =>
-            v.id === data.id ? data : v
-          );
-          this._mau3s.next(updateMau3s);
+          console.log(data);
+
+          // const updateMau3s = mau3s.map((v:any) =>
+          //   v.id === data.id ? data : v
+          // );
+          // this._mau3s.next(updateMau3s);
           return data;
       } catch (error) {
           return console.error(error);

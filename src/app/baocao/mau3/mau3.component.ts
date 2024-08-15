@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, HostListener, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -20,6 +20,7 @@ import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import { Mau3Service } from './mau3.service';
+import { Subject, Observable, withLatestFrom, map, filter, takeUntil, timer } from 'rxjs';
 @Component({
   selector: 'app-mau3',
   standalone:true,
@@ -80,6 +81,7 @@ export class Mau3Component implements OnInit {
   Overlay5:any = []
   Overlay6:any = []
   Overlay7:any = []
+  Overlay8:any = []
   idTrangthai:any =''
   triggerOrigin: any;
   toggle1(trigger: any,index:any) {
@@ -125,7 +127,7 @@ export class Mau3Component implements OnInit {
      console.log(item);
 
      if(item){
-       const findIndex = this.Overlay2.findIndex((v:any)=>{
+       const findIndex = this.Overlay3.findIndex((v:any)=>{
          return v.index == index && v.index1==index1
        })
        this.Overlay3[findIndex].value = false
@@ -196,6 +198,22 @@ export class Mau3Component implements OnInit {
     }
     else {
       this.Overlay7.push({index:index,index1:index1,value:false})
+    }
+  }
+  backdrop8(index:any,index1:any) {
+    const item = this.Overlay8.find((v:any)=>{
+      return v.index == index && v.index1==index1
+    })
+    console.log(item);
+
+    if(item){
+      const findIndex = this.Overlay8.findIndex((v:any)=>{
+        return v.index == index && v.index1==index1
+      })
+      this.Overlay8[findIndex].value = false
+    }
+    else {
+      this.Overlay8.push({index:index,index1:index1,value:false})
     }
   }
 
@@ -281,6 +299,22 @@ toggle4(trigger: any,index:any,index1:any) {
    }
    console.log(this.Overlay7);
  }
+ toggle8(trigger: any,index:any,index1:any) {
+  this.triggerOrigin = trigger;
+   const item = this.Overlay8.find((v:any)=>{
+     return v.index == index && v.index1==index1
+   })
+   if(item){
+     const findIndex = this.Overlay8.findIndex((v:any)=>{
+       return v.index == index && v.index1==index1
+     })
+     this.Overlay8[findIndex].value = true
+   }
+   else {
+     this.Overlay8.push({index:index,index1:index1,value:true})
+   }
+   console.log(this.Overlay8);
+ }
   GetOverlay(List:any,index:any,index1:any){
     const item =  List.find((v:any)=>{
       return v.index == index && v.index1==index1
@@ -318,14 +352,10 @@ toggle4(trigger: any,index:any,index1:any) {
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
     this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
     this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.Baocao.id)
-    console.log(this.DataMau);
-
     this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
     const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
     this.idTrangthai = Trangthai?.id
     this.Trangthai = this.FilterTrangthai = Trangthai?.Data
-    console.log(this.DataMau);
-    console.log(this.Chitiet);
     this.LoadDataSource()
   }
   LoadDataSource()
@@ -390,15 +420,12 @@ toggle4(trigger: any,index:any,index1:any) {
   }
   ChooseOverlay3(item:any,index:any,index1:any)
   {
-    console.log();
-
     this.DataMau[index].Chitiet[index1].Tinhtrang = item.Title
     this._Mau3Service.UpdateMau3(this.DataMau[index])
     this.LoadDataSource()
   }
   ChooseOverlay4(item:any,index:any,index1:any)
   {
-    console.log(item);
     this.DataMau[index].Chitiet[index1].Ngaythuchien = item
     this._Mau3Service.UpdateMau3(this.DataMau[index])
     this.LoadDataSource()
@@ -421,6 +448,14 @@ toggle4(trigger: any,index:any,index1:any) {
     this._HangmucService.CreateHangmuc({Title:item}).then(()=>
     {
     })
+  }
+  UpdateChiphi(idx:any,i:any)
+  {
+    this.DataMau[idx].Chitiet[i].Thanhtien = (this.DataMau[idx].Chitiet[i].Chiphivattu + this.DataMau[idx].Chitiet[i].Chiphinhancong)*this.DataMau[idx].Chitiet[i].Soluong||1
+    this._Mau3Service.UpdateMau3(this.DataMau[idx]).then(() =>
+      {
+       // this._NotifierService.notify("success","Cập Nhật Thành Công")
+      })
   }
   AddTrangthai(data:any)
   {

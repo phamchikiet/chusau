@@ -12,7 +12,7 @@
             <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_download</span>
             <span class="text-xs">Download</span>
           </div>
-          <div (click)="uploadfile.click()"
+          <!-- <div (click)="uploadfile.click()"
             class="flex flex-col items-center p-2 hover:bg-gray-200 rounded-lg">
             <span class="material-symbols-outlined text-xl" matTooltip="Upload File">file_upload</span>
             <span class="text-xs">Tải Lên</span>
@@ -27,11 +27,15 @@
           class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
           <span class="material-symbols-outlined text-xl" matTooltip="Drive">cloud_sync</span>
           <span class="text-xs">Sync ({{Listdata.length||0}}/{{SanphamsDrive.length||0}})</span>
-        </div>
-          <div (click)="openDialog(dialogXoaBaiviet);Detail={}"
+        </div> -->
+        <div (click)="openDialog(dialogXoaBaiviet);Detail={}"
           class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
           <span class="material-symbols-outlined text-xl" matTooltip="Drive">add_circle</span>
           <span class="text-xs">Thêm Mới</span>
+        </div>
+          <div class="flex flex-col items-center p-2 text-center justify-center hover:bg-gray-200 rounded-lg">
+          <span class="material-symbols-outlined text-xl" matTooltip="Drive">qr_code_2</span>
+          <span class="text-xs">Tải QR Code</span>
         </div>
         </div>
       </div>
@@ -44,7 +48,8 @@
             <td class="whitespace-nowrap" mat-cell *matCellDef="let row" (click)="openZoomDialog(dialogZoomQR,row)">
               <qrcode [qrdata]="row.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
                 [colorLight]="'#ffffffff'" [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
-                [width]="100"></qrcode>
+                [width]="100">
+              </qrcode>
             </td>
           </ng-container>
           <ng-container matColumnDef="hinhanh">
@@ -165,6 +170,11 @@
               placeholder="Tiêu Đề">
           </mat-form-field>
           <mat-form-field appearance="outline" class="w-full col-span-2">
+            <mat-label>Code</mat-label>
+            <input class="w-full" matInput [(ngModel)]="Detail.Code" [ngModelOptions]="{standalone: true}"
+              placeholder="Code">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full col-span-2">
             <mat-label>Mô Tả</mat-label>
             <input class="w-full" matInput [(ngModel)]="Detail.Mota" [ngModelOptions]="{standalone: true}"
               placeholder="Mô Tả">
@@ -212,15 +222,15 @@
     <div mat-dialog-title class="text-center">
     </div>
     <div mat-dialog-content class="text-center w-[400px]">
-      <div #createImage class="flex flex-col max-full items-center justify-center">
+      <div #captureDiv class="h-[420px] flex flex-col max-full items-center justify-center">
         <qrcode [qrdata]="SelectItem.id" [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#000000ff'"
         [colorLight]="'#ffffffff'" [title]="SelectItem.Tieude" [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [margin]="4" [scale]="1"
         [width]="400"></qrcode>
-        <span class="font-bold text-black">{{SelectItem.Code}}</span>
+        <span class="font-bold text-black -mt-8">{{SelectItem.Code}}</span>
       </div>
     </div>
     <div mat-dialog-actions class="!justify-center">
-      <button mat-flat-button color="primary">Tải QR</button>
+      <button mat-flat-button color="primary" (click)="saveAsImage(SelectItem)">Tải QR</button>
       <button mat-flat-button color="warn" mat-dialog-close="false">Đóng</button>
     </div>
   </ng-template>

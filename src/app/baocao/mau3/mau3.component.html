@@ -199,10 +199,10 @@
           <ng-container matColumnDef="Chiphivattu">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>Chi Phí Vật Tư </th>
             <td mat-cell *matCellDef="let row; let i = index">
-              <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+              <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                 (click)="toggle6(trigger,idx,i)">
-                <span class="group-hover:hidden block">{{row.Chiphivattu||0}}</span>
-                <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                <span>{{row.Chiphivattu| number:'1.0-0'||0}}đ</span>
+                <span class="material-symbols-outlined">edit</span>
               </div>
               <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                   cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop6(idx,i)"
@@ -210,7 +210,7 @@
                   <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                     <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
                       <input type="number" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Chiphivattu" [ngModelOptions]="{standalone: true}"
-                        placeholder="0" />
+                        placeholder="0" (ngModelChange)="UpdateChiphi(idx,i)"/>
                     </mat-form-field>
                   </div>
                 </ng-template>
@@ -220,10 +220,10 @@
           <ng-container matColumnDef="Chiphinhancong">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chi Phí Nhân Công </th>
             <td mat-cell *matCellDef="let row; let i = index">
-              <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+              <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                 (click)="toggle7(trigger,idx,i)">
-                <span class="group-hover:hidden block">{{row.Chiphinhancong||0}}</span>
-                <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                <span>{{row.Chiphinhancong| number:'1.0-0'||0}}đ</span>
+                <span class="material-symbols-outlined">edit</span>
               </div>
               <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                 cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop7(idx,i)"
@@ -231,7 +231,7 @@
                 <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                   <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
                     <input type="number" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Chiphinhancong"
-                      [ngModelOptions]="{standalone: true}" placeholder="0" />
+                      [ngModelOptions]="{standalone: true}" placeholder="0" (ngModelChange)="UpdateChiphi(idx,i)"/>
                   </mat-form-field>
                 </div>
               </ng-template>
@@ -242,18 +242,18 @@
           <ng-container matColumnDef="Soluong">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>Số Lượng </th>
             <td mat-cell *matCellDef="let row; let i = index">
-              <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-                (click)="toggle6(trigger,idx,i)">
-                <span class="group-hover:hidden block">{{row.Soluong||0}}</span>
-                <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+              <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                (click)="toggle8(trigger,idx,i)">
+                <span>{{row.Soluong| number:'1.0-0'||0}}</span>
+                <span class="material-symbols-outlined">edit</span>
               </div>
               <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
-                  cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop6(idx,i)"
-                  [cdkConnectedOverlayOpen]="GetOverlay(Overlay6,idx,i)">
+                  cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop8(idx,i)"
+                  [cdkConnectedOverlayOpen]="GetOverlay(Overlay8,idx,i)">
                   <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                     <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
                       <input type="number" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Soluong" [ngModelOptions]="{standalone: true}"
-                        placeholder="0" />
+                        placeholder="0" (ngModelChange)="UpdateChiphi(idx,i)"/>
                     </mat-form-field>
                   </div>
                 </ng-template>
@@ -263,17 +263,17 @@
           <ng-container matColumnDef="Thanhtien">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>Thành Tiền </th>
             <td mat-cell *matCellDef="let row; let i = index">
-                <span class="">{{row.Thanhtien||0}}</span>
+                <span class="font-bold">{{row.Thanhtien| number:'1.0-0'||0}}đ</span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="Ghichu">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú </th>
             <td mat-cell *matCellDef="let row; let i = index">
-              <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+              <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                 (click)="toggle5(trigger,idx,i)">
-                <span class="group-hover:hidden block">{{row.Ghichu||"Chưa chọn"}}</span>
-                <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                <span>{{row.Ghichu||"Chưa chọn"}}</span>
+                <span class="material-symbols-outlined">edit</span>
               </div>
               <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                 cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop5(idx,i)"

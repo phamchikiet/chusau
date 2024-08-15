@@ -55,10 +55,10 @@
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Hangmuc}}</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Tinhtrang}}</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphivattu}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphinhancong}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Soluong}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Thanhtien}}</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Chiphivattu|number:'1.0-0')||0}}đ</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Chiphinhancong| number:'1.0-0')||0}}đ</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Soluong|number:'1.0-0')||0}}</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Thanhtien|number:'1.0-0')||0}}đ</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
         </tr>
         }
