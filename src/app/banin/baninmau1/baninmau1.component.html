@@ -1,4 +1,3 @@
-
 <div class="w-[1280px] m-auto h-screen p-5 printarea">
   <div mat-dialog-content class="flex flex-col space-y-2">
     <div class="flex flex-row justify-between items-center">
@@ -28,21 +27,13 @@
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Hạng Mục</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tình Trạng</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày thực hiện</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Vật Tư</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Nhân Công</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Thành Tiền</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày kiểm tra</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
       </tr>
       @for (item of DataMau; track $index) {
       <tr>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
         <td class="text-xs p-2 border border-gray-400">{{item.TenTSCD}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
@@ -54,27 +45,11 @@
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Hangmuc}}</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Tinhtrang}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphivattu}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Soluong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Thanhtien}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaykiemtra|date:'dd/MM/yyyy'}}</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
       </tr>
       }
       }
-      <!-- <tr>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">1</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">3</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">4</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">5</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">6</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">7</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">8</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">9</td>
-      </tr> -->
     </table>
     <div class="flex flex-row justify-between items-center px-8">
       <div>
@@ -95,4 +70,3 @@
     </div>
   </div>
 </div>
-

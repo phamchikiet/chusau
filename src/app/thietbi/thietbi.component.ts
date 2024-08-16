@@ -106,7 +106,6 @@ export class ThietbiComponent {
   createZip() {
     const zip = new JSZip();
     const promises:any = [];
-
     this.Listdata.forEach((value, index) => {
       const element = this.parentContainerRef.nativeElement.querySelector('#abc' + index);
       if (!element) {

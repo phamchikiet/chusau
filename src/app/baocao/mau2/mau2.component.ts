@@ -125,7 +125,7 @@ export class Mau2Component implements OnInit {
      console.log(item);
 
      if(item){
-       const findIndex = this.Overlay2.findIndex((v:any)=>{
+       const findIndex = this.Overlay3.findIndex((v:any)=>{
          return v.index == index && v.index1==index1
        })
        this.Overlay3[findIndex].value = false

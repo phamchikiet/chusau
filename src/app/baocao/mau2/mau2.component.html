@@ -44,7 +44,7 @@
             </div>
           </ng-template>
         </div>
-        <div class="col-span-4 p-2">
+        <div class="col-span-4 p-2 overflow-auto">
           <table class="w-full" mat-table [dataSource]="dataSource[idx]" matSort>
             <ng-container matColumnDef="STT">
               <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> STT </th>
@@ -183,8 +183,8 @@
                   [cdkConnectedOverlayOpen]="GetOverlay(Overlay4,idx,i)">
                   <div class="border-t flex flex-col divide-y overflow-auto border rounded-lg">
                     <mat-card class="min-w-80">
-                      <mat-calendar [(selected)]="DataMau[idx].Chitiet[i].Ngaykiemtra"
-                        (selectedChange)="ChooseOverlay4($event,idx,i)"></mat-calendar>
+                      <mat-calendar [(selected)]="DataMau[idx].Chitiet[i].Ngaythuchien"
+                        (selectedChange)="ChooseOverlay4($event,idx,i);backdrop4(idx,i)"></mat-calendar>
                     </mat-card>
                   </div>
                 </ng-template>
@@ -193,10 +193,10 @@
             <ng-container matColumnDef="Noidungthuchien">
               <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Nội dung thực hiện </th>
               <td mat-cell *matCellDef="let row; let i = index">
-                <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                   (click)="toggle6(trigger,idx,i)">
-                  <span class="group-hover:hidden block">{{row.Noidungthuchien||"Chưa chọn"}}</span>
-                  <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                  <span>{{row.Noidungthuchien||"Chưa chọn"}}</span>
+                  <span class="material-symbols-outlined">edit</span>
                 </div>
                 <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                   cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop6(idx,i)"
@@ -214,10 +214,10 @@
             <ng-container matColumnDef="Saukhithuchien">
               <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Sau khi thực hiện </th>
               <td mat-cell *matCellDef="let row; let i = index">
-                <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                   (click)="toggle7(trigger,idx,i)">
-                  <span class="group-hover:hidden block">{{row.Saukhithuchien||"Chưa chọn"}}</span>
-                  <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                  <span>{{row.Saukhithuchien||"Chưa chọn"}}</span>
+                  <span class="material-symbols-outlined">edit</span>
                 </div>
                 <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                   cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop7(idx,i)"
@@ -236,10 +236,10 @@
             <ng-container matColumnDef="Ghichu">
               <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Ghi chú </th>
               <td mat-cell *matCellDef="let row; let i = index">
-                <div class="group flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                <div class="flex flex-row space-x-2 items-center" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
                   (click)="toggle5(trigger,idx,i)">
-                  <span class="group-hover:hidden block">{{row.Ghichu||"Chưa chọn"}}</span>
-                  <span class="group-hover:block hidden material-symbols-outlined">edit</span>
+                  <span>{{row.Ghichu||"Chưa chọn"}}</span>
+                  <span class="material-symbols-outlined">edit</span>
                 </div>
                 <ng-template [cdkConnectedOverlayHasBackdrop]="true" cdkConnectedOverlayBackdropClass="!opacity-50"
                   cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOrigin" (backdropClick)="backdrop5(idx,i)"

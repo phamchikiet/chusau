@@ -183,10 +183,10 @@ export class Mau2Service {
           }
           const data = await response.json();
           this._mau2.next(data)
-          const updateMau2s = mau2s.map((v:any) =>
-            v.id === data.id ? data : v
-          );
-          this._mau2s.next(updateMau2s);
+          // const updateMau2s = mau2s.map((v:any) =>
+          //   v.id === data.id ? data : v
+          // );
+          // this._mau2s.next(updateMau2s);
           return data;
       } catch (error) {
           return console.error(error);
