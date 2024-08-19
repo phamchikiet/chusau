@@ -63,6 +63,8 @@ export class Mau0Service {
       };
           const response = await fetch(`${environment.APIURL}/mau0/findslug/${Slug}`,options);
           const data = await response.json();
+          console.log(data);
+
           this._mau0.next(data)
           return data;
       } catch (error) {
@@ -79,6 +81,8 @@ export class Mau0Service {
       };
           const response = await fetch(`${environment.APIURL}/mau0/findidbaocao/${id}`,options);
           const data = await response.json();
+          console.log(data);
+
           this._mau0.next(data)
           return data;
       } catch (error) {

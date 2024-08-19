@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -16,7 +16,7 @@ import { Mau0Service } from './mau0.service';
 import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-mau0',
-  standalone:true,
+  standalone: true,
   imports: [
     MatTableModule,
     MatPaginatorModule,
@@ -34,19 +34,21 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class Mau0Component implements OnInit {
-
+  @Input() Baocao: any
   displayedColumns: string[] = [
     'TenTSCD', 'MasoTSCD', 'NamSD',
-    'TheoSoSL','TheoSoConlai',
-    'KiemkeSL','KiemkeNguyengia','KiemkeConlai',
-    'ChenhlechSL','ChenhlechNguyengia','ChenhlechConlai',
-    'Ghichu','MaCode'
+    'TheoSoSL', 'TheoSoConlai',
+    'KiemkeSL', 'KiemkeNguyengia', 'KiemkeConlai',
+    'ChenhlechSL', 'ChenhlechNguyengia', 'ChenhlechConlai',
+    'Ghichu', 'MaCode'
   ];
-  Baocao:any= [];
-  TSCD:any= [];
-  FilterTSCD:any= [];
-  Detail:any={}
-  DataMau:any={}
+  displayedColumns1: string[] = [
+    'TenTSCD', 'MasoTSCD', 'NamSD', 'TheoSoKT', 'TheoKiemKe', 'Chenhlech', 'Ghichu', 'MaCode'
+  ];
+  TSCD: any = [];
+  FilterTSCD: any = [];
+  Detail: any = {}
+  DataMau: any = {}
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -57,43 +59,45 @@ export class Mau0Component implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  _ThietbiService:ThietbiService= inject(ThietbiService)
-  _Mau0Service:Mau0Service= inject(Mau0Service)
+  _ThietbiService: ThietbiService = inject(ThietbiService)
+  _Mau0Service: Mau0Service = inject(Mau0Service)
   route: ActivatedRoute = inject(ActivatedRoute);
   constructor(private dialog: MatDialog) { }
   async ngOnInit() {
-    const Slug = this.route.snapshot.params['slug'];
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
-    this.DataMau = await this._Mau0Service.getMau0BySlug(Slug)
-    console.log(this.DataMau);
+    this.DataMau = await this._Mau0Service.getMau0ByidBaocao(this.Baocao.id)
+     const Thietbis = await this._ThietbiService.SearchThietbi({
+        pageSize: 9999,
+        pageNumber: 0,
+        isDelete: false
+      })
 
-    const Thietbis = await this._ThietbiService.SearchThietbi({
-      pageSize:9999,
-      pageNumber:0,
-      isDelete:false
-    })
-    console.log(Thietbis);
-    Thietbis.item.forEach((v:any)=>{
-      v.TenTSCD = v.Tieude
-      v.MasoTSCD = v.Code
-      v.NamSD = ''
-      v.TheoSoSL = ''
-      v.TheoSoConlai = ''
-      v.KiemkeSL = ''
-      v.KiemkeNguyengia = ''
-      v.KiemkeConlai = ''
-      v.ChenhlechNguyengia = ''
-      v.ChenhlechConlai = ''
-      v.Ghichu = ''
-      v.MaCode = ''
-      this.Baocao.push(v)
-    })
-    console.log(this.Baocao);
+      Thietbis.item.forEach(async (v: any, k: any) => {
+        const Thietbi = this.DataMau.find((v1: any) => v1.idTSCD == v.id)
+        console.log(Thietbi);
 
-
-    this.dataSource = new MatTableDataSource(this.Baocao);
+        if (!Thietbi) {
+          const item: any = {}
+          item.idBaocao = this.Baocao.id
+          item.Title = this.Baocao.Title
+          item.idTSCD = v.id
+          item.TenTSCD = v.Tieude
+          item.NamSD = (new Date()).getFullYear()
+          item.TheoSoSL = 0
+          item.TheoSoConlai = 0
+          item.KiemkeSL = 0
+          item.KiemkeNguyengia = 0
+          item.KiemkeConlai = 0
+          item.ChenhlechNguyengia = 0
+          item.ChenhlechConlai = 0
+          item.Ghichu = ''
+          item.MaCode = ''
+          await this._Mau0Service.CreateMau0(item)
+        }
+      })
+    this.dataSource = new MatTableDataSource(this.DataMau);
     this.dataSource.sortingDataAccessor = (item, property) => {
-      switch(property) {
+      switch (property) {
         case 'Diachi': return item.Giohangs.Khachhang.Diachi;
         case 'Hoten': return item.Giohangs.Khachhang.Hoten;
         case 'SDT': return item.Giohangs.Khachhang.SDT;
@@ -105,24 +109,21 @@ export class Mau0Component implements OnInit {
     this.dataSource.sort = this.sort;
   }
   triggerOrigin: any;
-  Overlay1:boolean = false
+  Overlay1: boolean = false
   toggle1(trigger: any) {
     this.triggerOrigin = trigger;
     this.Overlay1 = true
   }
-  FilterOverlay1(event:any)
-  {
+  FilterOverlay1(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue.length>1)
-      {
-        this.FilterTSCD = this.TSCD.filter((v:any)=>{
-          return v.Tieude.includes(filterValue.trim().toLowerCase())
-        })
-      }
+    if (filterValue.length > 1) {
+      this.FilterTSCD = this.TSCD.filter((v: any) => {
+        return v.Tieude.includes(filterValue.trim().toLowerCase())
+      })
+    }
     else this.FilterTSCD = this.TSCD
   }
-  ChooseOverlay1(item:any)
-  {
+  ChooseOverlay1(item: any) {
     // this.DataMau[index].TenTSCD = item.Tieude
     // this._Mau2Service.UpdateMau2(this.DataMau[index])
     // this.dataSource = new MatTableDataSource(this.DataMau);
@@ -130,71 +131,70 @@ export class Mau0Component implements OnInit {
     // this.dataSource.sort = this.sort;
   }
   writeExcelFile() {
-    let Giagoc:any=[]
-    let item:any={}
-  let exData:any= []
-  let Header= [
-    { A: "TRƯỜNG CAO ĐẲNG NGHỀ", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",K:"",L:"",M:"",N:""},
-    { A: "THÀNH PHỐ HỒ CHÍ MINH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"Độc lập - Tự do - Hạnh phúc",K:"",L:"",M:"",N:""},
-    { A: "KHOA: ĐIỆN - ĐIỆN LẠNH", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:"Mẫu 0"},
-    { A: "", B: "", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:"Mẫu 0"},
-    { A: "", B: "TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH", C: "",D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "STT", B: "Tên TSCĐ", C: "Mã số TSCĐ",D:"Năm sử dụng",E:"Theo sổ kế toán",F:"",G:"Theo kiểm kê",H:"",I:"",J:"Chênh lệch",K:"",L:"",M:"Ghi chú",N:"Mã code"},
-    { A: "", B: "", C: "",D:"SL",E:"Giá trị còn lại",F:"SL",G:"Nguyên giá",H:"Giá trị còn lại",I:"SL",J:"Nguyên giá",K:"Giá trị còn lại",L:"",M:"",N:""},
-  ]
-  let Footer= [
-    { A: "", B: "Trưởng ban kiểm kê", C: "" ,D:"",E:"Trưởng phòng TC-KT	",F:"",G:"",H:"Trưởng phòng QTTB",I:"",J:"",K:"",L:"Trưởng khoa Điện - Điện Lạnh",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "", C: "" ,D:"",E:"",F:"",G:"",H:"",I:"",J:"",K:"",L:"",M:"",N:""},
-    { A: "", B: "Trần Kim Tuyền", C: "" ,D:"",E:"Lưu Thị Hương",F:"",G:"",H:"Phạm Mạnh Dũng",I:"",J:"",K:"",L:"Phạm Văn Trọng	",M:"",N:""}
-  ]
-  let Main:any = []
-  this.Baocao.forEach((v:any)=>
-    {
-     const item =
-     {
-      A: v.TenTSCD,
-      B: v.MasoTSCD,
-      c: v.NamSD,
-      C: v.TheoSoSL ,
-      D: v.TheoSoConlai,
-      E: v.KiemkeSL,
-      F: v.KiemkeNguyengia,
-      G: v.KiemkeConlai,
-      H: v.ChenhlechSL,
-      I: v.ChenhlechNguyengia,
-      J: v.ChenhlechConlai,
-      K: v.KiemkeNguyengia,
-      L: v.KiemkeNguyengia,
-      M: v.Ghichu,
-      N: v.MaCode
+    let Giagoc: any = []
+    let item: any = {}
+    let exData: any = []
+    let Header = [
+      { A: "TRƯỜNG CAO ĐẲNG NGHỀ", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", K: "", L: "", M: "", N: "" },
+      { A: "THÀNH PHỐ HỒ CHÍ MINH", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "Độc lập - Tự do - Hạnh phúc", K: "", L: "", M: "", N: "" },
+      { A: "KHOA: ĐIỆN - ĐIỆN LẠNH", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "", K: "", L: "", M: "", N: "Mẫu 0" },
+      { A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "", K: "", L: "", M: "", N: "Mẫu 0" },
+      { A: "", B: "TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "", K: "", L: "", M: "", N: "" },
+      { A: "STT", B: "Tên TSCĐ", C: "Mã số TSCĐ", D: "Năm sử dụng", E: "Theo sổ kế toán", F: "", G: "Theo kiểm kê", H: "", I: "", J: "Chênh lệch", K: "", L: "", M: "Ghi chú", N: "Mã code" },
+      { A: "", B: "", C: "", D: "SL", E: "Giá trị còn lại", F: "SL", G: "Nguyên giá", H: "Giá trị còn lại", I: "SL", J: "Nguyên giá", K: "Giá trị còn lại", L: "", M: "", N: "" },
+    ]
+    let Footer = [
+      { A: "", B: "Trưởng ban kiểm kê", C: "", D: "", E: "Trưởng phòng TC-KT	", F: "", G: "", H: "Trưởng phòng QTTB", I: "", J: "", K: "", L: "Trưởng khoa Điện - Điện Lạnh", M: "", N: "" },
+      { A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "", K: "", L: "", M: "", N: "" },
+      { A: "", B: "", C: "", D: "", E: "", F: "", G: "", H: "", I: "", J: "", K: "", L: "", M: "", N: "" },
+      { A: "", B: "Trần Kim Tuyền", C: "", D: "", E: "Lưu Thị Hương", F: "", G: "", H: "Phạm Mạnh Dũng", I: "", J: "", K: "", L: "Phạm Văn Trọng	", M: "", N: "" }
+    ]
+    let Main: any = []
+    this.Baocao.forEach((v: any) => {
+      const item =
+      {
+        A: v.TenTSCD,
+        B: v.MasoTSCD,
+        c: v.NamSD,
+        C: v.TheoSoSL,
+        D: v.TheoSoConlai,
+        E: v.KiemkeSL,
+        F: v.KiemkeNguyengia,
+        G: v.KiemkeConlai,
+        H: v.ChenhlechSL,
+        I: v.ChenhlechNguyengia,
+        J: v.ChenhlechConlai,
+        K: v.KiemkeNguyengia,
+        L: v.KiemkeNguyengia,
+        M: v.Ghichu,
+        N: v.MaCode
       }
       Main.push(item)
     })
 
-    exData = [...Header,...Main,...Footer]
+    exData = [...Header, ...Main, ...Footer]
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(exData);
-  worksheet["!merges"] = [
-    { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
-    { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
-    { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
-    { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
-    { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
-    { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },
-  ]; // Merge first row
+    worksheet["!merges"] = [
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 1 } },
+      { s: { r: 1, c: 9 }, e: { r: 1, c: 13 } },
+      { s: { r: 2, c: 0 }, e: { r: 2, c: 1 } },
+      { s: { r: 2, c: 9 }, e: { r: 2, c: 13 } },
+      { s: { r: 3, c: 0 }, e: { r: 3, c: 1 } },
+      { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
+      { s: { r: 3, c: 9 }, e: { r: 3, c: 13 } },
+      { s: { r: 4, c: 1 }, e: { r: 4, c: 12 } },
+    ]; // Merge first row
 
-  // 3. Add Styling (Bold, Centered, Font Size)
-  const headerStyle = {
-    font: { bold: true, sz: 14 },
-    alignment: { horizontal: "center" },
-  };
-  worksheet["A1"].s = headerStyle;
-  XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
-  // 4. Generate Excel File (xlsx)
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    // 3. Add Styling (Bold, Centered, Font Size)
+    const headerStyle = {
+      font: { bold: true, sz: 14 },
+      alignment: { horizontal: "center" },
+    };
+    worksheet["A1"].s = headerStyle;
+    XLSX.utils.book_append_sheet(workbook, worksheet, "FormattedSheet");
+    // 4. Generate Excel File (xlsx)
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
 
     // const worksheet1: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
@@ -202,7 +202,7 @@ export class Mau0Component implements OnInit {
     // XLSX.utils.book_append_sheet(workbook, worksheet1, 'DonhangAdmin');
     // XLSX.utils.book_append_sheet(workbook, worksheet2, 'Giagoc');
     // const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    this.saveAsExcelFile(excelBuffer, 'Mau0_'+moment().format("DD_MM_YYYY"));
+    this.saveAsExcelFile(excelBuffer, 'Mau0_' + moment().format("DD_MM_YYYY"));
 
   }
   saveAsExcelFile(buffer: any, fileName: string) {
@@ -221,7 +221,7 @@ export class Mau0Component implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'true') {
-       // this._SanphamService.CreateSanpham(this.Detail).then(() => this.ngOnInit())
+        // this._SanphamService.CreateSanpham(this.Detail).then(() => this.ngOnInit())
       }
     });
   }
@@ -230,7 +230,7 @@ export class Mau0Component implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'true') {
-       // this._SanphamService.DeleteSanpham(this.SelectItem).then(() => this.ngOnInit())
+        // this._SanphamService.DeleteSanpham(this.SelectItem).then(() => this.ngOnInit())
       }
     });
   }

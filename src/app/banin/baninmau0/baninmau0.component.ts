@@ -11,11 +11,11 @@ import { Mau0Service } from '../../baocao/mau0/mau0.service';
 })
 export class Baninmau0Component implements OnInit {
   @Input() idBaocao:any;
-  DataMau:any[]=[]
+  DataMau:any
   constructor() { }
   _Mau0Service:Mau0Service = inject(Mau0Service)
   async ngOnInit() {
-    window.print();
+    //window.print();
      this.DataMau = await this._Mau0Service.getMau0ByidBaocao(this.idBaocao)
     console.log(this.DataMau);
   }

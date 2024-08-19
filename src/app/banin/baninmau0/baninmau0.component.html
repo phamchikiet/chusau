@@ -14,67 +14,54 @@
         <div class="text-center font-bold">Độc lập - Tự do - Hạnh phúc</div>
         <div class="text-center"><br /></div>
         <div class="text-center">
-          <span class="text-center p-2 font-bold border-2">Mẫu 1 </span>
+          <span class="text-center p-2 font-bold border-2">Mẫu 0 </span>
         </div>
 
       </div>
     </div>
     <br />
     <div class="text-center font-bold text-xl uppercase">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
-    <!-- <div class="text-center font-bold text-xl">{{Baocao.Title}}</div> -->
+    <!-- <div class="text-center font-bold text-xl">{{DataMau.Title}}</div> -->
     <table class="w-full table-auto border-collapse border border-gray-400">
       <tr class="font-bold">
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">STT</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Hạng Mục</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tình Trạng</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày thực hiện</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Vật Tư</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Nhân Công</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">STT</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Mã số TSCĐ</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Năm Sử Dụng</td>
+        <td colspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Theo sổ kế toán</td>
+        <td colspan="3" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Theo Kiểm Kê</td>
+        <td colspan="3" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Chênh Lệch</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
+        <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">Mã Code</td>
+      </tr>
+      <tr class="font-bold">
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Thành Tiền</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Giá Trị Còn Lại</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Nguyên giá</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Giá Trị Còn Lại</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Nguyên giá</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Giá Trị Còn Lại</td>
       </tr>
       @for (item of DataMau; track $index) {
       <tr>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
-        <td class="text-xs p-2 border border-gray-400">{{item.TenTSCD}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-      </tr>
-      @for (item1 of item.Chitiet; track $index) {
-      <tr>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Hangmuc}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Tinhtrang}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphivattu}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Soluong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Thanhtien}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
+        <td class="text-xs whitespace-wrap p-2 border border-gray-400 max-w-40">{{item.TenTSCD}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Hangmuc}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Tinhtrang}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphivattu}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Soluong}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Thanhtien}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Ghichu}}</td>
       </tr>
       }
-      }
-      <!-- <tr>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">1</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">3</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">4</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">5</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">6</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">7</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">8</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">9</td>
-      </tr> -->
     </table>
     <div class="flex flex-row justify-between items-center px-8">
       <div>
