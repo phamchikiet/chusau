@@ -24,6 +24,8 @@ export class Mau1Entity {
   @Column({ default: '' })
   Slug: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  Cauhinh: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
   Image: string;
   @Column({ default: '' })
   Type: string;

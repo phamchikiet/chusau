@@ -11,7 +11,27 @@ export class Mau0Entity {
   Mota: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   TenTSCD: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  idTSCD: string;
+  @Column()
+  NamSD: number;
+  @Column()
+  TheoSoSL: number;
+  @Column()
+  TheoSoConlai: number;
+  @Column()
+  KiemkeSL: number;
+  @Column()
+  KiemkeNguyengia: number;
+  @Column()
+  KiemkeConlai: number;
+  @Column()
+  ChenhlechNguyengia: number;
+  @Column()
+  ChenhlechConlai: number;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  MaCode: number;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
   Chitiet: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Hangmuc: string;
@@ -23,6 +43,8 @@ export class Mau0Entity {
   Ghichu: string;
   @Column({ default: '' })
   Slug: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  Cauhinh: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
   Image: string;
   @Column({ default: '' })

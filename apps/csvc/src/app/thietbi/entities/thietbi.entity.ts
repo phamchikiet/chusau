@@ -21,8 +21,8 @@ export class Thietbi {
     Tinhtrang: number;
     @Column({ default: 0 })
     Trangthai: number;
-    // @Column()
-    // NgayHSD: Date;
+    @Column()
+    NgayHSD: Date;
     @CreateDateColumn()
     Ngaytao: Date;
     @Column({ nullable: true })
