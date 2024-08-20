@@ -28,17 +28,6 @@ import { Mau0Module } from "./mau0/mau0.module";
         synchronize: true,
         charset: "utf8mb4"
     }),
-    // TypeOrmModule.forRoot({
-    //     type: 'mysql',
-    //     host: '103.221.221.14',
-    //     port: 3306,
-    //     username: 'jtnkwfpz_chikiet88',
-    //     password: '@Hikiet1988',
-    //     database: 'jtnkwfpz_csvc',
-    //     autoLoadEntities: true,
-    //     synchronize: true,
-    //     charset: "utf8mb4"
-    // }),
     LichsuModule,
     AuthModule,
     UsersModule,

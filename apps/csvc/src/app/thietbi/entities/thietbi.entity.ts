@@ -1,5 +1,4 @@
 import {Entity,Column,PrimaryGeneratedColumn,CreateDateColumn, OneToMany, ManyToOne, JoinColumn} from 'typeorm';
-import { environment } from 'apps/csvc/src/environments/environment.prod'
 @Entity('thietbi', {
 orderBy: { Ngaytao: 'DESC' } })
 export class Thietbi {
@@ -15,6 +14,10 @@ export class Thietbi {
     Hinhanh: string;
     @Column({ type: 'text', collation: 'utf8_general_ci' })
     Mota: string;
+    @Column({ default: 0 })
+    Gia: number;
+    @Column({ default: 0 })
+    ThoigianSD: number;
     @Column({ default: 1 })
     Ordering: number;
     @Column({ default: 0 })
