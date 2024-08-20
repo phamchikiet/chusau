@@ -14,6 +14,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Mau0Service } from './mau0.service';
 import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { BaocaoService } from '../baocao.service';
+import { NotifierService } from 'angular-notifier';
+import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-mau0',
   standalone: true,
@@ -27,7 +32,9 @@ import { ActivatedRoute } from '@angular/router';
     MatButtonModule,
     MatDialogModule,
     OverlayModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CommonModule,
+    EditorModule
   ],
   templateUrl: './mau0.component.html',
   styleUrls: ['./mau0.component.css']
@@ -52,6 +59,32 @@ export class Mau0Component implements OnInit {
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  APITINYMCE= environment.APITINYMCE;
+  configTiny: EditorComponent['init'] = {
+  // selector: '.dfree-header',
+  content_style: '.mce-content-body { border: 1px dashed blue; padding: 10px;  } '+'.mce-content-body p {margin-top: 0;margin-bottom: 0;}',
+  menubar: false,
+  inline: false,
+  toolbar: 'undo redo |fontfamily fontsize blocks | bold italic underline | alignleft aligncenter alignright alignjustify | fullscreen preview code | link image media',
+  plugins: [
+     'quickbars','advlist','autolink','lists','link','image','charmap','preview','anchor',
+    'searchreplace','visualblocks','code','fullscreen',
+    'insertdatetime','media','table','code','help'
+     ],
+  // quickbars_insert_toolbar: 'undo redo',
+  // quickbars_selection_toolbar: 'undo redo |fontfamily fontsize blocks | bold italic underline | alignleft aligncenter alignright alignjustify | fullscreen preview code | link image media',
+  branding: false,
+  image_advtab: true,
+  autoresize_bottom_margin: 20,
+  autoresize_min_height: 50,
+  height:"200",
+  statusbar:false,
+  deprecation_warnings: false,
+  default_link_target: '_blank',
+  block_unsupported_drop: true,
+  entity_encoding: 'raw',
+};
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -61,6 +94,8 @@ export class Mau0Component implements OnInit {
   }
   _ThietbiService: ThietbiService = inject(ThietbiService)
   _Mau0Service: Mau0Service = inject(Mau0Service)
+  _BaocaoService: BaocaoService = inject(BaocaoService)
+  _NotifierService: NotifierService = inject(NotifierService)
   route: ActivatedRoute = inject(ActivatedRoute);
   constructor(private dialog: MatDialog) { }
   async ngOnInit() {
@@ -74,7 +109,7 @@ export class Mau0Component implements OnInit {
 
       Thietbis.item.forEach(async (v: any, k: any) => {
         const Thietbi = this.DataMau.find((v1: any) => v1.idTSCD == v.id)
-        console.log(Thietbi);
+        console.log('Thietbi',Thietbi);
 
         if (!Thietbi) {
           const item: any = {}
@@ -129,6 +164,21 @@ export class Mau0Component implements OnInit {
     // this.dataSource = new MatTableDataSource(this.DataMau);
     // this.dataSource.paginator = this.paginator;
     // this.dataSource.sort = this.sort;
+  }
+  openDialogCauhinh(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        this._BaocaoService.UpdateBaocao(this.Baocao).then(() =>{
+          this._NotifierService.notify("success","Cập Nhật Thành Công")
+          this.ngOnInit()
+        }
+      )}});
+  }
+  addNewRowCauhinh()
+  {
+    this.Baocao.Cauhinh.push({id:Math.random(),Chucvu:'',Hoten:''})
   }
   writeExcelFile() {
     let Giagoc: any = []

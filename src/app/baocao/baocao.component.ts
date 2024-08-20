@@ -53,10 +53,10 @@ export class BaocaoComponent implements OnInit {
     { id: 4, Slug: '', Title: 'Mẫu 3 - CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ' },
   ]
   Maubaocao:any[]=[
-    {id:1,Title:'Báo Cáo TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH'},
-    {id:2,Title:'Báo Cáo ĐÁNH GIÁ THIẾT BỊ ĐỊNH KỲ'},
-    {id:3,Title:'Báo Cáo BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ'},
-    {id:4,Title:'Chi Phí Bảo Dưỡng Thiết Bị Định Kỳ'},
+    {id:1,Title:'Mẫu 0 - Báo Cáo TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH'},
+    {id:2,Title:'Mẫu 1 - Báo Cáo ĐÁNH GIÁ THIẾT BỊ ĐỊNH KỲ'},
+    {id:3,Title:'Mẫu 2 - Báo Cáo BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ'},
+    {id:4,Title:'Mẫu 3 - Chi Phí Bảo Dưỡng Thiết Bị Định Kỳ'},
   ]
   List:any[]=[]
   private _transformer = (node: any, level: number) => {

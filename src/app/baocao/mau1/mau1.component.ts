@@ -186,6 +186,18 @@ export class Mau1Component implements OnInit {
         }
       )}});
   }
+  openDialogCauhinh(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result == 'true') {
+    //     this.Detail.idBaocao = this.Baocao.id
+    //     this._Mau1Service.CreateMau1(this.Detail).then(() =>{
+    //       this._NotifierService.notify("success","Thêm Thành Công")
+    //       this.ngOnInit()
+    //     }
+    //   )}});
+  }
   openPrintDialog(teamplate: TemplateRef<any>): void {
     const dialogRef = this.dialog.open(teamplate, {
     });

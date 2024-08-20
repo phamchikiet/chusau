@@ -336,12 +336,7 @@ toggle4(trigger: any,index:any,index1:any) {
       Tinhtrang: "",
       idBaocao:this.Baocao.id
      }
-     console.log(item);
-
-      this._Mau3Service.CreateMau3(item).then(async ()=>
-      {
-        this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.Baocao.id)
-      })
+     await this._Mau3Service.CreateMau3(item).then(()=>{this.ngOnInit()})
 
   }
   constructor(

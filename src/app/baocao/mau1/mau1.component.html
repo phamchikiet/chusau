@@ -14,10 +14,16 @@
       <span class="material-symbols-outlined text-xl">add_circle</span>
       <span class="text-xs">Thêm Mới</span>
     </div>
-    <a href="banin/1/{{Baocao.id}}" class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
-      <span class="material-symbols-outlined text-xl">print</span>
-      <span class="text-xs">In Báo Cáo</span>
-    </a>
+    <div class="flex flex-row space-x-2">
+      <span (click)="openDialogCauhinh(dialogTemplateCauhinh)" class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
+        <span class="material-symbols-outlined text-xl">settings</span>
+        <span class="text-xs">Cấu hình</span>
+      </span>
+      <a href="banin/1/{{Baocao.id}}" class="flex flex-col items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg">
+        <span class="material-symbols-outlined text-xl">print</span>
+        <span class="text-xs">In Báo Cáo</span>
+      </a>
+    </div>
   </div>
 
 
@@ -241,74 +247,21 @@
   </div>
 </ng-template>
 
-<ng-template #PrintTeamplate>
-  <div class="w-screen h-screen p-2 printarea">
-    <div mat-dialog-content class="flex flex-col space-y-2 !max-h-[100vh]">
-      <div class="flex flex-row justify-between items-center">
-        <div>
-          <div class="text-center"> TRƯỜNG CAO ĐẲNG NGHỀ</div>
-          <div class="text-center"> THÀNH PHỐ HỒ CHÍ MINH</div>
-          <div class="text-center font-bold"> KHOA: ĐIỆN - ĐIỆN LẠNH</div>
-          <div class="text-center text-xs font-bold"> Số:    / M1/KĐ.ĐL</div>
-        </div>
 
-        <div>
-          <div class="text-center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-          <div class="text-center">Độc lập - Tự do - Hạnh phúc</div>
-          <div class="text-center"><br/></div>
-          <div class="text-center">Mẫu 1</div>
+<ng-template #dialogTemplateCauhinh>
+    <div class="lg:w-[40vw] p-2 flex flex-col space-y-3">
+      <div mat-dialog-title>Thêm Mới</div>
+      <div mat-dialog-content>
+        <div class="flex flex-col w-full space-y-4 lg:p-4">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Slug</mat-label>
+            <input matInput [(ngModel)]="Detail.Slug" [ngModelOptions]="{standalone: true}" placeholder="Oldlink">
+          </mat-form-field>
         </div>
-      </div>
-      <br/>
-      <div class="text-center font-bold text-xl">ĐÁNH GIÁ THIẾT BỊ ĐỊNH KỲ</div>
-      <div class="text-center font-bold text-xl">{{Baocao.Title}}</div>
-      <table class="w-full table-auto border-collapse border border-gray-400">
-        <tr class="font-bold">
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">STT</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Hạng Mục</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tình Trạng</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày Kiểm Tra</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
-        </tr>
-        @for (item of DataMau; track $index) {
-          <tr>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
-            <td class="text-xs p-2 border border-gray-400">{{item.TenTSCD}}</td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-          </tr>
-          @for (item1 of item.Chitiet; track $index) {
-          <tr>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Hangmuc}}</td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Tinhtrang}}</td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaykiemtra|date:'dd/MM/yyyy'}}</td>
-            <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
-          </tr>
-          }
-        }
-      </table>
-      <div class="flex flex-row justify-between items-center px-8">
-        <div>
-          <div class="text-center"></div>
-          <div class="text-center font-bold"> TRƯỞNG KHOA ĐIỆN LẠNH </div>
-          <br/>
-          <br/>
-          <div class="text-center"> PHẠM VĂN TRỌNG</div>
-        </div>
-
-        <div>
-          <div class="text-center font-bold">Ngày tháng năm </div>
-          <div class="text-center">Nhân viên thực hiện</div>
-          <br/>
-          <br/>
-          <div class="text-center">Dương Văn Tuấn</div>
+        <div class="flex flex-row space-x-2 items-center justify-center">
+          <button mat-flat-button color="warn" mat-dialog-close="false">Huỷ</button>
+          <button mat-flat-button color="primary" mat-dialog-close="true">Đồng Ý</button>
         </div>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>

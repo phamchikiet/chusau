@@ -11,8 +11,8 @@ import { HangmucService } from '../../hangmuc/hangmuc.service';
 import { CauhinhService } from '../../cauhinh/cauhinh.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatCardModule} from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Mau2Service } from './mau2.service';
@@ -22,7 +22,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-mau2',
-  standalone:true,
+  standalone: true,
   imports: [
     MatTableModule,
     MatPaginatorModule,
@@ -46,10 +46,10 @@ import { NotifierService } from 'angular-notifier';
 
 export class Mau2Component implements OnInit {
   @Input() Baocao: any
-  displayedColumns: string[] = ['STT', 'Hangmuc', 'Tinhtrang','Ngaythuchien','Noidungthuchien','Saukhithuchien','Ghichu'];
-  DataMau:any[]=[]
-  Chitiet:any[]=[]
-  dataSource: any[]=[];
+  displayedColumns: string[] = ['STT', 'Hangmuc', 'Tinhtrang', 'Ngaythuchien', 'Noidungthuchien', 'Saukhithuchien', 'Ghichu'];
+  DataMau: any[] = []
+  Chitiet: any[] = []
+  dataSource: any[] = [];
   // dataSource!: MatTableDataSource<any[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -60,254 +60,244 @@ export class Mau2Component implements OnInit {
   //     this.dataSource.paginator.firstPage();
   //   }
   // }
-  TSCD:any[]=[]
-  FilterTSCD:any[]=[]
-  Hangmuc:any[]=[]
-  FilterHangmuc:any[]=[]
-  Trangthai:any[]=[]
-  FilterTrangthai:any[]=[]
-  _ThietbiService:ThietbiService= inject(ThietbiService)
-  _HangmucService:HangmucService= inject(HangmucService)
-  _CauhinhService:CauhinhService= inject(CauhinhService)
-  _Mau2Service:Mau2Service= inject(Mau2Service)
-  SelectItem:any
-  input2:any=''
-  input3:any=''
-  Overlay1:any = {}
-  Overlay2:any= []
-  Overlay3:any = []
-  Overlay4:any = []
-  Overlay5:any = []
-  Overlay6:any = []
-  Overlay7:any = []
-  idTrangthai:any =''
+  TSCD: any[] = []
+  FilterTSCD: any[] = []
+  Hangmuc: any[] = []
+  FilterHangmuc: any[] = []
+  Trangthai: any[] = []
+  FilterTrangthai: any[] = []
+  _ThietbiService: ThietbiService = inject(ThietbiService)
+  _HangmucService: HangmucService = inject(HangmucService)
+  _CauhinhService: CauhinhService = inject(CauhinhService)
+  _Mau2Service: Mau2Service = inject(Mau2Service)
+  SelectItem: any
+  input2: any = ''
+  input3: any = ''
+  Overlay1: any = {}
+  Overlay2: any = []
+  Overlay3: any = []
+  Overlay4: any = []
+  Overlay5: any = []
+  Overlay6: any = []
+  Overlay7: any = []
+  idTrangthai: any = ''
   triggerOrigin: any;
-  toggle1(trigger: any,index:any) {
+  toggle1(trigger: any, index: any) {
     this.triggerOrigin = trigger;
     this.Overlay1[index] = true
   }
-  toggle2(trigger: any,index:any,index1:any) {
-   this.triggerOrigin = trigger;
-    const item = this.Overlay2.find((v:any)=>{
-      return v.index == index && v.index1==index1
+  toggle2(trigger: any, index: any, index1: any) {
+    this.triggerOrigin = trigger;
+    const item = this.Overlay2.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
-    if(item){
-      const findIndex = this.Overlay2.findIndex((v:any)=>{
-        return v.index == index && v.index1==index1
+    if (item) {
+      const findIndex = this.Overlay2.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
       })
       this.Overlay2[findIndex].value = true
     }
     else {
-      this.Overlay2.push({index:index,index1:index1,value:true})
+      this.Overlay2.push({ index: index, index1: index1, value: true })
     }
     console.log(this.Overlay2);
   }
-  backdrop2(index:any,index1:any) {
-     const item = this.Overlay2.find((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     console.log(item);
-
-     if(item){
-       const findIndex = this.Overlay2.findIndex((v:any)=>{
-         return v.index == index && v.index1==index1
-       })
-       this.Overlay2[findIndex].value = false
-     }
-     else {
-       this.Overlay2.push({index:index,index1:index1,value:false})
-     }
-   }
-  backdrop3(index:any,index1:any) {
-     const item = this.Overlay3.find((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     console.log(item);
-
-     if(item){
-       const findIndex = this.Overlay3.findIndex((v:any)=>{
-         return v.index == index && v.index1==index1
-       })
-       this.Overlay3[findIndex].value = false
-     }
-     else {
-       this.Overlay3.push({index:index,index1:index1,value:false})
-     }
-   }
-   backdrop4(index:any,index1:any) {
-    const item = this.Overlay4.find((v:any)=>{
-      return v.index == index && v.index1==index1
+  backdrop2(index: any, index1: any) {
+    const item = this.Overlay2.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
     console.log(item);
 
-    if(item){
-      const findIndex = this.Overlay4.findIndex((v:any)=>{
-        return v.index == index && v.index1==index1
+    if (item) {
+      const findIndex = this.Overlay2.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay2[findIndex].value = false
+    }
+    else {
+      this.Overlay2.push({ index: index, index1: index1, value: false })
+    }
+  }
+  backdrop3(index: any, index1: any) {
+    const item = this.Overlay3.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    console.log(item);
+
+    if (item) {
+      const findIndex = this.Overlay3.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay3[findIndex].value = false
+    }
+    else {
+      this.Overlay3.push({ index: index, index1: index1, value: false })
+    }
+  }
+  backdrop4(index: any, index1: any) {
+    const item = this.Overlay4.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    console.log(item);
+
+    if (item) {
+      const findIndex = this.Overlay4.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
       })
       this.Overlay4[findIndex].value = false
     }
     else {
-      this.Overlay4.push({index:index,index1:index1,value:false})
+      this.Overlay4.push({ index: index, index1: index1, value: false })
     }
   }
-  backdrop5(index:any,index1:any) {
-    const item = this.Overlay5.find((v:any)=>{
-      return v.index == index && v.index1==index1
+  backdrop5(index: any, index1: any) {
+    const item = this.Overlay5.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
     console.log(item);
 
-    if(item){
-      const findIndex = this.Overlay5.findIndex((v:any)=>{
-        return v.index == index && v.index1==index1
+    if (item) {
+      const findIndex = this.Overlay5.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
       })
       this.Overlay5[findIndex].value = false
     }
     else {
-      this.Overlay5.push({index:index,index1:index1,value:false})
+      this.Overlay5.push({ index: index, index1: index1, value: false })
     }
   }
-  backdrop6(index:any,index1:any) {
-    const item = this.Overlay6.find((v:any)=>{
-      return v.index == index && v.index1==index1
+  backdrop6(index: any, index1: any) {
+    const item = this.Overlay6.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
     console.log(item);
 
-    if(item){
-      const findIndex = this.Overlay6.findIndex((v:any)=>{
-        return v.index == index && v.index1==index1
+    if (item) {
+      const findIndex = this.Overlay6.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
       })
       this.Overlay6[findIndex].value = false
     }
     else {
-      this.Overlay6.push({index:index,index1:index1,value:false})
+      this.Overlay6.push({ index: index, index1: index1, value: false })
     }
   }
-  backdrop7(index:any,index1:any) {
-    const item = this.Overlay7.find((v:any)=>{
-      return v.index == index && v.index1==index1
+  backdrop7(index: any, index1: any) {
+    const item = this.Overlay7.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
     console.log(item);
 
-    if(item){
-      const findIndex = this.Overlay7.findIndex((v:any)=>{
-        return v.index == index && v.index1==index1
+    if (item) {
+      const findIndex = this.Overlay7.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
       })
       this.Overlay7[findIndex].value = false
     }
     else {
-      this.Overlay7.push({index:index,index1:index1,value:false})
+      this.Overlay7.push({ index: index, index1: index1, value: false })
     }
   }
 
 
-  toggle3(trigger: any,index:any,index1:any) {
+  toggle3(trigger: any, index: any, index1: any) {
     this.triggerOrigin = trigger;
-     const item = this.Overlay3.find((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     if(item){
-       const findIndex = this.Overlay3.findIndex((v:any)=>{
-         return v.index == index && v.index1==index1
-       })
-       this.Overlay3[findIndex].value = true
-     }
-     else {
-       this.Overlay3.push({index:index,index1:index1,value:true})
-     }
-     console.log(this.Overlay3);
-   }
-
-toggle4(trigger: any,index:any,index1:any) {
-  this.triggerOrigin = trigger;
-   const item = this.Overlay4.find((v:any)=>{
-     return v.index == index && v.index1==index1
-   })
-   if(item){
-     const findIndex = this.Overlay4.findIndex((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     this.Overlay4[findIndex].value = true
-   }
-   else {
-     this.Overlay4.push({index:index,index1:index1,value:true})
-   }
-   console.log(this.Overlay4);
- }
- toggle5(trigger: any,index:any,index1:any) {
-  this.triggerOrigin = trigger;
-   const item = this.Overlay5.find((v:any)=>{
-     return v.index == index && v.index1==index1
-   })
-   if(item){
-     const findIndex = this.Overlay5.findIndex((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     this.Overlay5[findIndex].value = true
-   }
-   else {
-     this.Overlay5.push({index:index,index1:index1,value:true})
-   }
-   console.log(this.Overlay5);
- }
- toggle6(trigger: any,index:any,index1:any) {
-  this.triggerOrigin = trigger;
-   const item = this.Overlay6.find((v:any)=>{
-     return v.index == index && v.index1==index1
-   })
-   if(item){
-     const findIndex = this.Overlay6.findIndex((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     this.Overlay6[findIndex].value = true
-   }
-   else {
-     this.Overlay6.push({index:index,index1:index1,value:true})
-   }
-   console.log(this.Overlay6);
- }
- toggle7(trigger: any,index:any,index1:any) {
-  this.triggerOrigin = trigger;
-   const item = this.Overlay7.find((v:any)=>{
-     return v.index == index && v.index1==index1
-   })
-   if(item){
-     const findIndex = this.Overlay7.findIndex((v:any)=>{
-       return v.index == index && v.index1==index1
-     })
-     this.Overlay7[findIndex].value = true
-   }
-   else {
-     this.Overlay7.push({index:index,index1:index1,value:true})
-   }
-   console.log(this.Overlay7);
- }
-  GetOverlay(List:any,index:any,index1:any){
-    const item =  List.find((v:any)=>{
-      return v.index == index && v.index1==index1
+    const item = this.Overlay3.find((v: any) => {
+      return v.index == index && v.index1 == index1
     })
-    if(item){
+    if (item) {
+      const findIndex = this.Overlay3.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay3[findIndex].value = true
+    }
+    else {
+      this.Overlay3.push({ index: index, index1: index1, value: true })
+    }
+    console.log(this.Overlay3);
+  }
+
+  toggle4(trigger: any, index: any, index1: any) {
+    this.triggerOrigin = trigger;
+    const item = this.Overlay4.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    if (item) {
+      const findIndex = this.Overlay4.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay4[findIndex].value = true
+    }
+    else {
+      this.Overlay4.push({ index: index, index1: index1, value: true })
+    }
+    console.log(this.Overlay4);
+  }
+  toggle5(trigger: any, index: any, index1: any) {
+    this.triggerOrigin = trigger;
+    const item = this.Overlay5.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    if (item) {
+      const findIndex = this.Overlay5.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay5[findIndex].value = true
+    }
+    else {
+      this.Overlay5.push({ index: index, index1: index1, value: true })
+    }
+    console.log(this.Overlay5);
+  }
+  toggle6(trigger: any, index: any, index1: any) {
+    this.triggerOrigin = trigger;
+    const item = this.Overlay6.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    if (item) {
+      const findIndex = this.Overlay6.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay6[findIndex].value = true
+    }
+    else {
+      this.Overlay6.push({ index: index, index1: index1, value: true })
+    }
+    console.log(this.Overlay6);
+  }
+  toggle7(trigger: any, index: any, index1: any) {
+    this.triggerOrigin = trigger;
+    const item = this.Overlay7.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    if (item) {
+      const findIndex = this.Overlay7.findIndex((v: any) => {
+        return v.index == index && v.index1 == index1
+      })
+      this.Overlay7[findIndex].value = true
+    }
+    else {
+      this.Overlay7.push({ index: index, index1: index1, value: true })
+    }
+    console.log(this.Overlay7);
+  }
+  GetOverlay(List: any, index: any, index1: any) {
+    const item = List.find((v: any) => {
+      return v.index == index && v.index1 == index1
+    })
+    if (item) {
       return item.value
     }
     else {
       return false
     }
   }
-  async Addrow()
-  {
+  async Addrow() {
     const item = {
       TenTSCD: "",
-      Hangmuc: "",
-      Tinhtrang: "",
-      Ngaykiemtra: new Date(),
-      Baocao:this.Baocao.id
-     }
-      this._Mau2Service.CreateMau2(item).then(async ()=>
-      {
-        this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
-        this.dataSource[1] = new MatTableDataSource(this.DataMau[1].Chitiet);
-        this.dataSource[1].paginator = this.paginator;
-        this.dataSource[1].sort = this.sort;
-      })
+      idBaocao: this.Baocao.id,
+    }
+    this._Mau2Service.CreateMau2(item).then(async () => { this.ngOnInit() })
 
   }
   constructor(
@@ -318,7 +308,7 @@ toggle4(trigger: any,index:any,index1:any) {
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
     this.Hangmuc = this.FilterHangmuc = await this._HangmucService.getAllHangmuc()
     this.DataMau = await this._Mau2Service.getMau2ByidBaocao(this.Baocao.id)
-    this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
+    this.Chitiet = this.DataMau.flatMap(item => item?.Chitiet);
     const Trangthai = await this._CauhinhService.getCauhinhBySlug('trangthai')
     this.idTrangthai = Trangthai?.id
     this.Trangthai = this.FilterTrangthai = Trangthai?.Data
@@ -327,9 +317,8 @@ toggle4(trigger: any,index:any,index1:any) {
     this.LoadDataSource()
 
   }
-  LoadDataSource()
-  {
-    this.DataMau.forEach((v,k) => {
+  LoadDataSource() {
+    this.DataMau.forEach((v, k) => {
       this.dataSource[k] = new MatTableDataSource(v.Chitiet);
       this.dataSource[k].paginator = this.paginator;
       this.dataSource[k].sort = this.sort;
@@ -337,101 +326,86 @@ toggle4(trigger: any,index:any,index1:any) {
   }
 
 
-  DeleteItem(item:any,index:any)
-  {
-    item.Chitiet = item.Chitiet.slice(0, index).concat(item.Chitiet.slice(index+1))
-    this._Mau2Service.UpdateMau2(item).then(()=>this.ngOnInit())
+  DeleteItem(item: any, index: any) {
+    item.Chitiet = item.Chitiet.slice(0, index).concat(item.Chitiet.slice(index + 1))
+    this._Mau2Service.UpdateMau2(item).then(() => this.ngOnInit())
   }
-  FilterOverlay1(event:any)
-  {
+  FilterOverlay1(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue.length>1)
-      {
-        this.FilterTSCD = this.TSCD.filter((v:any)=>{
-          return v.Tieude.includes(filterValue.trim().toLowerCase())
-        })
-      }
+    if (filterValue.length > 1) {
+      this.FilterTSCD = this.TSCD.filter((v: any) => {
+        return v.Tieude.includes(filterValue.trim().toLowerCase())
+      })
+    }
     else this.FilterTSCD = this.TSCD
   }
-  FilterOverlay2(event:any)
-  {
+  FilterOverlay2(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue.length>1)
-      {
-        this.FilterHangmuc = this.Hangmuc.filter((v:any)=>{
-          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
-        })
-      }
+    if (filterValue.length > 1) {
+      this.FilterHangmuc = this.Hangmuc.filter((v: any) => {
+        return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+      })
+    }
     else this.FilterHangmuc = this.Hangmuc
   }
-  FilterOverlay3(event:any)
-  {
+  FilterOverlay3(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue.length>1)
-      {
-        this.FilterTrangthai = this.Trangthai.filter((v:any)=>{
-          return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
-        })
-      }
+    if (filterValue.length > 1) {
+      this.FilterTrangthai = this.Trangthai.filter((v: any) => {
+        return v.Title.trim().toLowerCase().includes(filterValue.trim().toLowerCase())
+      })
+    }
     else this.FilterTrangthai = this.Trangthai
   }
-  ChooseOverlay1(item:any,index:any,index1:any)
-  {
+  ChooseOverlay1(item: any, index: any, index1: any) {
     this.DataMau[index].TenTSCD = item.Tieude
     this._Mau2Service.UpdateMau2(this.DataMau[index])
     this.LoadDataSource()
   }
-  ChooseOverlay2(item:any,index:any,index1:any)
-  {
+  ChooseOverlay2(item: any, index: any, index1: any) {
     this.DataMau[index].Chitiet[index1].Hangmuc = item.Title
     this._Mau2Service.UpdateMau2(this.DataMau[index])
     this.LoadDataSource()
   }
-  ChooseOverlay3(item:any,index:any,index1:any)
-  {
+  ChooseOverlay3(item: any, index: any, index1: any) {
     console.log();
 
     this.DataMau[index].Chitiet[index1].Tinhtrang = item.Title
     this._Mau2Service.UpdateMau2(this.DataMau[index])
     this.LoadDataSource()
   }
-  ChooseOverlay4(item:any,index:any,index1:any)
-  {
+  ChooseOverlay4(item: any, index: any, index1: any) {
     console.log(item);
     this.DataMau[index].Chitiet[index1].Ngaykiemtra = item
     this._Mau2Service.UpdateMau2(this.DataMau[index])
     this.LoadDataSource()
   }
-  ChooseOverlay5(item:any,index:any,index1:any)
-  {
+  ChooseOverlay5(item: any, index: any, index1: any) {
     console.log(item);
     this.DataMau[index].Chitiet[index1].Ghichu = item
     this._Mau2Service.UpdateMau2(this.DataMau[index])
     this.LoadDataSource()
   }
-  AddChitiet(index:any) {
+  AddChitiet(index: any) {
     console.log(index);
     this.DataMau[index].Chitiet.unshift({ Hangmuc: '', Tinhtrang: '', Ngaykiemtra: '', Ghichu: '' })
-   // this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
+    // this.Chitiet =  this.DataMau.flatMap(item => item.Chitiet);
     this.LoadDataSource()
   }
-  AddHangmuc(item:any)
-  {
-    this._HangmucService.CreateHangmuc({Title:item}).then(()=>
-    {
+  AddHangmuc(item: any) {
+    this._HangmucService.CreateHangmuc({ Title: item }).then(() => {
     })
   }
-  AddTrangthai(data:any)
-  {
+  AddTrangthai(data: any) {
     console.log(data);
-    this.Trangthai.push({id:this.Trangthai.length+1,Title:data})
-    const item ={id:this.idTrangthai,Data:this.Trangthai}
-    this._CauhinhService.UpdateCauhinh(item).then(()=>{})
+    this.Trangthai.push({ id: this.Trangthai.length + 1, Title: data })
+    const item = { id: this.idTrangthai, Data: this.Trangthai }
+    this._CauhinhService.UpdateCauhinh(item).then(() => { })
   }
   openPrintDialog(teamplate: TemplateRef<any>): void {
     const dialogRef = this.dialog.open(teamplate, {
     });
-    dialogRef.afterClosed().subscribe((result:any) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
 
     });
   }
@@ -441,8 +415,8 @@ toggle4(trigger: any,index:any,index1:any) {
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'true') {
         console.log(this.SelectItem);
-        this._Mau2Service.DeleteMau2(this.SelectItem).then(() =>{
-          this._NotifierService.notify("success","Xoá Thành Công")
+        this._Mau2Service.DeleteMau2(this.SelectItem).then(() => {
+          this._NotifierService.notify("success", "Xoá Thành Công")
           this.ngOnInit()
         })
       }
