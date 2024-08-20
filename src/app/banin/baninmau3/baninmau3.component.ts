@@ -20,9 +20,21 @@ export class Baninmau3Component implements OnInit {
   async ngOnInit() {
      this.DataMau = await this._Mau3Service.getMau3ByidBaocao(this.idBaocao)
      this.Baocao = await this._BaocaoService.getBaocaoByid(this.idBaocao)
-    setTimeout(() => {
-      window.print();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.print();
+    // }, 1000);
+  }
+  Sum(item:any[])
+  {
+    return item.reduce((total, item) => total + item.Thanhtien, 0);
+  }
+  VAT(item:any[])
+  {
+    return (item.reduce((total, item) => total + item.Thanhtien, 0))*0.1;
+  }
+  SumVAT(item:any[])
+  {
+    return (item.reduce((total, item) => total + item.Thanhtien, 0))*1.1;
   }
 
 }

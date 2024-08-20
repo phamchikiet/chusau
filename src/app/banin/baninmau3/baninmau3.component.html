@@ -1,69 +1,127 @@
-
-  <div class="w-[1280px] m-auto h-screen p-5 printarea">
-    <div mat-dialog-content class="flex flex-col space-y-2">
-      <div class="flex flex-row justify-between items-center">
-        <div class="flex flex-col space-y-2">
-          <div class="text-center"> TRƯỜNG CAO ĐẲNG NGHỀ</div>
-          <div class="text-center"> THÀNH PHỐ HỒ CHÍ MINH</div>
-          <div class="text-center font-bold"> KHOA: ĐIỆN - ĐIỆN LẠNH</div>
-          <div class="text-center text-xs font-bold"> Số: / M3/KĐ.ĐL</div>
-        </div>
-
-        <div class="flex flex-col space-y-2">
-          <div class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
-          <div class="text-center font-bold">Độc lập - Tự do - Hạnh phúc</div>
-          <div class="text-center"><br /></div>
-          <div class="text-center">
-            <span class="text-center p-2 font-bold border-2">Mẫu 3 </span>
-          </div>
-
-        </div>
+<div class="w-[1280px] m-auto h-screen p-5 printarea">
+  <div mat-dialog-content class="flex flex-col space-y-2">
+    <div class="flex flex-row justify-between items-center">
+      <div class="flex flex-col space-y-2">
+        <div class="text-center"> TRƯỜNG CAO ĐẲNG NGHỀ</div>
+        <div class="text-center"> THÀNH PHỐ HỒ CHÍ MINH</div>
+        <div class="text-center font-bold"> KHOA: ĐIỆN - ĐIỆN LẠNH</div>
+        <div class="text-center text-xs font-bold"> Số: / M3/KĐ.ĐL</div>
       </div>
-      <br />
-      <div class="text-center font-bold text-xl uppercase">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
-      <div class="text-center font-bold text-xl">{{Baocao.Title}}</div>
-      <table class="w-full table-auto border-collapse border border-gray-400">
+
+      <div class="flex flex-col space-y-2">
+        <div class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
+        <div class="text-center font-bold">Độc lập - Tự do - Hạnh phúc</div>
+        <div class="text-center"><br /></div>
+        <div class="text-center">
+          <span class="text-center p-2 font-bold border-2">Mẫu 3 </span>
+        </div>
+
+      </div>
+    </div>
+    <br />
+    <div class="text-center font-bold text-xl uppercase">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
+    <div class="text-center font-bold text-xl">{{Baocao?.Title}}</div>
+    <table class="w-full table-auto border-collapse border border-gray-400">
+      <tr class="font-bold">
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">STT</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Hạng Mục</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tình Trạng</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày thực hiện</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Vật Tư</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Nhân Công</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Thành Tiền</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
+      </tr>
+      @for (item of DataMau; track $index) {
+      <tr>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
+        <td class="text-xs p-2 border border-gray-400">
+          @if(item.TenTSCD){
+          {{item.TenTSCD}}
+          } @else{ <span class="italic text-red-500">Trống</span> }
+        </td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+      </tr>
+      @for (item1 of item.Chitiet; track $index) {
+      <tr>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">
+          @if(item1.Hangmuc){
+          {{item1.Hangmuc}}
+          } @else{ <span class="italic text-red-500">Trống</span> }
+        </td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">
+          @if(item1.Tinhtrang){
+          {{item1.Tinhtrang}}
+          } @else{ <span class="italic text-red-500">Trống</span> }
+        </td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+          @if(item1.Ngaythuchien){
+          {{item1.Ngaythuchien|date:'dd/MM/yyyy'}}
+          } @else{ <span class="italic text-red-500">Trống</span> }
+        </td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+          {{(item1.Chiphivattu|number:'1.0-0')||0}}đ</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">{{(item1.Chiphinhancong|
+          number:'1.0-0')||0}}đ</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+          {{(item1.Soluong|number:'1.0-0')||0}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+          {{(item1.Thanhtien|number:'1.0-0')||0}}đ</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
+      </tr>
         <tr class="font-bold">
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">STT</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tên TSCD</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Hạng Mục</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Tình Trạng</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ngày thực hiện</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Vật Tư</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Chi Phí Nhân Công</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Số Lượng</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Thành Tiền</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">Ghi Chú</td>
-        </tr>
-        @for (item of DataMau; track $index) {
-        <tr>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
-          <td class="text-xs p-2 border border-gray-400">{{item.TenTSCD}}</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td colspan="2" class="text-center text-xs whitespace-nowrap p-2 border border-gray-400">Tổng</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+            {{(Sum(item.Chitiet)|number:'1.0-0')||0}}đ
+          </td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         </tr>
-        @for (item1 of item.Chitiet; track $index) {
-        <tr>
+        <tr class="font-bold">
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td colspan="2" class="text-center text-xs whitespace-nowrap p-2 border border-gray-400">VAT (10%)</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Hangmuc}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Tinhtrang}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Chiphivattu|number:'1.0-0')||0}}đ</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Chiphinhancong| number:'1.0-0')||0}}đ</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Soluong|number:'1.0-0')||0}}</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{(item1.Thanhtien|number:'1.0-0')||0}}đ</td>
-          <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item1.Ghichu}}</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+            {{(VAT(item.Chitiet)|number:'1.0-0')||0}}đ
+          </td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
         </tr>
-        }
-        }
-        <tr>
+        <tr class="font-bold">
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td colspan="2" class="text-center text-xs whitespace-nowrap p-2 border border-gray-400">Tổng cộng (VAT)</td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400 text-right">
+            {{(SumVAT(item.Chitiet)|number:'1.0-0')||0}}đ
+          </td>
+          <td class="text-xs whitespace-nowrap p-2 border border-gray-400"></td>
+        </tr>
+      }
+      }
+      <!-- <tr>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">1</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">2</td>
@@ -74,25 +132,24 @@
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">7</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">8</td>
           <td class="text-xs whitespace-nowrap p-2 border border-gray-400">9</td>
-        </tr>
-      </table>
-      <div class="flex flex-row justify-between items-center px-8">
-        <div>
-          <div class="text-center"></div>
-          <div class="text-center font-bold"> TRƯỞNG KHOA ĐIỆN LẠNH </div>
-          <br />
-          <br />
-          <div class="text-center"> PHẠM VĂN TRỌNG</div>
-        </div>
+        </tr> -->
+    </table>
+    <div class="flex flex-row justify-between items-center px-8">
+      <div>
+        <div class="text-center"></div>
+        <div class="text-center font-bold"> TRƯỞNG KHOA ĐIỆN LẠNH </div>
+        <br />
+        <br />
+        <div class="text-center"> PHẠM VĂN TRỌNG</div>
+      </div>
 
-        <div>
-          <div class="text-center font-bold">Ngày tháng năm </div>
-          <div class="text-center">Nhân viên thực hiện</div>
-          <br />
-          <br />
-          <div class="text-center">Dương Văn Tuấn</div>
-        </div>
+      <div>
+        <div class="text-center font-bold">Ngày tháng năm </div>
+        <div class="text-center">Nhân viên thực hiện</div>
+        <br />
+        <br />
+        <div class="text-center">Dương Văn Tuấn</div>
       </div>
     </div>
   </div>
-
+</div>
