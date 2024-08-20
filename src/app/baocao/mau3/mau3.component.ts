@@ -455,6 +455,10 @@ toggle4(trigger: any,index:any,index1:any) {
        // this._NotifierService.notify("success","Cập Nhật Thành Công")
       })
   }
+  AutoUpdate(index: any)
+  {
+    this._Mau3Service.UpdateMau3(this.DataMau[index])
+  }
   AddTrangthai(data:any)
   {
     console.log(data);
