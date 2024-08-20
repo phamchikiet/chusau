@@ -328,7 +328,10 @@ export class Mau2Component implements OnInit {
     });
   }
 
-
+  AutoUpdate(index: any)
+  {
+    this._Mau2Service.UpdateMau2(this.DataMau[index])
+  }
   DeleteItem(item: any, index: any) {
     item.Chitiet = item.Chitiet.slice(0, index).concat(item.Chitiet.slice(index + 1))
     this._Mau2Service.UpdateMau2(item).then(() => this.ngOnInit())

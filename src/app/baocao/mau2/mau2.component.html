@@ -210,7 +210,7 @@
                   [cdkConnectedOverlayOpen]="GetOverlay(Overlay6,idx,i)">
                   <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                     <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
-                      <textarea matInput [(ngModel)]="DataMau[idx].Chitiet[i].Noidungthuchien" [ngModelOptions]="{standalone: true}"
+                      <textarea (change)="AutoUpdate(idx)" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Noidungthuchien" [ngModelOptions]="{standalone: true}"
                         placeholder="Nội Dung Thực Hiện"></textarea>
                     </mat-form-field>
                   </div>
@@ -231,7 +231,7 @@
                   [cdkConnectedOverlayOpen]="GetOverlay(Overlay7,idx,i)">
                   <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                     <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
-                      <textarea matInput [(ngModel)]="DataMau[idx].Chitiet[i].Saukhithuchien" [ngModelOptions]="{standalone: true}"
+                      <textarea (change)="AutoUpdate(idx)" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Saukhithuchien" [ngModelOptions]="{standalone: true}"
                         placeholder="Nội Dung Sau Thực Hiện"></textarea>
                     </mat-form-field>
                   </div>
@@ -253,7 +253,7 @@
                   [cdkConnectedOverlayOpen]="GetOverlay(Overlay5,idx,i)">
                   <div class="p-2 flex flex-col bg-white rounded-lg border shadow-lg">
                     <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-full">
-                      <textarea matInput [(ngModel)]="DataMau[idx].Chitiet[i].Ghichu" [ngModelOptions]="{standalone: true}"
+                      <textarea (change)="AutoUpdate(idx)" matInput [(ngModel)]="DataMau[idx].Chitiet[i].Ghichu" [ngModelOptions]="{standalone: true}"
                         placeholder="Ghi Chú"></textarea>
                     </mat-form-field>
                   </div>
