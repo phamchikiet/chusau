@@ -9,6 +9,8 @@ export class Mau2Service {
     private Mau2Repository: Repository<Mau2Entity>
   ) { }
   async create(data: any) {
+    console.log(data);
+
       this.Mau2Repository.create(data);
       return await this.Mau2Repository.save(data);
   }

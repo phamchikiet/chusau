@@ -15,7 +15,7 @@ export class Mau3Entity {
   Chitiet: string;
   @Column({ default: '' })
   Slug: string;
-  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
   Cauhinh: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
   Image: string;
