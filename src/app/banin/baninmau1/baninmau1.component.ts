@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Mau1Service } from '../../baocao/mau1/mau1.service';
+import { BaocaoService } from '../../baocao/baocao.service';
 
 @Component({
   selector: 'app-baninmau1',
@@ -14,10 +15,14 @@ export class Baninmau1Component implements OnInit {
   DataMau:any[]=[]
   constructor() { }
   _Mau1Service:Mau1Service = inject(Mau1Service)
+  Baocao:any
+  _BaocaoService:BaocaoService = inject(BaocaoService)
   async ngOnInit() {
-    window.print();
      this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.idBaocao)
-    console.log(this.DataMau);
+     this.Baocao = await this._BaocaoService.getBaocaoByid(this.idBaocao)
+     setTimeout(() => {
+      window.print();
+    }, 1000);
   }
 
 }

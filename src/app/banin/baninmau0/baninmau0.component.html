@@ -6,13 +6,11 @@
         <div class="text-center"> TRƯỜNG CAO ĐẲNG NGHỀ</div>
         <div class="text-center"> THÀNH PHỐ HỒ CHÍ MINH</div>
         <div class="text-center font-bold"> KHOA: ĐIỆN - ĐIỆN LẠNH</div>
-        <div class="text-center text-xs font-bold"> Số: / M2/KĐ.ĐL</div>
       </div>
 
       <div class="flex flex-col space-y-2">
         <div class="text-center font-bold">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
         <div class="text-center font-bold">Độc lập - Tự do - Hạnh phúc</div>
-        <div class="text-center"><br /></div>
         <div class="text-center">
           <span class="text-center p-2 font-bold border-2">Mẫu 0 </span>
         </div>
@@ -20,8 +18,8 @@
       </div>
     </div>
     <br />
-    <div class="text-center font-bold text-xl uppercase">CHI PHÍ BẢO DƯỠNG THIẾT BỊ ĐỊNH KỲ</div>
-    <!-- <div class="text-center font-bold text-xl">{{DataMau.Title}}</div> -->
+    <div class="text-center font-bold text-xl uppercase">TỔNG HỢP THIẾT BỊ KHOA ĐIỆN - ĐIỆN LẠNH</div>
+     <div class="text-center font-bold text-xl">{{Baocao?.Title}}</div>
     <table class="w-full table-auto border-collapse border border-gray-400">
       <tr class="font-bold">
         <td rowspan="2" class="text-xs text-center whitespace-nowrap p-2 border border-gray-400">STT</td>
@@ -48,18 +46,18 @@
       <tr>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{$index+1}}</td>
         <td class="text-xs whitespace-wrap p-2 border border-gray-400 max-w-40">{{item.TenTSCD}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Hangmuc}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Tinhtrang}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Ngaythuchien|date:'dd/MM/yyyy'}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphivattu}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Chiphinhancong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Soluong}}</td>
-        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Thanhtien}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.MasoTSCD}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.NamSD}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.TheoSoSL}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.TheoSoConlai}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.KiemkeSL}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.KiemkeNguyengia}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.KiemkeConlai}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.ChenhlechSL}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.ChenhlechNguyengia}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.ChenhlechConlai}}</td>
         <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.Ghichu}}</td>
+        <td class="text-xs whitespace-nowrap p-2 border border-gray-400">{{item.MaCode}}</td>
       </tr>
       }
     </table>
