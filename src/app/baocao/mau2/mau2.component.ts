@@ -20,6 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
+import { BaocaoService } from '../baocao.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-mau2',
   standalone: true,
@@ -70,6 +72,7 @@ export class Mau2Component implements OnInit {
   _HangmucService: HangmucService = inject(HangmucService)
   _CauhinhService: CauhinhService = inject(CauhinhService)
   _Mau2Service: Mau2Service = inject(Mau2Service)
+  _BaocaoService: BaocaoService = inject(BaocaoService)
   SelectItem: any
   input2: any = ''
   input3: any = ''
@@ -419,6 +422,23 @@ export class Mau2Component implements OnInit {
           this._NotifierService.notify("success", "Xoá Thành Công")
           this.ngOnInit()
         })
+      }
+    });
+  }
+  router: Router = inject(Router);
+  DeleteBaocao(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.Baocao);
+        this._BaocaoService.DeleteBaocao(this.Baocao)
+        this.DataMau.forEach((v)=>{
+          this._Mau2Service.DeleteMau2(v)
+        })
+        setTimeout(() => {
+          this.router.navigate(['/baocao']);
+        }, 300);
       }
     });
   }

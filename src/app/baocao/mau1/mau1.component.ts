@@ -22,6 +22,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
+import { BaocaoService } from '../baocao.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-mau1',
   standalone: true,
@@ -68,6 +70,8 @@ export class Mau1Component implements OnInit {
   _HangmucService: HangmucService = inject(HangmucService)
   _CauhinhService: CauhinhService = inject(CauhinhService)
   _Mau1Service: Mau1Service = inject(Mau1Service)
+  _BaocaoService: BaocaoService = inject(BaocaoService)
+  router: Router = inject(Router);
   input2: any = ''
   input3: any = ''
   async Addrow() {
@@ -438,12 +442,6 @@ export class Mau1Component implements OnInit {
     this.DataMau[index].Chitiet[index1].Ngaykiemtra = item.Title
     this._Mau1Service.UpdateMau1(this.DataMau[index])
   }
-
-
-
-
-
-
   AddHangmuc(item: any) {
     this._HangmucService.CreateHangmuc({ Title: item }).then(() => {
     })
@@ -453,5 +451,22 @@ export class Mau1Component implements OnInit {
     this.Trangthai.push({ id: this.Trangthai.length + 1, Title: data })
     const item = { id: this.idTrangthai, Data: this.Trangthai }
     this._CauhinhService.UpdateCauhinh(item).then(() => { })
+  }
+
+  DeleteBaocao(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.Baocao);
+        this._BaocaoService.DeleteBaocao(this.Baocao)
+        this.DataMau.forEach((v)=>{
+          this._Mau1Service.DeleteMau1(v)
+        })
+        setTimeout(() => {
+          this.router.navigate(['/baocao']);
+        }, 300);
+      }
+    });
   }
 }

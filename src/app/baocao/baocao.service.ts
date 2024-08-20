@@ -27,8 +27,8 @@ export class BaocaoService {
   //       },
   //     };
   //   const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1VghpYpLVKug07LJm1-pdcpeQcEoh5VaCOgBvOfQ0-L8/values/baocao?key=AIzaSyCWh10EgrjVBm8qKpnsGOgXrIsT5uqroMc`,options);
-  //   const data = await response.json();  
-  //         //this._baocaos.next(data)                 
+  //   const data = await response.json();
+  //         //this._baocaos.next(data)
   //   return data;
   //     } catch (error) {
   //         return console.error(error);
@@ -43,8 +43,8 @@ export class BaocaoService {
         },
       };
           const response = await fetch(`${environment.APIURL}/baocao`,options);
-          const data = await response.json(); 
-          this._baocaos.next(data)                 
+          const data = await response.json();
+          this._baocaos.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -59,8 +59,8 @@ export class BaocaoService {
         },
       };
           const response = await fetch(`${environment.APIURL}/baocao/findslug/${Slug}`,options);
-          const data = await response.json();    
-          this._baocao.next(data)                      
+          const data = await response.json();
+          this._baocao.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -78,14 +78,14 @@ export class BaocaoService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._baocao.next(data)              
+          const data = await response.json();
+          this._baocao.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async SearchBaocao(SearchParams:any) {    
+  async SearchBaocao(SearchParams:any) {
     try {
       const options = {
         method:'POST',
@@ -98,9 +98,9 @@ export class BaocaoService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._baocaos.next(data.items)              
-          this._totalCount.next(data.totalCount)              
+          const data = await response.json();
+          this._baocaos.next(data.items)
+          this._totalCount.next(data.totalCount)
           return data;
       } catch (error) {
           return console.error(error);
@@ -115,18 +115,18 @@ export class BaocaoService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/baocao`, options);          
+          const response = await fetch(`${environment.APIURL}/baocao`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
+          const data = await response.json();
           console.log(data);
-          
-          return data                
+
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async SyncBaocao(item:any) {
     try {
         const options = {
@@ -136,18 +136,18 @@ export class BaocaoService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/baocao/sync`, options);          
+          const response = await fetch(`${environment.APIURL}/baocao/sync`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
+          const data = await response.json();
           console.log(data);
-          
-          return data                
+
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async UpdateBaocao(item:any) {
     const baocaos:any = await this.baocaos$.pipe(take(1)).toPromise();
     try {
@@ -163,17 +163,17 @@ export class BaocaoService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._baocao.next(data) 
+          this._baocao.next(data)
           const updateBaocaos = baocaos.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._baocaos.next(updateBaocaos);               
-          return data;  
+          this._baocaos.next(updateBaocaos);
+          return data;
       } catch (error) {
           return console.error(error);
       }
-  }  
-  
+  }
+
   async DeleteBaocao(item:any) {
     try {
         const options = {
@@ -183,7 +183,7 @@ export class BaocaoService {
             },
           };
           const response = await fetch(`${environment.APIURL}/baocao/${item.id}`, options);
-          return await response.json();         
+          return await response.json();
       } catch (error) {
           return console.error(error);
       }

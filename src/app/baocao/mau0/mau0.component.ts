@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Mau0Service } from './mau0.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BaocaoService } from '../baocao.service';
 import { NotifierService } from 'angular-notifier';
@@ -97,6 +97,7 @@ export class Mau0Component implements OnInit {
   _BaocaoService: BaocaoService = inject(BaocaoService)
   _NotifierService: NotifierService = inject(NotifierService)
   route: ActivatedRoute = inject(ActivatedRoute);
+  router: Router = inject(Router);
   constructor(private dialog: MatDialog) { }
   async ngOnInit() {
     this.TSCD = this.FilterTSCD = await this._ThietbiService.getAllThietbi()
@@ -281,6 +282,22 @@ export class Mau0Component implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result == 'true') {
         // this._SanphamService.DeleteSanpham(this.SelectItem).then(() => this.ngOnInit())
+      }
+    });
+  }
+  DeleteBaocao(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.Baocao);
+        this._BaocaoService.DeleteBaocao(this.Baocao)
+        this.DataMau.forEach((v:any)=>{
+          this._Mau0Service.DeleteMau0(v)
+        })
+        setTimeout(() => {
+          this.router.navigate(['/baocao']);
+        }, 300);
       }
     });
   }

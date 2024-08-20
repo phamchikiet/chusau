@@ -21,6 +21,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotifierService } from 'angular-notifier';
 import { Mau3Service } from './mau3.service';
 import { Subject, Observable, withLatestFrom, map, filter, takeUntil, timer } from 'rxjs';
+import { BaocaoService } from '../baocao.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-mau3',
   standalone:true,
@@ -71,6 +73,7 @@ export class Mau3Component implements OnInit {
   _HangmucService:HangmucService= inject(HangmucService)
   _CauhinhService:CauhinhService= inject(CauhinhService)
   _Mau3Service:Mau3Service= inject(Mau3Service)
+  _BaocaoService:BaocaoService= inject(BaocaoService)
   SelectItem:any
   input2:any=''
   input3:any=''
@@ -466,6 +469,7 @@ toggle4(trigger: any,index:any,index1:any) {
 
     });
   }
+
   XoaDialog(teamplate: TemplateRef<any>): void {
     const dialogRef = this.dialog.open(teamplate, {
     });
@@ -479,4 +483,22 @@ toggle4(trigger: any,index:any,index1:any) {
       }
     });
   }
+  router: Router = inject(Router);
+  DeleteBaocao(teamplate: TemplateRef<any>): void {
+    const dialogRef = this.dialog.open(teamplate, {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == 'true') {
+        console.log(this.Baocao);
+        this._BaocaoService.DeleteBaocao(this.Baocao)
+        this.DataMau.forEach((v)=>{
+          this._Mau3Service.DeleteMau3(v)
+        })
+        setTimeout(() => {
+          this.router.navigate(['/baocao']);
+        }, 300);
+      }
+    });
+  }
+
 }
