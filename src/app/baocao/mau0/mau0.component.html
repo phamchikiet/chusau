@@ -63,37 +63,53 @@
       </ng-container>
       <ng-container matColumnDef="TheoSoSL">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Theo Sổ SL </th>
-        <td mat-cell *matCellDef="let row"> {{row.TheoSoSL}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.TheoSoSL | number:'1.0-0')||'0'}}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="TheoSoConlai">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Theo Sổ Còn Lại </th>
-        <td mat-cell *matCellDef="let row"> {{row.TheoSoConlai}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.TheoSoConlai | number:'1.0-0')||'0'}}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="KiemkeSL">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê SL </th>
-        <td mat-cell *matCellDef="let row"> {{row.KiemkeSL}} </td>
+        <td mat-cell *matCellDef="let row">
+           {{(row.KiemkeSL | number:'1.0-0')||'0'}}
+          </td>
       </ng-container>
       <ng-container matColumnDef="KiemkeNguyengia">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê Nguyên Giá </th>
-        <td mat-cell *matCellDef="let row"> {{row.KiemkeNguyengia}} </td>
+        <td mat-cell *matCellDef="let row">
+           {{(row.KiemkeNguyengia | number:'1.0-0')||'0'}}đ
+          </td>
       </ng-container>
       <ng-container matColumnDef="KiemkeConlai">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Kiểm Kê Còn Lại </th>
-        <td mat-cell *matCellDef="let row"> {{row.KiemkeConlai}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.KiemkeConlai | number:'1.0-0')||'0'}}
+        </td>
       </ng-container>
       <ng-container matColumnDef="ChenhlechSL">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch SL </th>
-        <td mat-cell *matCellDef="let row"> {{row.ChenhlechSL}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.ChenhlechSL | number:'1.0-0')||'0'}}
+        </td>
       </ng-container>
       <ng-container matColumnDef="ChenhlechNguyengia">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch Nguyên Giá </th>
-        <td mat-cell *matCellDef="let row"> {{row.ChenhlechNguyengia}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.ChenhlechNguyengia | number:'1.0-0')||'0'}}đ
+         </td>
       </ng-container>
       <ng-container matColumnDef="ChenhlechConlai">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Chênh Lệch Còn Lại </th>
-        <td mat-cell *matCellDef="let row"> {{row.ChenhlechConlai}} </td>
+        <td mat-cell *matCellDef="let row">
+          {{(row.ChenhlechConlai | number:'1.0-0')||'0'}}đ
+        </td>
       </ng-container>
       <ng-container matColumnDef="Ghichu">
         <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2"> Ghi Chú </th>

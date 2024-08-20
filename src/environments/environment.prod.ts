@@ -5,7 +5,7 @@ export const environment = {
   DATABASE_URL: "mysql://root:@localhost:3306/crm",
   //APIURL:"https://v2apidaotao.tazagroup.vn",
   //APIURL: "http://localhost:3300",
-  APIURL:"https://apicsvc.chikiet.com",
+  APIURL:"https://apicsvc.cdntphcm.com",
   REMOTE_URL: "mysql://tazaspac_it:ChiKiet1988:@localhost:3306/tazaspac_daotao",
   SECRETKEY: "mycustomuselongsecret",
   EXPIRESIN: "60 days",
