@@ -119,8 +119,9 @@ export class Mau0Component implements OnInit {
           item.idTSCD = v.id
           item.TenTSCD = v.Tieude
           item.NamSD = (new Date()).getFullYear()
-          item.TheoSoSL = 0
-          item.TheoSoConlai = 0
+          item.TheoSoSL = 1
+          item.TheoSoNguyengia = v.Gia
+          item.TheoSoConlai = v.Gia
           item.KiemkeSL = 0
           item.KiemkeNguyengia = 0
           item.KiemkeConlai = 0
