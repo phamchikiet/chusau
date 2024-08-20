@@ -179,10 +179,10 @@ export class Mau1Service {
           }
           const data = await response.json();
           this._mau1.next(data)
-          const updateMau1s = mau1s.map((v:any) =>
-            v.id === data.id ? data : v
-          );
-          this._mau1s.next(updateMau1s);
+          // const updateMau1s = mau1s.map((v:any) =>
+          //   v.id === data.id ? data : v
+          // );
+          // this._mau1s.next(updateMau1s);
           return data;
       } catch (error) {
           return console.error(error);
