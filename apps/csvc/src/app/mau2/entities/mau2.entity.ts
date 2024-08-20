@@ -17,6 +17,10 @@ export class Mau2Entity {
   Hangmuc: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Tinhtrang: string;
+  @Column({ default: 0 })
+  Gia: number;
+  @Column({ default: 0 })
+  ThoigianSudung: number;
   @Column()
   Ngaythuchien: Date;
   @Column()
