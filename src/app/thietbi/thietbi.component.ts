@@ -60,7 +60,7 @@ export class ThietbiComponent {
     isDelete:false
   };
   IsshowCam:boolean=false;
-  displayedColumns: string[] = ['qrcode','hinhanh', 'Tieude', 'Code','Tinhtrang','HSD','NgayHSD','Ngaytao','Action'];
+  displayedColumns: string[] = ['qrcode','hinhanh', 'Tieude', 'Code','Tinhtrang','Gia','ThoigianSD','HSD','NgayHSD','Ngaytao','Action'];
   dataSource!: MatTableDataSource<any>;
   Listdata:any[]=[];
   public showWebcam = true;

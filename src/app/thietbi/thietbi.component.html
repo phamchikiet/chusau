@@ -89,6 +89,14 @@
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Tình Trạng </th>
             <td class="whitespace-nowrap"  mat-cell *matCellDef="let row"> {{row.Tinhtrang}} </td>
           </ng-container>
+          <ng-container matColumnDef="Gia">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Giá </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row"> {{row.Gia}} </td>
+          </ng-container>
+          <ng-container matColumnDef="ThoigianSD">
+            <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Đã Dùng </th>
+            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row"> {{row.ThoigianSD}} </td>
+          </ng-container>
           <ng-container matColumnDef="HSD">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Hạn Sử Dụng </th>
             <td class="whitespace-nowrap" mat-cell *matCellDef="let row">
