@@ -19,6 +19,14 @@ export class ThietbiController {
   findAll() {
     return this.thietbiService.findAll();
   }
+  @Post('loaddata')
+  loadata(@Body() listData: any) {
+    console.log(listData);
+    listData.forEach((v:any)=> {
+      this.thietbiService.update(v.id,v)
+    })
+    return listData
+  }
 
   @Get('findByid/:id')
   findOne(@Param('id') id: string) {
