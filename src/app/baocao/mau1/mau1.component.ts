@@ -81,19 +81,9 @@ export class Mau1Component implements OnInit {
       idBaocao: this.Baocao.id
     }
     this.DataMau = [item,...this.DataMau]
-    // const item = {
-    //   TenTSCD: "",
-    //   Hangmuc: "",
-    //   Tinhtrang: "",
-    //   Ngaykiemtra: new Date(),
-    //   idBaocao: this.Baocao.id
-    // }
-    // this._Mau1Service.CreateMau1(item).then(async () => {
-    //   this.DataMau = await this._Mau1Service.getMau1ByidBaocao(this.Baocao.id)
-    //   this.dataSource = new MatTableDataSource(this.DataMau);
-    //   this.dataSource.paginator = this.paginator;
-    //   this.dataSource.sort = this.sort;
-    // })
+    this._Mau1Service.CreateMau1(item).then(async () => {
+      this.ngOnInit()
+    })
 
   }
   constructor(
