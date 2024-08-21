@@ -27,8 +27,8 @@ export class CaidatService {
         },
       };
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/1VghpYpLVKug07LJm1-pdcpeQcEoh5VaCOgBvOfQ0-L8/values/users?key=AIzaSyCWh10EgrjVBm8qKpnsGOgXrIsT5uqroMc`,options);
-    const data = await response.json();  
-          //this._userss.next(data)                 
+    const data = await response.json();
+          //this._userss.next(data)
     return data;
       } catch (error) {
           return console.error(error);
@@ -43,8 +43,8 @@ export class CaidatService {
         },
       };
           const response = await fetch(`${environment.APIURL}/test_users`,options);
-          const data = await response.json(); 
-          this._userss.next(data)                 
+          const data = await response.json();
+          this._userss.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -59,8 +59,8 @@ export class CaidatService {
         },
       };
           const response = await fetch(`${environment.APIURL}/test_users/findslug/${Slug}`,options);
-          const data = await response.json();    
-          this._users.next(data)                      
+          const data = await response.json();
+          this._users.next(data)
           return data;
       } catch (error) {
           return console.error(error);
@@ -78,14 +78,14 @@ export class CaidatService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._users.next(data)              
+          const data = await response.json();
+          this._users.next(data)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async SearchUsers(SearchParams:any) {    
+  async SearchUsers(SearchParams:any) {
     try {
       const options = {
         method:'POST',
@@ -98,9 +98,9 @@ export class CaidatService {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();   
-          this._userss.next(data.item)              
-          this._totalCount.next(data.totalCount)              
+          const data = await response.json();
+          this._userss.next(data.item)
+          this._totalCount.next(data.totalCount)
           return data;
       } catch (error) {
           return console.error(error);
@@ -115,18 +115,18 @@ export class CaidatService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/users`, options);          
+          const response = await fetch(`${environment.APIURL}/test_users`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
+          const data = await response.json();
           console.log(data);
-          
-          return data                
+
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async SyncUsers(item:any) {
     try {
         const options = {
@@ -136,18 +136,18 @@ export class CaidatService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/test_users/sync`, options);          
+          const response = await fetch(`${environment.APIURL}/test_users/sync`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-          const data = await response.json();  
+          const data = await response.json();
           console.log(data);
-          
-          return data                
+
+          return data
       } catch (error) {
           return console.error(error);
       }
-  }  
+  }
   async UpdateUsers(item:any) {
     const userss:any = await this.userss$.pipe(take(1)).toPromise();
     try {
@@ -163,17 +163,17 @@ export class CaidatService {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          this._users.next(data) 
+          this._users.next(data)
           const updateUserss = userss.map((v:any) =>
             v.id === data.id ? data : v
           );
-          this._userss.next(updateUserss);               
-          return data;  
+          this._userss.next(updateUserss);
+          return data;
       } catch (error) {
           return console.error(error);
       }
-  }  
-  
+  }
+
   async DeleteUsers(item:any) {
     try {
         const options = {
@@ -183,7 +183,7 @@ export class CaidatService {
             },
           };
           const response = await fetch(`${environment.APIURL}/test_users/${item.id}`, options);
-          return await response.json();         
+          return await response.json();
       } catch (error) {
           return console.error(error);
       }
