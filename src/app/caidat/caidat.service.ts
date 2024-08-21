@@ -115,7 +115,7 @@ export class CaidatService {
             },
             body: JSON.stringify(item),
           };
-          const response = await fetch(`${environment.APIURL}/test_users`, options);
+          const response = await fetch(`${environment.APIURL}/test_users/dangky`, options);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
