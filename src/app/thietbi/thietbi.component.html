@@ -91,7 +91,9 @@
           </ng-container>
           <ng-container matColumnDef="Gia">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Giá </th>
-            <td class="whitespace-nowrap"  mat-cell *matCellDef="let row"> {{row.Gia}} </td>
+            <td class="whitespace-nowrap !text-right"  mat-cell *matCellDef="let row">
+              {{(row.Gia | number:'1.0-0')||'0'}}đ
+            </td>
           </ng-container>
           <ng-container matColumnDef="ThoigianSD">
             <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header> Đã Dùng </th>
