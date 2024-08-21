@@ -137,7 +137,7 @@ export class CaidatComponent {
   }
   CreateCaidat(data:any)
   {
-    this._CaidatService.CreateUsers(data)
+    this._CaidatService.CreateUsers(data).then(()=>{this.ngOnInit()})
     // .subscribe(()=>
     // {
     //   this._CaidatService.caidats$.subscribe((data:any)=>{
